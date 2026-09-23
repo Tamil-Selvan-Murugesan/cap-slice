@@ -1,0 +1,48 @@
+# PROGRESS.md
+
+Living status for `cap-slice`. Update at the end of every session. Stable rules and facts are in [`AGENTS.md`](AGENTS.md).
+
+**Last updated:** 2026-09-23
+
+## Current status
+
+**Phase:** research complete for the 5-company pilot; **awaiting discussion** of the open questions below before any build work.
+
+## Done
+
+- **2026-09-21** — Tested direct NSE access: homepage loads, `/api/*` blocked by Akamai even with cookies/headers. BSE main site and company IR pages also 403.
+- **2026-09-21** — Found the open archive layer (`nsearchives.nseindia.com`, `archives.nseindia.com`, `bseindia.com/xml-data/corpfiling`); confirmed direct PDF fetch across all 5 companies.
+- **2026-09-21** — Built `data/document_availability_matrix.csv`: 267 documents (APAR 121, Hero 66, E2E 58, Esconet 14, C2C 8). 17 URLs verified `200`, 224 `untested`, 18 `blocked`, 8 `not found`.
+- **2026-09-21** — Wrote `docs/document-sourcing-report.md` (sources, workarounds, ToS/subscription, scaling issues, open questions).
+- **2026-09-23** — Added `AGENTS.md` and this file for hand-offs.
+
+## Open gaps
+
+| Gap | Affects | Status |
+|---|---|---|
+| Official filed shareholding-pattern PDF not discoverable | All 5 companies | Open — only derived % from Screener |
+| Periodic-results PDF not isolated | APAR, Hero MotoCorp (and E2E partially) | Open |
+| 224 of 267 URLs not individually verified | Matrix | Open — pattern-matched only |
+| Hero MotoCorp pre-2022 concalls on company site | 18 rows | `blocked` (403) |
+
+## Open questions (for discussion)
+
+1. Keep Screener.in as the discovery dependency, or build a primary-source discovery path (e.g. browser automation against NSE/BSE filing search)?
+2. Accept "derived data only" for shareholding pattern, or find a dedicated discovery path?
+3. At what volume does NSE Data & Analytics' paid route make more sense than the workaround? (3–4k companies × 10 years ≈ 150k–250k docs.)
+4. How to discover periodic results for large mainboard companies, given pattern-matching didn't isolate them?
+
+## Next steps
+
+1. Discuss the open questions above.
+2. Commit the current research artifacts (nothing committed yet).
+
+## Decision log
+
+| Date | Decision | Why |
+|---|---|---|
+| 2026-09-21 | Personal research, low volume only | NSE ToS prohibits automated scraping; bulk/commercial needs the paid route |
+| 2026-09-21 | No crawler yet — build an availability matrix first | Understand sources and failure modes before investing in infrastructure |
+| 2026-09-21 | Don't use Screener as the source of record — record the underlying NSE/BSE archive URL | Goal is to understand primary sources, not depend on an aggregator |
+| 2026-09-21 | Periodic results follow the listing tier: quarterly for mainboard, half-yearly for SME | That's what each tier actually files |
+| 2026-09-23 | Split stable guidance (`AGENTS.md`) from living status (`PROGRESS.md`) | Keeps rules readable; progress can grow without burying them |
