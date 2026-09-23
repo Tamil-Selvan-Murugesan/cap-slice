@@ -1,5 +1,7 @@
 # NSE/BSE Document Sourcing — Pilot Findings
 
+> Historical pilot report. The [independent verification on 2026-09-23](pilot-verification-2026-09-23.md) corrects several claims below: APAR company sources work; APAR results/shareholding documents were found; C2C's catalogued results PDF is misclassified; E2E's listing tier changed in 2022. Main's full downloader run has now attempted all 259 catalogued URLs (228 downloaded, 31 failed), including individual confirmation of all 18 Hero 403s. See [PROGRESS.md](../PROGRESS.md) for reconciled current status.
+
 **Scope:** 5 companies (Esconet Technologies, E2E Networks, C2C Advanced Systems, APAR Industries, Hero MotoCorp), 5 document types (annual report, quarterly/half-yearly results, shareholding pattern, concall transcript, investor presentation), target window 2015–2026.
 
 **Purpose:** understand the real data sources, the workarounds they require, the subscription/ToS landscape, and the issues that would emerge scaling this from 5 companies to ~3,000–4,000 NSE-listed companies over a 10-year window — before building any fetching infrastructure.
