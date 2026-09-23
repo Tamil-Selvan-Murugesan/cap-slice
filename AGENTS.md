@@ -19,7 +19,7 @@ Guidance for any agent (or human) picking up this repo. Stable facts and rules l
 
 Target: roughly 2015–2026 (or from listing date if later), eventually for ~3,000–4,000 companies.
 
-**Current phase: research, not building.** We are mapping data sources, workarounds, ToS/subscription constraints, and scaling issues on a 5-company pilot before writing any fetcher. Don't start building crawler infrastructure unless `PROGRESS.md` says that decision has been made.
+**Current phase: research, not building.** We are mapping data sources, workarounds, ToS/subscription constraints, and scaling issues on a 5-company pilot. The only code is a downloader for URLs already in the matrix — it does no discovery. Don't build discovery/crawler infrastructure unless `PROGRESS.md` says that decision has been made.
 
 ## Repo layout
 
@@ -27,7 +27,9 @@ Target: roughly 2015–2026 (or from listing date if later), eventually for ~3,0
 |---|---|
 | `data/document_availability_matrix.csv` | Pilot catalog: one row per document, 5 companies |
 | `docs/document-sourcing-report.md` | Findings report: sources, workarounds, ToS, scaling issues, open questions |
-| `src/cap_slice/` | Python package (still the `uv init` stub — no fetcher code yet) |
+| `data/<SYMBOL>/<doc_type>s/` | Downloaded documents, e.g. `data/E2E/annual_reports/`. Files named `<filed_date>_<period>.pdf`. Gitignored — re-create with the downloader |
+| `data/download_manifest.csv` | One row per download attempt: result, HTTP code, bytes, sha256, local path |
+| `src/cap_slice/downloader.py` | Downloads every matrix row that has a URL (`uv run cap-slice-download`) |
 | `PROGRESS.md` | Living status + decision log |
 
 Tooling: Python 3.12, `uv` for env/deps (`uv run`, `uv add`).
@@ -61,6 +63,8 @@ Filenames embed internal IDs/timestamps — **they can't be derived, only discov
 
 **Current discovery workaround:** Screener.in (`https://www.screener.in/company/<SYMBOL>/` or `/consolidated/`) lists historical docs and links to the archive URLs above. It is an index only — record the archive URL as the source, not Screener.
 
+**NSE annual reports up to FY2022-23 are ZIPs, not PDFs.** `archives.nseindia.com/annual_reports/` serves `.zip` files, each wrapping a single PDF, for FY2022-23 and earlier; from FY2023-24 they're plain PDFs. Seen for both `AR_` and `SME_AR_` (E2E FY2017-18–FY2022-23, APAR FY2011-12). One ZIP had a nested path inside (`<name>.zip/<file>.pdf`), so match on `.pdf` rather than exact names. BSE's `bseplus/AnnualReport/` serves PDFs for all years. *(verified 2026-09-23)*
+
 **SME vs mainboard is a fork, not a filter:** SME companies file half-yearly (not quarterly) and use the `SME_AR_` annual-report prefix.
 
 **Known gaps:**
@@ -82,7 +86,7 @@ Filenames embed internal IDs/timestamps — **they can't be derived, only discov
 `data/document_availability_matrix.csv` columns:
 
 ```
-company,symbol,listing_tier,doc_type,period_label,filed_date,primary_exchange,host_domain,url,fetch_status,notes
+company,symbol,listing_tier,doc_type,period_label,filed_date,primary_exchange,host_domain,url,fetch_status,notes,download_status
 ```
 
 | Column | Allowed values / format |
@@ -93,6 +97,7 @@ company,symbol,listing_tier,doc_type,period_label,filed_date,primary_exchange,ho
 | `filed_date` | `YYYY-MM-DD` |
 | `primary_exchange` | `NSE`, `BSE`, `other` (company site) — derived from the host, never an aggregator |
 | `fetch_status` | `200` (verified this session), `untested`, `blocked`, `not found` |
+| `download_status` | `yes` (file present under `data/<SYMBOL>/<doc_type>s/`), `no` — set by the downloader from what's on disk |
 
 ## Verifying a URL
 
@@ -104,3 +109,17 @@ curl -s -o /dev/null -m 20 -L \
 ```
 
 Expect `200|application/pdf|<bytes>`.
+
+## Downloader
+
+```bash
+uv run cap-slice-download --dry-run            # list targets, fetch nothing
+uv run cap-slice-download                      # everything with a URL
+uv run cap-slice-download --symbol E2E --doc-type annual_report
+uv run cap-slice-download --refresh-status     # recompute download_status only
+```
+
+- Sequential, 3 s between requests (`--delay`). Existing files are skipped, so re-running resumes.
+- Checks the first bytes of each response: only real PDF (`%PDF`) or ZIP (`PK`) files are saved; HTML decoy/error pages count as failures.
+- ZIPs holding exactly one PDF are unpacked in place (ZIP deleted, PDF kept under the same name). Anything else stays a ZIP and is reported. Any ZIPs already on disk are unpacked at the start of every run.
+- Writes `fetch_status` back to the matrix: `200` on success, `blocked` on 401/403, `not found` on 404/410 (`--no-update-matrix` to skip).

@@ -8,3 +8,8 @@ wheels/
 
 # Virtual environments
 .venv
+
+# Downloaded documents (large binaries; re-create with cap-slice-download)
+data/*/*/*.pdf
+data/*/*/*.zip
+data/*/*/*.part

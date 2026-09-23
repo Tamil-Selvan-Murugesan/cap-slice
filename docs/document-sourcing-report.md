@@ -46,6 +46,8 @@ By document type: concall transcripts 108, investor presentations 103, annual re
 
 Verification: 17 of 267 URLs were individually re-fetched and confirmed `200 application/pdf` this session; 224 were pattern-matched (same URL structure, not individually re-checked); 18 came back `blocked`; 8 came back `not found`.
 
+*Update 2026-09-23 (full download):* every one of the 259 URLs was then fetched. 228 downloaded as real documents; 18 were still `blocked` (403, Hero MotoCorp's own site); 13 were wrong: 11 returned 404 and 2 returned an HTML page instead of a PDF (10 APAR, 3 Hero MotoCorp). So about 5% of the cataloged URLs were wrong, all of them in the two large mainboard companies.
+
 ## 5. Structural issues (will compound, not stay flat, at scale)
 
 **a. SME vs. mainboard aren't a filter, they're a fork.** SME-listed companies file half-yearly, not quarterly, and use a `SME_AR_` filename prefix instead of `AR_` for annual reports. A meaningful share of a 3-4k-company universe will be SME-listed — this needs to be a first-class branch in any fetcher's logic, not an edge case handled after the fact.
@@ -59,6 +61,8 @@ Verification: 17 of 267 URLs were individually re-fetched and confirmed `200 app
 **e. URL patterns are undocumented, not contractual.** Filenames embed internal transaction IDs and timestamps that can only be discovered, never derived or templated. Nothing here is a documented public API — the archive domains are "currently open," not "guaranteed open." NSE or BSE could add protection to them without notice.
 
 **f. Verification is itself a cost that scales.** Only 17 of 267 URLs were individually re-fetched this session; the rest were trusted on pattern-match. At 3-4k companies, even light verification of every discovered URL becomes meaningful request volume against the same currently-open archive domains — worth deciding deliberately how much to verify vs. trust before automating it.
+
+**g. Older NSE annual reports are ZIPs, not PDFs.** *(Added 2026-09-23, found during the full download.)* `archives.nseindia.com/annual_reports/` serves annual reports for FY2022-23 and earlier as `.zip` files, each wrapping a single PDF; from FY2023-24 onward they are plain PDFs. This held for both `AR_` and `SME_AR_` files (E2E FY2017-18 to FY2022-23, APAR FY2011-12). BSE's `bseplus/AnnualReport/` serves PDFs for every year. One ZIP stored its PDF under a nested path (`<name>.zip/<file>.pdf`), so inner filenames can't be assumed either. At scale, a large share of a 10-year window of NSE-sourced annual reports will arrive as ZIPs, so any fetcher has to detect the real file type (from the first bytes, not the URL extension) and unpack before parsing.
 
 ## 6. Rough scale math
 
