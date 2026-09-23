@@ -39,7 +39,7 @@ Living status for `cap-slice`. Update at the end of every session. Stable rules 
 
 1. Discuss the open questions above.
 2. Re-discover the 13 wrong URLs (see Open gaps).
-3. Commit the downloader, matrix update, and docs (downloaded files are gitignored).
+3. ~~Commit the downloader, matrix update, and docs~~ — done 2026-09-23 (`dee24b8`).
 
 ## Decision log
 
