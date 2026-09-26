@@ -48,7 +48,7 @@ Particulars Standalone
 
 ### Chunk 3
 
-_table · pages 12–12 · 167 words · 438 tokens · golden facts: F13 (L1)_
+_table · pages 12–12 · 167 words · 438 tokens_
 
 ```text
 ## FINANCIAL SUMMARY OF OPERATIONS

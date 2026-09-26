@@ -155,5 +155,5 @@ uv run cap-slice-compare --option pymupdf4llm --doc e2e_pres --reparse
 
 - Options: `baseline` (extract.py + chunk.py), `pymupdf_text` (Option 1), `pymupdf4llm` (Option 2, layout model + RapidOCR). Options 1 and 2 share `structured_chunk.py`, so differences come from the parser.
 - Golden set: `data/golden/compare_docs.csv` (5 docs) and `parse_facts.csv` (28 facts). **Facts are read off rendered page images, never from a parser's output** — keep it that way when adding facts.
-- Levels: L1 value in some chunk; L2 label and value on the same row; L3 + period header and unit in the same chunk; L4 + value under the right column. Definitions in `compare_parsers.py`.
+- Levels: L1 value in a chunk covering the fact's page; L2 label and value on the same row; L3 + period header and unit in the same chunk; L4 + value under the right column. Each fact is tested against every chunk of its document that covers its page and scores the best single chunk (assumes perfect retrieval). Definitions in `compare_parsers.py`.
 - Always open the chunks behind a score change before trusting it — several "improvements" during development were bugs (see `review/README.md`).

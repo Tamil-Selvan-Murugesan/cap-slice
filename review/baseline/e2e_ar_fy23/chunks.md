@@ -6,7 +6,7 @@
 
 ### Chunk 0
 
-_text · pages 2–13 · 399 words · 849 tokens · golden facts: F13 (L1)_
+_text · pages 2–13 · 399 words · 849 tokens_
 
 ```text
 Corporate Information1. About the Company2. 1 3. Chairman’s Message 2 4. Director's Report 9 5. Management

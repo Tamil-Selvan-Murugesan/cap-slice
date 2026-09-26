@@ -17,7 +17,7 @@ Each `<option>/<doc>/` has `parsed.md` (raw parser output per page, **before** c
 
 | Facts (28, read off page images) | Baseline | Option 1 | Option 2 |
 |---|---|---|---|
-| Value present at all (≥ L1) | 21 | 21 | **27** |
+| Value present on the fact's page (≥ L1) | 20 | 20 | **26** |
 | Row intact, label next to value (≥ L2) | 20 | 18 | **23** |
 | + year header and unit in the same chunk (≥ L3) | 19 | 17 | **21** |
 | + value under the right column (L4) | 4 | 15 | **21** |
@@ -39,7 +39,7 @@ Tokens to embed are about the same or lower for Options 1 and 2 (boilerplate rem
 
 **2. Scanned financial statements (E2E FY2022-23, F09–F14) — nobody passes**
 - Baseline and Option 1: no OCR, pages 123–164 are simply missing (0/6).
-- Option 2: OCR recovers text on all 52 image pages, but only 5/6 values are found (one of them only via the directors' report text, chunk 7) and none at L3+: RapidOCR drops spaces (`BalanceSheetasatMarch31,2023`), reads some commas as dots (`6.840.73`), and **puts both year columns in one cell** (`1,631.31 384.34`), so the year of each number is lost. Raising OCR resolution to 300 dpi did not fix it. See `pymupdf4llm/e2e_ar_fy23/parsed.md`, page 123.
+- Option 2: OCR recovers text on all 52 image pages, but only 4/6 values are found on the scanned pages and none at L3+: RapidOCR drops spaces (`BalanceSheetasatMarch31,2023`), reads some commas as dots (`6.840.73`), and **puts both year columns in one cell** (`1,631.31 384.34`), so the year of each number is lost. Raising OCR resolution to 300 dpi did not fix it. See `pymupdf4llm/e2e_ar_fy23/parsed.md`, page 123.
 - This is the case Docling's table model is supposed to handle — the main reason to still test Option 3.
 
 **3. Concall transcript (C2C, F15–F18)**
@@ -61,6 +61,13 @@ Tokens to embed are about the same or lower for Options 1 and 2 (boilerplate rem
 - Tiny chunks (4–15 words) from designed pages → tables under 3 rows count as text; prose under 80 words merges forward.
 - PyMuPDF4LLM wraps unsure OCR characters in `~~` (e.g. `2,294~~.~~41`) → stripped in cleaning.
 - A heading arriving while a chunk was small lost its text; the small-chunk merge also dropped the next chunk's heading → both fixed (fact F24).
+
+## How facts are matched to chunks
+
+- Only chunks from the fact's own document **whose page range covers the fact's page** are tested (default since 2026-09-26; `score_fact(..., any_page=True)` turns it off).
+- Every such chunk is tested; the fact scores the **best level any single chunk reaches**. Evidence is never combined across chunks. Ties keep the earliest chunk, which is the one tagged `golden facts: Fxx (Ln)` in `chunks.md`.
+- This assumes **perfect retrieval**: a score is the ceiling of what the best chunk allows, not what search will return. Duplicate or garbled copies of a value elsewhere are not penalised. Search quality needs the next, embedding-based evaluation.
+- Why the page rule: without it F13 (profit 990.99, scanned P&L on p. 124) scored L1 in every option only because the directors' report on another page quotes the same number. With it, F13 is 0 everywhere; no other score changed.
 
 ## Caveats
 - 28 facts across 5 documents is a small sample; it measures whether information *survives* parsing and chunking, not search quality (that needs embeddings + a question set).

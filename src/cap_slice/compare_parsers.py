@@ -8,8 +8,9 @@ For every option x document it writes, under review/<option>/<doc>/:
   chunks.md  - every chunk exactly as it would be embedded
 and review/COMPARISON.md with timings, token counts and fact scores.
 
-Fact levels (data/golden/parse_facts.csv; values read off page images):
-  L1 value appears in some chunk
+Fact levels (data/golden/parse_facts.csv; values read off page images). Only
+chunks whose page range covers the fact's page count; the best chunk wins.
+  L1 value appears in a chunk covering the fact's page
   L2 label and value on the same line, <= 80 chars apart (row kept together)
   L3 L2 + the column's period/header text and the unit in that same chunk
   L4 L3 + value sits under the right column header (tables with | cells only)
@@ -99,12 +100,23 @@ def _cells(line: str) -> list[str]:
     return [c.strip() for c in line.strip().strip("|").split("|") if c.strip()]
 
 
-def score_fact(fact: dict, chunks: list[OutChunk]) -> tuple[int, int | None]:
-    """Return (level 0-4, index of the best chunk)."""
+def score_fact(fact: dict, chunks: list[OutChunk], any_page: bool = False) -> tuple[int, int | None]:
+    """Return (level 0-4, index of the best chunk).
+
+    Every chunk of the document that covers the fact's page is tested and the
+    best level any single chunk reaches wins (ties keep the earliest chunk).
+    This assumes perfect retrieval: it measures whether the information
+    survived parsing and chunking, not whether search would find it.
+    ``any_page=True`` drops the page restriction (the value may then match an
+    unrelated occurrence elsewhere, e.g. a directors' report quoting the P&L).
+    """
     vre = _value_re(fact["value"])
     label = _flat(fact["label"])
+    page = int(fact["page"])
     best, where = 0, None
     for c in chunks:
+        if not any_page and not (c.page_start <= page <= c.page_end):
+            continue
         if not vre.search(c.text):
             continue
         level = 1

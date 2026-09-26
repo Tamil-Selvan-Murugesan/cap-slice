@@ -252,7 +252,7 @@ The financial performance during the Financial Year 2022-23 is summarized below:
 
 ### Chunk 7
 
-_table · pages 12–12 · 62 words · 396 tokens · golden facts: F13 (L1)_
+_table · pages 12–12 · 62 words · 396 tokens_
 
 ```text
 ## FINANCIAL SUMMARY OF OPERATIONS
