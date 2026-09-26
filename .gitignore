@@ -16,3 +16,4 @@ data/*/*/*.part
 
 # Local Qdrant vector store (re-create with cap-slice-index)
 data/qdrant/
+

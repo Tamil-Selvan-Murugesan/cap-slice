@@ -31,10 +31,15 @@ Target: roughly 2015–2026 (or from listing date if later), eventually for ~3,0
 | `data/download_manifest.csv` | One row per download attempt: result, HTTP code, bytes, sha256, local path |
 | `src/cap_slice/downloader.py` | Downloads every matrix row that has a URL (`uv run cap-slice-download`) |
 | `src/cap_slice/extract.py` → `chunk.py` → `embed.py` → `vectorstore.py` | Indexing pipeline stages; `index.py` runs them (`uv run cap-slice-index`) |
+| `src/cap_slice/parsing/`, `structured_chunk.py`, `compare_parsers.py` | Parser comparison: Option 1 (`pymupdf_text`), Option 2 (`pymupdf4llm`), shared structure-aware chunker, runner `uv run cap-slice-compare` |
+| `data/golden/` | Golden set: `compare_docs.csv` (5 docs) and `parse_facts.csv` (28 facts read off page images, not from any parser) |
+| `review/` | Parser-comparison outputs (committed): `README.md` verdict, `COMPARISON.md` scores, `<option>/<doc>/parsed.md` (raw parser output), `chunks.md` (what would be embedded), `parsed.json` (parse cache — `cap-slice-compare` reuses it; `--reparse` to redo) |
 | `data/qdrant/` | Local Qdrant store (gitignored; re-create with `cap-slice-index`) |
 | `PROGRESS.md` | Living status + decision log |
 
 Tooling: Python 3.12, `uv` for env/deps (`uv run`, `uv add`).
+
+**Disk:** the Linux disk is a virtual disk on the Windows C: drive, which has only ~8 GB free, and it never shrinks on its own. Check `df -h /mnt/c` before installing anything big; install PyTorch CPU-only (the default Linux wheels pull several GB of unusable CUDA libraries).
 
 ## Pilot companies
 
@@ -140,3 +145,15 @@ uv run cap-slice-search "capex guidance" --symbol E2E
 - **Store** (`vectorstore.py`): Qdrant collection `filings`, cosine distance. Local folder `data/qdrant/` by default; set `QDRANT_URL` for a server (payload indexes on `symbol`, `doc_type`, `period_label`, `doc_id` are only created there). Point IDs are UUIDv5 of `doc_id#chunk_index`; `doc_id` is the file path under `data/` without extension.
 - **Re-runs** skip a document if its file's sha256 is already stored *and* all its chunks are present (`n_chunks`), so an interrupted run only redoes the document it was on; a changed file has its old chunks deleted and new ones written. `--reindex` forces re-embedding. Changing the embedding model means starting a new collection — vectors from different models can't be mixed.
 - Each point's payload carries company, symbol, tier, doc type, period, filed date, source URL, local path, pages, chunk text and model name.
+
+## Parser comparison
+
+```bash
+uv run cap-slice-compare                                  # all options x golden docs (uses parse cache)
+uv run cap-slice-compare --option pymupdf4llm --doc e2e_pres --reparse
+```
+
+- Options: `baseline` (extract.py + chunk.py), `pymupdf_text` (Option 1), `pymupdf4llm` (Option 2, layout model + RapidOCR). Options 1 and 2 share `structured_chunk.py`, so differences come from the parser.
+- Golden set: `data/golden/compare_docs.csv` (5 docs) and `parse_facts.csv` (28 facts). **Facts are read off rendered page images, never from a parser's output** — keep it that way when adding facts.
+- Levels: L1 value in some chunk; L2 label and value on the same row; L3 + period header and unit in the same chunk; L4 + value under the right column. Definitions in `compare_parsers.py`.
+- Always open the chunks behind a score change before trusting it — several "improvements" during development were bugs (see `review/README.md`).

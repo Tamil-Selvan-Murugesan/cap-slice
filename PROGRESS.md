@@ -6,7 +6,15 @@ Living status for `cap-slice`. Update at the end of every session. Stable rules 
 
 ## Current status
 
-**Phase:** five-company acquisition and indexing prototype. All 259 catalogued URLs were attempted; 228 PDFs are present and hash-verified, but coverage and document classification remain incomplete. The indexing pipeline is uncommitted; its full local dry run and temporary Qdrant checks passed on 2026-09-26. No live embeddings or retrieval-quality evaluation are established. See the validation review below before paid indexing or discovery/crawler build work.
+**Phase:** five-company research prototype — acquisition, indexing pipeline and a parser comparison. Nothing has been embedded yet (no Voyage calls, no `data/qdrant/`).
+
+| Area | State (2026-09-26) |
+|---|---|
+| Catalogue & downloads | 267 rows, 259 URLs attempted, **228 PDFs** on disk (hash-verified). Coverage and document labels are **not** content-validated (see Open gaps) |
+| Indexing pipeline | Committed on main (`b3fe0bd`); dry run and local Qdrant checks pass. Still uses the old flattening chunker (`chunk.py`) — not yet switched to the comparison winner |
+| Parser comparison | Done for baseline, Option 1 (PyMuPDF text) and Option 2 (PyMuPDF4LLM + RapidOCR) on 5 golden docs / 28 facts. **Option 2 best (21/28 at L4) but ~30x slower, and scanned statements fail in every option.** Docling (Option 3) not run — disk space. Verdict: `review/README.md` |
+| Other agent's work | Branch `tamil/codex-pilot-verification` (`a6ca47b`, on GitHub) holds an independent pilot verification and catalogue corrections **not yet merged into main** — see "Branches and parallel work" |
+| Next decision | Run Docling (needs ~3 GB, C: has ~8 GB free) or accept Option 2; then reconcile the branch and wire the chosen parser into `index.py` |
 
 ## Done
 
@@ -18,8 +26,8 @@ Living status for `cap-slice`. Update at the end of every session. Stable rules 
 - **2026-09-23** — Wrote `src/cap_slice/downloader.py` (`uv run cap-slice-download`) and created `data/<SYMBOL>/<doc_type>s/` folders. Full run: **228 downloaded** (761 MB), **31 failed** — 18 × 403 (Hero company site), 11 × 404, 2 × HTML page instead of PDF. Matrix `fetch_status` updated from real fetches; added `download_status` column (yes 228 / no 39). Per-attempt log in `data/download_manifest.csv`.
 - **2026-09-23** — Found that NSE serves annual reports up to FY2022-23 as ZIPs (recorded in `AGENTS.md`). Downloader now unpacks them; the 7 existing ZIPs were converted, so every downloaded document is now a PDF.
 - **2026-09-23** — Wrote the indexing pipeline (`extract.py`, `chunk.py`, `embed.py`, `vectorstore.py`, `index.py`; CLIs `cap-slice-index`, `cap-slice-search`). Dry run over all 228 PDFs: 12,980 pages, **13,441 chunks = 11.0M tokens** (exact count with Voyage's tokenizer; annual reports 8.4M), no extraction failures, no document mostly scanned. Qdrant store tested locally with dummy vectors (insert, skip-if-indexed, replace-on-change, filtered search). Fixed: a run interrupted mid-upsert would have left a partial document marked as done — now `has_doc` checks stored count against `n_chunks`.
-
-- **2026-09-26** — Validated the repo end to end. Matrix (267 rows), files on disk (228 PDFs, all start `%PDF`, no orphans), `download_status` and manifest sha256s all agree. Pipeline compiles, dry run and Qdrant checks pass. Fixed: (a) embedding batches were a fixed 64 chunks — worst case ~166K tokens, over Voyage's 120K cap — now sized by token count (≤100K); (b) the 2 URLs that returned HTML were left `untested` — now `not found`, and the downloader records such responses that way. Matrix `fetch_status` is now 228 `200` / 21 `not found` / 18 `blocked`.
+- **2026-09-26** — Validated the repo end to end. Matrix (267 rows), files on disk (228 PDFs, all start `%PDF`, no orphans), `download_status` and manifest sha256s all agree. Pipeline compiles, dry run and Qdrant checks pass. Fixed: (a) embedding batches were a fixed 64 chunks — worst case ~166K tokens, over Voyage's 120K cap — now sized by token count (≤100K); (b) the 2 URLs that returned HTML were left `untested` — now `not found`, and the downloader records such responses that way. Matrix `fetch_status` is now 228 `200` / 21 `not found` / 18 `blocked`. Committed with the indexing pipeline in `b3fe0bd` — note that commit also included the other agent's "Validation review — 2026-09-26" section below, which was in the working tree at the time and not mentioned in the commit message.
+- **2026-09-26** — Parser comparison on 5 golden docs (375 pages) with 28 ground-truth facts read off page images (`data/golden/`). Code: `src/cap_slice/parsing/` (Option 1 `pymupdf_text`, Option 2 `pymupdf4llm` + RapidOCR), shared `structured_chunk.py`, runner `cap-slice-compare`. Facts at L4 (value under the right column): baseline 4/28, Option 1 15/28, **Option 2 21/28**. Option 2 is ~30x slower (21 min for 375 pages; 945 s for the report with scanned pages). Scanned statements still fail in every option (RapidOCR merges year columns, drops spaces). Verdict and file guide: `review/README.md`; scores: `review/COMPARISON.md`; per option/doc `parsed.md` (raw parser output) and `chunks.md` (what would be embedded). Along the way fixed six chunker/parser bugs (letterhead removal, a real table row deleted as boilerplate, fake tables from two-column layouts, tiny chunks, OCR `~~` markup, headings lost) — listed in `review/README.md`. New deps: `pymupdf4llm` (+ `pymupdf-layout`, `onnxruntime`), `rapidocr_onnxruntime` (~340 MB total in `.venv`, no PyTorch). Parser output is cached in `review/*/*/parsed.json` (committed, because re-parsing with Option 2 takes ~21 min).
 
 ## Open gaps
 
@@ -28,10 +36,16 @@ Living status for `cap-slice`. Update at the end of every session. Stable rules 
 | Official filed shareholding-pattern PDF not discoverable | All 5 companies | Open — only derived % from Screener |
 | Periodic-results PDF not isolated | APAR, Hero MotoCorp (and E2E partially) | Open |
 | ~~224 of 267 URLs not individually verified~~ | Matrix | Closed 2026-09-23 — every URL now fetched by the downloader |
-| **Tables are flattened.** `chunk.py` joins all whitespace, so balance-sheet rows run together, numbers lose their column headers (which year) and units, and chunks straddle pages/sections (e.g. E2E FY2024-25 chunk 139 = auditor sign-off + balance sheet). PyMuPDF `find_tables()` out of the box also failed on that page (whole table merged into one cell) | All financial tables — mostly annual reports and results | Open — fix before paying to embed; evaluate a layout-aware parser (e.g. Docling) |
-| 441 of 12,980 pages (3.4%) have no text layer — 273 mostly covered by one image, 118 small images only, 42 blank, 8 text-as-vector-outlines; includes E2E AR FY2022-23 pp. 123–164 (likely financial statements) | Search won't find that content | Open — needs OCR |
+| **Tables are flattened.** `chunk.py` joins all whitespace, so balance-sheet rows run together, numbers lose their column headers (which year) and units, and chunks straddle pages/sections (e.g. E2E FY2024-25 chunk 139 = auditor sign-off + balance sheet). PyMuPDF `find_tables()` out of the box also failed on that page (whole table merged into one cell) | All financial tables — mostly annual reports and results | **Partly addressed** 2026-09-26 — Options 1 and 2 keep rows, headers and units (Option 2: 8/8 digital facts under the right year column), but `index.py` still uses `chunk.py`; switch after the parser decision |
+| Scanned financial statements: PyMuPDF4LLM + RapidOCR recovers the text but not the table (both year columns in one cell, spaces dropped, some `,` read as `.`); 300 dpi didn't help | E2E FY2022-23 and any scanned filing | Open — test Docling (Option 3) |
+| 441 of 12,980 pages (3.4%) have no text layer — 273 mostly covered by one image, 118 small images only, 42 blank, 8 text-as-vector-outlines; includes E2E AR FY2022-23 pp. 123–164 (likely financial statements) | Search won't find that content | **Partly addressed** — Option 2's OCR recovers text on all 52 E2E FY2022-23 low-text pages and all 9 image-only slides; text quality is good for prose/slides, poor for scanned tables (row above). Pages under 50 chars are "low-text", not proven scans |
+| **Catalogue error:** C2C `periodic_results` "H1 FY2025-26" (filed 2025-10-22) is a preferential-allotment outcome (shares + warrants), not financial results — checked against the page images on 2026-09-26. The URL says `Outcome_of_Board_Meeting..._updated_FS`, which is how it got matched | C2C periodic results | Open — also found independently on branch `a6ca47b` (2026-09-23). Real H1 FY2025-26 results still need finding; matrix row should be relabelled |
 | Hero MotoCorp pre-2022 concalls on company site | 18 rows | `blocked` (403) — confirmed again by downloader |
 | 13 matrix URLs were wrong (11 × 404, 2 × HTML page) | APAR: AR FY2022-23; presentations Feb 2023 (d), Aug 2022 (b), Aug 2021, Nov 2018 (a)/(b), Jan 2018; concalls Feb 2018, Mar 2017, Jun 2016. Hero: concall Jul 2023; presentations Sep 2018, Aug 2018 | Open — need re-discovery of the correct URLs |
+| 198 of 228 downloaded rows have no `filed_date` (verified 2026-09-26) | Matrix, file naming (those files are named by period only) | Open |
+| `chunk.py`: `chunk_words` argument only partly honoured — paragraphs are pre-split at the module-level size, so `chunk_words=100` still yields a 250-word chunk (verified) | Baseline chunker | Open — likely moot once `index.py` switches to `structured_chunk.py` |
+| Indexing skip logic keys on file hash + chunk count, not parser/chunker version or embedding model | `index.py` / `vectorstore.py` | Open — add a pipeline version to the payload before the first real embedding run |
+| Historical corrections on branch `a6ca47b` not on main: C2C listed 3 Dec 2024; E2E mainboard trading from 12 Apr 2022; issuer-hosted APAR results and shareholding reports found | `AGENTS.md` pilot table, matrix | Open — part of reconciling the branch |
 
 ## Open questions (for discussion)
 
@@ -42,11 +56,13 @@ Living status for `cap-slice`. Update at the end of every session. Stable rules 
 
 ## Next steps
 
-1. Fix table/structure handling (see Open gaps), then run `cap-slice-index` with a Voyage API key (start with `--symbol C2C` to check cost/quality), then try `cap-slice-search`.
-2. Decide on OCR for text-less pages (see Open gaps).
-3. Discuss the open questions above.
-4. Re-discover the 13 wrong URLs (see Open gaps).
-5. ~~Commit the downloader, matrix update, and docs~~ — done 2026-09-23 (`dee24b8`).
+1. **Review the parser comparison** (`review/README.md`) — in progress by the user.
+2. **Parser decision:** run Docling (Option 3) on the same golden set (free disk first; CPU-only PyTorch, ~3 GB), or accept Option 2 and treat scanned statements separately.
+3. **Reconcile branch `tamil/codex-pilot-verification` (`a6ca47b`)** into main: its verification doc, catalogue/history corrections and APAR issuer sources. Resolve `AGENTS.md`/`PROGRESS.md` conflicts by hand, keeping both agents' findings.
+4. Correct the catalogue: relabel the C2C allotment row; fill missing `filed_date`s where possible; re-discover the 13 wrong URLs.
+5. Switch `index.py` to the chosen parser + `structured_chunk.py`; add a pipeline/model version to the index payload.
+6. Build the retrieval golden set (questions with known source pages) and run a small approved embedding test (`cap-slice-index --symbol C2C`, then `cap-slice-search`).
+7. Discuss the open questions above (Screener dependency, shareholding, paid NSE route, results discovery).
 
 ## Decision log
 
@@ -61,7 +77,18 @@ Living status for `cap-slice`. Update at the end of every session. Stable rules 
 | 2026-09-23 | Unpack single-PDF ZIPs, keep only the PDF | One consistent format for later parsing; the ZIP adds nothing |
 | 2026-09-23 | Embeddings: Voyage `voyage-finance-2`; vector DB: Qdrant (local mode first) | User's choice; finance-tuned model, and Qdrant's local mode uses the same client code as a server later |
 | 2026-09-23 | Split stable guidance (`AGENTS.md`) from living status (`PROGRESS.md`) | Keeps rules readable; progress can grow without burying them |
+| 2026-09-26 | Compare parsers with one shared chunker, scored on facts read off page images | Isolates the parser as the only variable; ground truth independent of any parser |
+| 2026-09-26 | Semantic chunking deferred | Tables and Q&A are our main problems and it helps neither; test later on the chosen parser |
+| 2026-09-26 | Docling deferred; PyTorch must be CPU-only | C: drive has ~8 GB free and the WSL disk never shrinks; default Linux PyTorch pulls several GB of unusable CUDA libraries |
+| 2026-09-26 | Commit comparison outputs (`review/`, incl. parse caches) | So the user and other agents can review without re-running (~21 min for Option 2) |
 
+## Branches and parallel work
+
+| Branch / worktree | Commit | What it is | Status |
+|---|---|---|---|
+| `main` | this commit | Downloader, indexing pipeline, parser comparison | Pushed |
+| `tamil/codex-pilot-verification` (on GitHub) | `a6ca47b` (based on `cbe2f7f`) | Another agent's independent pilot verification: `docs/pilot-verification-2026-09-23.md`, corrected `AGENTS.md`/`PROGRESS.md`/report | **Not merged** — see Next steps 3 |
+| `pilot-test-2` (local worktree `../cap-slice-1`) | `cbe2f7f` | Local only; no commits beyond main's history | Unknown purpose — ask before removing |
 
 ## Validation review — 2026-09-26
 
@@ -84,3 +111,9 @@ This review checks the current working tree, including the other agent's uncommi
 **Recommended order:** (1) reconcile the two agents' documentation and correct catalog labels/history; (2) preserve financial-table headers, units and section boundaries and recover relevant omitted pages with OCR; (3) add regression checks and version-aware indexing; (4) evaluate a small, approved embedding run against representative questions with known source pages; (5) commit the reviewed pipeline, expand validated coverage, and confirm source/access rights before bulk discovery. The existing research-stage restriction on crawler development remains in force.
 
 No implementation changes, commits, paid calls or new research artifacts were made by this validation review; its only repository edit is this progress update.
+
+**Follow-up to this review (later on 2026-09-26, main agent):**
+- "The indexing pipeline is uncommitted" — it was committed in `b3fe0bd` (which also carried this review section).
+- Item (2), table headers/units/section boundaries and OCR: tested in the parser comparison — Option 2 keeps them for digital tables and recovers low-text pages, but scanned tables remain broken. Not yet in `index.py`.
+- Verified independently: 198 downloaded rows lack `filed_date`; the `chunk_words` bug; the C2C misclassification (checked against page images).
+- Not yet done: reconciling the two agents' documentation (item 1), version-aware indexing (item 3), approved embedding test (item 4). All are in Next steps.
