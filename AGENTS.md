@@ -19,7 +19,7 @@ Guidance for any agent (or human) picking up this repo. Stable facts and rules l
 
 Target: roughly 2015–2026 (or from listing date if later), eventually for ~3,000–4,000 companies.
 
-**Current phase: research, not building.** We are mapping data sources, workarounds, ToS/subscription constraints, and scaling issues on a 5-company pilot. The only code is a downloader for URLs already in the matrix — it does no discovery. Don't build discovery/crawler infrastructure unless `PROGRESS.md` says that decision has been made.
+**Current phase: research, not building.** We are mapping data sources, workarounds, ToS/subscription constraints, and scaling issues on a 5-company pilot. Code so far: a downloader for URLs already in the matrix (no discovery), and an indexing pipeline (extract → chunk → embed → Qdrant). Don't build discovery/crawler infrastructure unless `PROGRESS.md` says that decision has been made.
 
 ## Repo layout
 
@@ -30,6 +30,8 @@ Target: roughly 2015–2026 (or from listing date if later), eventually for ~3,0
 | `data/<SYMBOL>/<doc_type>s/` | Downloaded documents, e.g. `data/E2E/annual_reports/`. Files named `<filed_date>_<period>.pdf`. Gitignored — re-create with the downloader |
 | `data/download_manifest.csv` | One row per download attempt: result, HTTP code, bytes, sha256, local path |
 | `src/cap_slice/downloader.py` | Downloads every matrix row that has a URL (`uv run cap-slice-download`) |
+| `src/cap_slice/extract.py` → `chunk.py` → `embed.py` → `vectorstore.py` | Indexing pipeline stages; `index.py` runs them (`uv run cap-slice-index`) |
+| `data/qdrant/` | Local Qdrant store (gitignored; re-create with `cap-slice-index`) |
 | `PROGRESS.md` | Living status + decision log |
 
 Tooling: Python 3.12, `uv` for env/deps (`uv run`, `uv add`).
@@ -120,6 +122,21 @@ uv run cap-slice-download --refresh-status     # recompute download_status only
 ```
 
 - Sequential, 3 s between requests (`--delay`). Existing files are skipped, so re-running resumes.
-- Checks the first bytes of each response: only real PDF (`%PDF`) or ZIP (`PK`) files are saved; HTML decoy/error pages count as failures.
+- Checks the first bytes of each response: only real PDF (`%PDF`) or ZIP (`PK`) files are saved; HTML decoy/error pages count as failures (recorded as `not found`).
 - ZIPs holding exactly one PDF are unpacked in place (ZIP deleted, PDF kept under the same name). Anything else stays a ZIP and is reported. Any ZIPs already on disk are unpacked at the start of every run.
 - Writes `fetch_status` back to the matrix: `200` on success, `blocked` on 401/403, `not found` on 404/410 (`--no-update-matrix` to skip).
+
+## Indexing pipeline
+
+```bash
+uv run cap-slice-index --dry-run               # extract + chunk only; no API calls
+VOYAGE_API_KEY=... uv run cap-slice-index      # embed + store every download_status=yes row
+uv run cap-slice-search "capex guidance" --symbol E2E
+```
+
+- **Extract** (`extract.py`): PyMuPDF text per page. Pages under 50 chars count as having no text layer and are left out; a document where more than half the pages have none is skipped as "needs OCR". No OCR yet.
+- **Chunk** (`chunk.py`): paragraph-aware, ~500 words with 75-word overlap; each chunk keeps `page_start`/`page_end`. Filings average ~1.56 Voyage tokens per word (≈840 tokens per chunk), more for number-heavy text. **Known limitation:** tables are flattened into running text — see `PROGRESS.md`.
+- **Embed** (`embed.py`): Voyage AI, `voyage-finance-2` by default (1024-dim, 120K tokens per request; `VOYAGE_MODEL` to override), `input_type="document"` for chunks and `"query"` for searches, batched by token count (≤100K tokens per request, counted locally).
+- **Store** (`vectorstore.py`): Qdrant collection `filings`, cosine distance. Local folder `data/qdrant/` by default; set `QDRANT_URL` for a server (payload indexes on `symbol`, `doc_type`, `period_label`, `doc_id` are only created there). Point IDs are UUIDv5 of `doc_id#chunk_index`; `doc_id` is the file path under `data/` without extension.
+- **Re-runs** skip a document if its file's sha256 is already stored *and* all its chunks are present (`n_chunks`), so an interrupted run only redoes the document it was on; a changed file has its old chunks deleted and new ones written. `--reindex` forces re-embedding. Changing the embedding model means starting a new collection — vectors from different models can't be mixed.
+- Each point's payload carries company, symbol, tier, doc type, period, filed date, source URL, local path, pages, chunk text and model name.

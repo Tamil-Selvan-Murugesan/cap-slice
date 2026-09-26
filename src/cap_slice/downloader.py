@@ -151,7 +151,7 @@ def matrix_status(outcome: Outcome, current: str) -> str:
         return "200"
     if outcome.http_code in ("401", "403"):
         return "blocked"
-    if outcome.http_code in ("404", "410"):
+    if outcome.http_code in ("404", "410") or outcome.error.startswith("not a PDF"):
         return "not found"
     return current
 

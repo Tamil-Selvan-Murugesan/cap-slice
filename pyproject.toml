@@ -7,11 +7,17 @@ authors = [
     { name = "Tamil Selvan Murugesan", email = "tselvan482@gmail.com" }
 ]
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "pymupdf>=1.28.2",
+    "qdrant-client>=1.19.1",
+    "voyageai>=0.5.0",
+]
 
 [project.scripts]
 cap-slice = "cap_slice:main"
 cap-slice-download = "cap_slice.downloader:main"
+cap-slice-index = "cap_slice.index:main"
+cap-slice-search = "cap_slice.index:search_main"
 
 [build-system]
 requires = ["uv_build>=0.12.5,<0.13.0"]
