@@ -31,15 +31,16 @@ Target: roughly 2015–2026 (or from listing date if later), eventually for ~3,0
 | `data/download_manifest.csv` | One row per download attempt: result, HTTP code, bytes, sha256, local path |
 | `src/cap_slice/downloader.py` | Downloads every matrix row that has a URL (`uv run cap-slice-download`) |
 | `src/cap_slice/extract.py` → `chunk.py` → `embed.py` → `vectorstore.py` | Indexing pipeline stages; `index.py` runs them (`uv run cap-slice-index`) |
-| `src/cap_slice/parsing/`, `structured_chunk.py`, `compare_parsers.py` | Parser comparison: Option 1 (`pymupdf_text`), Option 2 (`pymupdf4llm`), shared structure-aware chunker, runner `uv run cap-slice-compare` |
+| `src/cap_slice/parsing/`, `structured_chunk.py`, `compare_parsers.py` | Parser comparison: Option 1 (`pymupdf_text`), Option 2 (`pymupdf4llm`), Option 3 (`docling`), shared structure-aware chunker, runner `uv run cap-slice-compare` |
 | `data/golden/` | Golden set: `compare_docs.csv` (5 docs) and `parse_facts.csv` (28 facts read off page images, not from any parser) |
 | `review/` | Parser-comparison outputs (committed): `README.md` verdict, `COMPARISON.md` scores, `<option>/<doc>/parsed.md` (raw parser output), `chunks.md` (what would be embedded), `parsed.json` (parse cache — `cap-slice-compare` reuses it; `--reparse` to redo) |
 | `data/qdrant/` | Local Qdrant store (gitignored; re-create with `cap-slice-index`) |
 | `PROGRESS.md` | Living status + decision log |
+| `bugs_resolved.md` | Parser/chunker/scorer/indexing bugs with root cause and fix — read the Lessons first; add an entry whenever you fix one |
 
 Tooling: Python 3.12, `uv` for env/deps (`uv run`, `uv add`).
 
-**Disk:** the Linux disk is a virtual disk on the Windows C: drive, which has only ~8 GB free, and it never shrinks on its own. Check `df -h /mnt/c` before installing anything big; install PyTorch CPU-only (the default Linux wheels pull several GB of unusable CUDA libraries).
+**Disk:** the Linux disk is a virtual disk (`ext4.vhdx`, ~100 GB) on the Windows C: drive. It grows but never shrinks on its own, and on 2026-09-28 C: reached **~210 MB free**. Check `df -h /mnt/c` before any install or large write; don't trust the ~900 GB Linux `df -h /` shows. PyTorch must be CPU-only (configured in `pyproject.toml` via the `pytorch-cpu` index). Docling added ~2 GB (packages + ~0.5 GB models in `~/.cache/huggingface`).
 
 ## Pilot companies
 
@@ -153,7 +154,9 @@ uv run cap-slice-compare                                  # all options x golden
 uv run cap-slice-compare --option pymupdf4llm --doc e2e_pres --reparse
 ```
 
-- Options: `baseline` (extract.py + chunk.py), `pymupdf_text` (Option 1), `pymupdf4llm` (Option 2, layout model + RapidOCR). Options 1 and 2 share `structured_chunk.py`, so differences come from the parser.
+- Options: `baseline` (extract.py + chunk.py), `pymupdf_text` (Option 1), `pymupdf4llm` (Option 2, layout model + RapidOCR), `docling` (Option 3, layout + TableFormer + RapidOCR, CPU PyTorch). Options 1–3 share `structured_chunk.py`, so differences come from the parser.
+- **Parsing is slow for Options 2–3** (3.3 and 15.2 s/page on this laptop; Docling ~95 min for the 375 golden pages, peak 6.1 GB RAM). Run them in the background, one option per process, and rely on the `parsed.json` caches (they store the measured parse time and date) — re-scoring after chunker changes needs no re-parse.
+- Don't re-parse Option 2 without pinning its OCR backend: since Docling's install, PyMuPDF4LLM picks `rapidocr` 3.9 instead of `rapidocr_onnxruntime` (`bugs_resolved.md` P6).
 - Golden set: `data/golden/compare_docs.csv` (5 docs) and `parse_facts.csv` (28 facts). **Facts are read off rendered page images, never from a parser's output** — keep it that way when adding facts.
 - Levels: L1 value in a chunk covering the fact's page; L2 label and value on the same row; L3 + period header and unit in the same chunk; L4 + value under the right column. Each fact is tested against every chunk of its document that covers its page and scores the best single chunk (assumes perfect retrieval). Definitions in `compare_parsers.py`.
-- Always open the chunks behind a score change before trusting it — several "improvements" during development were bugs (see `review/README.md`).
+- Always open the chunks behind a score change before trusting it — several "improvements" during development were bugs (see `bugs_resolved.md`).

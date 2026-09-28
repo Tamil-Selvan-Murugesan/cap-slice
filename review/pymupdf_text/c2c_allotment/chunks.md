@@ -1,7 +1,7 @@
 # Chunks: Option 1: PyMuPDF text, line-preserving cleaning + structured chunker — c2c_allotment
 
 - PDF: `data/C2C/periodic_results/2025-10-22_H1-FY2025-26-half-yearly-SME.pdf` (page numbers = PDF viewer pages)
-- 7 chunks, 2,081 tokens (3 table chunks)
+- 7 chunks, 2,179 tokens (3 table chunks)
 - Text inside each block is exactly what would be embedded.
 
 ### Chunk 0
@@ -42,9 +42,13 @@ Sr. Name of No. of Category Total Amount Received
 
 ### Chunk 1
 
-_table · pages 1–1 · 60 words · 141 tokens · golden facts: F25 (L1)_
+_table · pages 1–1 · 109 words · 239 tokens · golden facts: F25 (L1)_
 
 ```text
+1. Allotment of 3,27,265 Equity Shares at an Issue Price of Rs. 581/- per share
+including a premium of Rs. 571/- per share on preferential basis to the following
+Persons belonging to the Non-Promoter Category in accordance with provisions
+of SEBI (Issue of Capital and Disclosure Requirements) Regulations 2018.
 Sr. Name of No. of Category Total Amount Received
 
 | No. | Allottees | Shares | (Promoter/ | @ Rs. 581/- per equity |

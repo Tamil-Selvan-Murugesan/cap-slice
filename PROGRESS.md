@@ -2,7 +2,7 @@
 
 Living status for `cap-slice`. Update at the end of every session. Stable rules and facts are in [`AGENTS.md`](AGENTS.md).
 
-**Last updated:** 2026-09-26
+**Last updated:** 2026-09-28
 
 ## Current status
 
@@ -12,9 +12,9 @@ Living status for `cap-slice`. Update at the end of every session. Stable rules 
 |---|---|
 | Catalogue & downloads | 267 rows, 259 URLs attempted, **228 PDFs** on disk (hash-verified). Coverage and document labels are **not** content-validated (see Open gaps) |
 | Indexing pipeline | Committed on main (`b3fe0bd`); dry run and local Qdrant checks pass. Still uses the old flattening chunker (`chunk.py`) — not yet switched to the comparison winner |
-| Parser comparison | Done for baseline, Option 1 (PyMuPDF text) and Option 2 (PyMuPDF4LLM + RapidOCR) on 5 golden docs / 28 facts. **Option 2 best (21/28 at L4) but ~30x slower, and scanned statements fail in every option.** Docling (Option 3) not run — disk space. Verdict: `review/README.md` |
+| Parser comparison | Done for all four: baseline, Option 1 (PyMuPDF text), Option 2 (PyMuPDF4LLM), **Option 3 (Docling)** on 5 golden docs / 28 facts. **Docling most accurate: 27/28 at L4** (the only option that reads scanned tables with years intact) **but 15.2 s/page (95 min for 375 pages, ~55 h projected for the collection), 6.1 GB peak RAM.** Option 2: 21/28, 3.3 s/page. Verdict and latency: `review/README.md` |
 | Other agent's work | Branch `tamil/codex-pilot-verification` (`a6ca47b`, on GitHub) holds an independent pilot verification and catalogue corrections **not yet merged into main** — see "Branches and parallel work" |
-| Next decision | Run Docling (needs ~3 GB, C: has ~8 GB free) or accept Option 2; then reconcile the branch and wire the chosen parser into `index.py` |
+| Next decision | Parser strategy: route pages (fast parser for ordinary pages, Docling for low-text/table pages) vs Docling everywhere vs a GPU; then reconcile the branch and wire the choice into `index.py`. **C: drive is full (~210 MB free) — free space first** |
 
 ## Done
 
@@ -29,6 +29,7 @@ Living status for `cap-slice`. Update at the end of every session. Stable rules 
 - **2026-09-26** — Validated the repo end to end. Matrix (267 rows), files on disk (228 PDFs, all start `%PDF`, no orphans), `download_status` and manifest sha256s all agree. Pipeline compiles, dry run and Qdrant checks pass. Fixed: (a) embedding batches were a fixed 64 chunks — worst case ~166K tokens, over Voyage's 120K cap — now sized by token count (≤100K); (b) the 2 URLs that returned HTML were left `untested` — now `not found`, and the downloader records such responses that way. Matrix `fetch_status` is now 228 `200` / 21 `not found` / 18 `blocked`. Committed with the indexing pipeline in `b3fe0bd` — note that commit also included the other agent's "Validation review — 2026-09-26" section below, which was in the working tree at the time and not mentioned in the commit message.
 - **2026-09-26** — Parser comparison on 5 golden docs (375 pages) with 28 ground-truth facts read off page images (`data/golden/`). Code: `src/cap_slice/parsing/` (Option 1 `pymupdf_text`, Option 2 `pymupdf4llm` + RapidOCR), shared `structured_chunk.py`, runner `cap-slice-compare`. Facts at L4 (value under the right column): baseline 4/28, Option 1 15/28, **Option 2 21/28**. Option 2 is ~30x slower (21 min for 375 pages; 945 s for the report with scanned pages). Scanned statements still fail in every option (RapidOCR merges year columns, drops spaces). Verdict and file guide: `review/README.md`; scores: `review/COMPARISON.md`; per option/doc `parsed.md` (raw parser output) and `chunks.md` (what would be embedded). Along the way fixed six chunker/parser bugs (letterhead removal, a real table row deleted as boilerplate, fake tables from two-column layouts, tiny chunks, OCR `~~` markup, headings lost) — listed in `review/README.md`. New deps: `pymupdf4llm` (+ `pymupdf-layout`, `onnxruntime`), `rapidocr_onnxruntime` (~340 MB total in `.venv`, no PyTorch). Parser output is cached in `review/*/*/parsed.json` (committed, because re-parsing with Option 2 takes ~21 min).
 - **2026-09-26** — Scorer now only matches a fact against chunks covering the fact's page (was: any chunk of the document). Only change: F13 (scanned P&L, p. 124) drops L1 → 0 in every option — its earlier "found" came from the directors' report quoting the same number. Totals now: value found on the page 20 / 20 / 26 (baseline / Option 1 / Option 2); L4 unchanged at 4 / 15 / 21. Scanned statements: Option 2 finds 4 of 6 values, none with the year column.
+- **2026-09-28** — **Docling (Option 3) run on the golden set.** Installed with CPU-only PyTorch (`pyproject.toml` `pytorch-cpu` index; no CUDA packages; ~2 GB incl. 0.5 GB models). Defaults kept (8 threads measured slower than 4). Result, re-scored with the fixed chunker: **27/28 facts at L4** (Option 2: 21, Option 1: 15, baseline: 4); scanned statements 5/6 at L4 (Option 2: 0). Latency: 95 min for 375 pages (15.2 s/page) vs 21 min for Option 2 and 6 s for plain PyMuPDF; peak 6.1 GB RAM. Runner now records parse vs chunk time, memory, machine and measurement date, and writes a latency table with a full-collection projection (`review/COMPARISON.md`). Chunker fix S8 (units line carried into table chunks) — Docling first scored 1/8 on digital tables because of it. New `bugs_resolved.md` (27 bugs with root causes and 6 lessons). Side effect found: installing Docling makes PyMuPDF4LLM switch OCR engine on re-parse (P6).
 
 ## Open gaps
 
@@ -38,7 +39,7 @@ Living status for `cap-slice`. Update at the end of every session. Stable rules 
 | Periodic-results PDF not isolated | APAR, Hero MotoCorp (and E2E partially) | Open |
 | ~~224 of 267 URLs not individually verified~~ | Matrix | Closed 2026-09-23 — every URL now fetched by the downloader |
 | **Tables are flattened.** `chunk.py` joins all whitespace, so balance-sheet rows run together, numbers lose their column headers (which year) and units, and chunks straddle pages/sections (e.g. E2E FY2024-25 chunk 139 = auditor sign-off + balance sheet). PyMuPDF `find_tables()` out of the box also failed on that page (whole table merged into one cell) | All financial tables — mostly annual reports and results | **Partly addressed** 2026-09-26 — Options 1 and 2 keep rows, headers and units (Option 2: 8/8 digital facts under the right year column), but `index.py` still uses `chunk.py`; switch after the parser decision |
-| Scanned financial statements: PyMuPDF4LLM + RapidOCR recovers the text but not the table (both year columns in one cell, spaces dropped, some `,` read as `.`); 300 dpi didn't help | E2E FY2022-23 and any scanned filing | Open — test Docling (Option 3) |
+| Scanned financial statements: PyMuPDF4LLM + RapidOCR recovers the text but not the table (both year columns in one cell, spaces dropped, some `,` read as `.`); 300 dpi didn't help | E2E FY2022-23 and any scanned filing | **Largely addressed 2026-09-28 by Docling:** 5/6 scanned facts under the right year column. Remaining miss is a real OCR error (990.99 read as `6960969`). Cost: ~17 s/page |
 | 441 of 12,980 pages (3.4%) have no text layer — 273 mostly covered by one image, 118 small images only, 42 blank, 8 text-as-vector-outlines; includes E2E AR FY2022-23 pp. 123–164 (likely financial statements) | Search won't find that content | **Partly addressed** — Option 2's OCR recovers text on all 52 E2E FY2022-23 low-text pages and all 9 image-only slides; text quality is good for prose/slides, poor for scanned tables (row above). Pages under 50 chars are "low-text", not proven scans |
 | **Catalogue error:** C2C `periodic_results` "H1 FY2025-26" (filed 2025-10-22) is a preferential-allotment outcome (shares + warrants), not financial results — checked against the page images on 2026-09-26. The URL says `Outcome_of_Board_Meeting..._updated_FS`, which is how it got matched | C2C periodic results | Open — also found independently on branch `a6ca47b` (2026-09-23). Real H1 FY2025-26 results still need finding; matrix row should be relabelled |
 | Hero MotoCorp pre-2022 concalls on company site | 18 rows | `blocked` (403) — confirmed again by downloader |
@@ -57,8 +58,8 @@ Living status for `cap-slice`. Update at the end of every session. Stable rules 
 
 ## Next steps
 
-1. **Review the parser comparison** (`review/README.md`) — in progress by the user.
-2. **Parser decision:** run Docling (Option 3) on the same golden set (free disk first; CPU-only PyTorch, ~3 GB), or accept Option 2 and treat scanned statements separately.
+1. **Free disk space on C:** (~210 MB left on 2026-09-28): compact/sparse the WSL virtual disk (`ext4.vhdx`, ~100 GB for 51 GB used) — needs `wsl --shutdown`; optionally `uv cache clean` (~1.9 GB).
+2. **Parser decision** (review `review/README.md`): route pages by need vs Docling everywhere vs GPU. Before deciding, add golden facts from unseen documents (the current 28 also guided the chunker fixes) and test routing on the golden set.
 3. **Reconcile branch `tamil/codex-pilot-verification` (`a6ca47b`)** into main: its verification doc, catalogue/history corrections and APAR issuer sources. Resolve `AGENTS.md`/`PROGRESS.md` conflicts by hand, keeping both agents' findings.
 4. Correct the catalogue: relabel the C2C allotment row; fill missing `filed_date`s where possible; re-discover the 13 wrong URLs.
 5. Switch `index.py` to the chosen parser + `structured_chunk.py`; add a pipeline/model version to the index payload.
@@ -80,8 +81,11 @@ Living status for `cap-slice`. Update at the end of every session. Stable rules 
 | 2026-09-23 | Split stable guidance (`AGENTS.md`) from living status (`PROGRESS.md`) | Keeps rules readable; progress can grow without burying them |
 | 2026-09-26 | Compare parsers with one shared chunker, scored on facts read off page images | Isolates the parser as the only variable; ground truth independent of any parser |
 | 2026-09-26 | Semantic chunking deferred | Tables and Q&A are our main problems and it helps neither; test later on the chosen parser |
-| 2026-09-26 | Docling deferred; PyTorch must be CPU-only | C: drive has ~8 GB free and the WSL disk never shrinks; default Linux PyTorch pulls several GB of unusable CUDA libraries |
+| 2026-09-26 | Docling deferred; PyTorch must be CPU-only (superseded 2026-09-28: Docling run with CPU PyTorch) | C: drive has ~8 GB free and the WSL disk never shrinks; default Linux PyTorch pulls several GB of unusable CUDA libraries |
 | 2026-09-26 | Commit comparison outputs (`review/`, incl. parse caches) | So the user and other agents can review without re-running (~21 min for Option 2) |
+| 2026-09-28 | Run Docling with its default settings (4 threads) | Fairest "as shipped" comparison; 8 threads measured slower |
+| 2026-09-28 | Keep Option 2's 2026-09-26 cached timings instead of re-parsing | Re-parse would take 21 min and use a different OCR engine version (P6), so results wouldn't be comparable |
+| 2026-09-28 | Log every parser/chunker/scorer fix in `bugs_resolved.md` | User request: learning material for other agents |
 
 ## Branches and parallel work
 

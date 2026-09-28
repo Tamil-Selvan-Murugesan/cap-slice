@@ -3,6 +3,7 @@
 - ``pymupdf_text``: PyMuPDF plain text, with column gaps turned into ``|`` cells
   and ALL-CAPS short lines marked as headings (Option 1).
 - ``pymupdf4llm``: PyMuPDF4LLM layout mode, Markdown tables, RapidOCR (Option 2).
+- ``docling``: Docling layout model + TableFormer + OCR, CPU PyTorch (Option 3).
 """
 
 from __future__ import annotations
@@ -23,6 +24,8 @@ def get_parser(name: str) -> Callable[[Path], list[ParsedPage]]:
         from cap_slice.parsing.pymupdf_text import parse
     elif name == "pymupdf4llm":
         from cap_slice.parsing.pymupdf4llm_md import parse
+    elif name == "docling":
+        from cap_slice.parsing.docling_md import parse
     else:
         raise ValueError(f"unknown parser {name!r}")
     return parse

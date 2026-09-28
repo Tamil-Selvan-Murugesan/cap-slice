@@ -1,7 +1,7 @@
 # Chunks: Option 1: PyMuPDF text, line-preserving cleaning + structured chunker — e2e_pres
 
 - PDF: `data/E2E/investor_presentations/May-2024.pdf` (page numbers = PDF viewer pages)
-- 12 chunks, 5,467 tokens (6 table chunks)
+- 12 chunks, 5,654 tokens (6 table chunks)
 - Text inside each block is exactly what would be embedded.
 
 ### Chunk 0
@@ -233,10 +233,23 @@ Revenue in INR Mn
 
 ### Chunk 4
 
-_table · pages 22–22 · 185 words · 497 tokens_
+_table · pages 22–22 · 234 words · 684 tokens_
 
 ```text
 ## 1200FISCAL HIGHLIGHTS
+Customer Value Drivers
+Delhi-NCR-1
+Delhi-NCR-2
+Best Price-Performance Ratio Built on Open Source
+Mumbai-1
+| Performance and Solutioning | 100% Tech-Savvy Human Support |
+## RATED TOP IAAS BY CUSTOMERS
+## DEEP EXPERIENCE OF SCALING UNICORNS
+## CUSTOMERS RUNNING AI/ML WORKLOADS
+## MEDIA COVERAGE
+https://www.financialexpress.com/business/digital-transformation-e2e-networks-ltd-collaborates-with-nasscom-to-support-generative-ai-startups-3299904/
+FINANCIALS
+Revenue in INR Mn
 ## 1200FISCAL HIGHLIGHTS
 
 | 961 | 1000 |

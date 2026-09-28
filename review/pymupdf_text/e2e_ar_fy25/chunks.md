@@ -1,7 +1,7 @@
 # Chunks: Option 1: PyMuPDF text, line-preserving cleaning + structured chunker — e2e_ar_fy25
 
 - PDF: `data/E2E/annual_reports/2025-09-04_FY2024-25.pdf` (page numbers = PDF viewer pages)
-- 374 chunks, 130,550 tokens (113 table chunks)
+- 374 chunks, 132,942 tokens (113 table chunks)
 - Text inside each block is exactly what would be embedded.
 
 ### Chunk 0
@@ -176,10 +176,14 @@ and others
 
 ### Chunk 7
 
-_table · pages 6–6 · 42 words · 83 tokens_
+_table · pages 6–6 · 54 words · 113 tokens_
 
 ```text
 ## ABOUT E2E
+MILESTONES
+2009 Inception ofthe company
+Raised Seed from Blume Ventures
+and others
 2017 Self-Service Cloud Platform
 
 | IPO Listing on NSE Emerge, | 2018 | oversubscribed 70× |
@@ -829,10 +833,18 @@ EBITDA and Margin % PAT and Margin %
 
 ### Chunk 26
 
-_table · pages 23–23 · 73 words · 176 tokens_
+_table · pages 23–23 · 123 words · 301 tokens_
 
 ```text
 ## & KEY FINANCIAL METRICS
+PAT PAT Margin Diluted EPS
+| INR 4750 Lakhs | 29.0% | INR 27.2 |
+| +117% YoY | 582 bps YoY | +85% YoY |
+Debt Equity Ratio Return on Capital Current Ratio
+Employed (ROCE)
+| 0.05 | 1.70 |
+4.48%
+EBITDA and Margin % PAT and Margin %
 59%
 
 | 967 | 475 | 30% |
@@ -861,9 +873,11 @@ RUNRATE
 
 ### Chunk 28
 
-_table · pages 24–24 · 60 words · 160 tokens_
+_table · pages 24–24 · 69 words · 184 tokens_
 
 ```text
+## MONTHLY REVENUE
+(in INR Mn) (in INR Mn)
 ## MONTHLY REVENUE
 RUNRATE
 
@@ -981,9 +995,10 @@ The financial performance for the Financial Year ended March 31, 2025 is summari
 
 ### Chunk 32
 
-_table · pages 26–26 · 202 words · 527 tokens_
+_table · pages 26–26 · 207 words · 542 tokens_
 
 ```text
+## FINANCIAL SUMMARY OF OPERATIONS
 ## FINANCIAL SUMMARY OF OPERATIONS
 The financial performance for the Financial Year ended March 31, 2025 is summarized below:
 (Amount in Rs. Lakh)
@@ -2487,10 +2502,11 @@ Sl. No. Particular Amount (In Rs.)
 
 ### Chunk 79
 
-_table · pages 48–48 · 107 words · 230 tokens_
+_table · pages 48–48 · 123 words · 264 tokens_
 
 ```text
 ## [FRN P2018UP067700]
+| (in Rs.) | subsection (6) of section 135. | sub-section (5) of section 135. |
 Amount. Date of transfer. Name of the Amount. Date of transfer
 Fund
 Rs. 60,61,505 Nil Not Applicable Not Applicable Nil Not Applicable
@@ -2533,10 +2549,15 @@ under under Year years.
 
 ### Chunk 81
 
-_table · pages 48–48 · 69 words · 131 tokens_
+_table · pages 48–48 · 113 words · 205 tokens_
 
 ```text
 ## [FRN P2018UP067700]
+| CSR | CSR | reporting | 135(5), if any | succeeding |
+| Account Account Financial financial |
+under under Year years.
+| section 135 section 135 (In Rs.) (In Rs.) |
+| (6) | (6) | Name of Amount Date of |
 (In Rs.) (In Rs.) the Fund (in Rs). transfer
 
 | 1 | 2023-24 | NA | Nil | Nil | NA | Nil | NA | Nil |
@@ -2586,10 +2607,12 @@ the Employees
 
 ### Chunk 83
 
-_table · pages 50–50 · 164 words · 341 tokens_
+_table · pages 50–50 · 173 words · 358 tokens_
 
 ```text
 ## [FRN P2018UP067700]
+(In Rs.) (In Rs.) the Fund (in Rs). transfer
+
 | 1. | Mr. Gaurav Munjal* | Chairman & | Non-Executive | and | 0.10 |
 | Independent Director |
 | 2. | Mr. Tarun Dua | Managing Director | 13.50 |
@@ -2625,10 +2648,11 @@ No. CS /Manager in the financial year
 
 ### Chunk 85
 
-_table · pages 50–50 · 102 words · 195 tokens_
+_table · pages 50–50 · 111 words · 211 tokens_
 
 ```text
 ## [FRN P2018UP067700]
+(In Rs.) (In Rs.) the Fund (in Rs). transfer
 Director
 * Independent Directors are being paid only sitting fees for attending the Board/Committee Meetings.
 B. The percentage increase in remuneration of each Director, Chief Financial Officer, Chief Executive
@@ -2869,9 +2893,12 @@ Name of the Director DIN Designation/ Category Shareholding as on
 
 ### Chunk 93
 
-_table · pages 54–54 · 155 words · 349 tokens_
+_table · pages 54–54 · 179 words · 390 tokens_
 
 ```text
+## KEY INFORMATION OF DIRECTORS:
+None of the Non-Executive Directors were involved in the day-to-day management of the Company during the year
+under review.
 ## KEY INFORMATION OF DIRECTORS:
 The details relating to composition and category of Directors as on March 31, 2025 are as follows:
 Name of the Director DIN Designation/ Category Shareholding as on
@@ -3495,10 +3522,12 @@ Entitled to attend
 
 ### Chunk 114
 
-_table · pages 62–62 · 75 words · 129 tokens_
+_table · pages 62–62 · 90 words · 163 tokens_
 
 ```text
 ## COMMITTEES OF THE BOARD OF DIRECTORS
+company exceeding Rs.RS. 100 crores or 10% of asset size of subsidiary, whichever is lower;
+
 | 1 | Mr. Gaurav Munjal | Chairman | 6 | 5 |
 | 2 | Mr. Varun Pratap Rajda* | Member | 5 | 5 |
 | 3 | Mr. Naman K. Sarawagi | Member | 6 | 5 |
@@ -3680,10 +3709,12 @@ Further the shares held by the Executive Directors as on March 31, 2025 are as f
 
 ### Chunk 119
 
-_table · pages 65–65 · 48 words · 106 tokens_
+_table · pages 65–65 · 62 words · 188 tokens_
 
 ```text
 ## AND OTHER EMPLOYEES:
+(Amount in Rs.)
+| Total (A) | Rs.1,24,94,964.3/- Rs. 1,24,97,083.3/- Rs.64,99,166.33 | Rs.3,14,91,213.93/- |
 Further the shares held by the Executive Directors as on March 31, 2025 are as follows:
 
 | Name No. of Shares held in the Company |
@@ -3713,10 +3744,12 @@ Rajda Jain
 
 ### Chunk 121
 
-_table · pages 65–65 · 112 words · 291 tokens_
+_table · pages 65–65 · 115 words · 298 tokens_
 
 ```text
 ## AND OTHER EMPLOYEES:
+(Amount in Rs.)
+
 | DIN | 01148272 07468016 02363421 | 05295642 | 11003461 | 06828019 | 08393018 |
 | • Fee for attending Board | 0 | 0 | 0 | 60,000 | 60,000 | 50,000 | 70,000 | Meetings |
 | • Fee for attending Audit | 0 | 0 | 0 | 25,000 | 25,000 | 25,000 | 25,000 | Committee Meetings |
@@ -3737,10 +3770,11 @@ Rajda Jain
 
 ### Chunk 123
 
-_table · pages 66–66 · 228 words · 464 tokens_
+_table · pages 66–66 · 231 words · 470 tokens_
 
 ```text
 ## AND OTHER EMPLOYEES:
+(Amount in Rs.)
 Non-Executive Directors Aditya Varun Gaurav Naman K. Sonu Gosain Prashant Shrimati
 Bhushan Pratap Munjal Sarawagi Soni Chiranjive Ambastha
 Rajda Jain
@@ -3787,10 +3821,11 @@ Technology
 
 ### Chunk 125
 
-_table · pages 66–66 · 100 words · 189 tokens_
+_table · pages 66–66 · 103 words · 195 tokens_
 
 ```text
 ## AND OTHER EMPLOYEES:
+(Amount in Rs.)
 Ravoof Technical Science, networking, and open source software.
 Mohamed Officer Information and Avid user and supporter of FOSS. Leads
 Imran Communication technology team to build innovative and
@@ -4366,10 +4401,13 @@ Details of Special 1. To appoint Mr. Aditya Bhushan 1. To re-appoint Mr. Naman 1
 
 ### Chunk 148
 
-_table · pages 73–73 · 80 words · 157 tokens_
+_table · pages 73–73 · 112 words · 254 tokens_
 
 ```text
 ## GENERAL MEETINGS AND POSTAL BALLOT
+Industrial Estate, Mathura Road, Industrial Estate, Mathura Road, Industrial Estate, Mathura Road,
+| Saidabad, New Delhi-110044 Saidabad, New | Delhi-110044 Saidabad, New Delhi-110044 |
+| (through VC/OAVM) (through VC/OAVM) (through VC/OAVM) |
 Details of Special 1. To appoint Mr. Aditya Bhushan 1. To re-appoint Mr. Naman 1. Adoption of New set of
 
 | Resolution passed | (DIN: 01148272) as Non- | Kailashprasad | Sarawagi | Memorandum of Association |
@@ -4397,10 +4435,13 @@ payable to him for the period Director of the Company.
 
 ### Chunk 150
 
-_table · pages 73–73 · 54 words · 112 tokens_
+_table · pages 73–73 · 103 words · 202 tokens_
 
 ```text
 ## GENERAL MEETINGS AND POSTAL BALLOT
+| appointment | of Mr. Tarun 1. To | approve | revision | in | to the ‘Promoter and Promoter |
+Dua, Managing Director of the remuneration of Mr. Tarun Dua Group and Public Category’ on
+| Company and remuneration | (DIN: 02696789), Managing | a Preferential Basis. |
 payable to him for the period Director of the Company.
 
 | from January 31, 2023 till |
@@ -4912,10 +4953,12 @@ of Fund Allotment Raised stated in the Offer (Rs. in crore) Utilisation (Rs.
 
 ### Chunk 167
 
-_table · pages 81–81 · 95 words · 211 tokens_
+_table · pages 81–81 · 108 words · 240 tokens_
 
 ```text
 ## GENERAL SHAREHOLDERS’ INFORMATION:
+of Fund Allotment Raised stated in the Offer (Rs. in crore) Utilisation (Rs.
+
 | Raising | (Rs. in | Document / Notice) | during FY 2024-25 | in crore) as on |
 | crore) | March 31, 2025 |
 | Preferential September | 405.66 | Capital expenditure towards | 100.02 | 305.64 |
@@ -4943,10 +4986,15 @@ Object Amount as per Offer Utilised up to March Un-utilised as on
 
 ### Chunk 169
 
-_table · pages 81–81 · 102 words · 233 tokens_
+_table · pages 81–81 · 130 words · 297 tokens_
 
 ```text
 ## GENERAL SHAREHOLDERS’ INFORMATION:
+of Fund Allotment Raised stated in the Offer (Rs. in crore) Utilisation (Rs.
+outstanding loans, general
+corporate purposes, and
+working capital
+A. Preferential Allotment dated September 21, 2024
 Object Amount as per Offer Utilised up to March Un-utilised as on
 
 | Document | (Rs. | in 31, 2025 (Rs. in crore) March 31, 2025 (Rs. in |
@@ -4980,10 +5028,13 @@ Object Amount as per Offer Utilised up to Un-utilised as on
 
 ### Chunk 171
 
-_table · pages 82–82 · 78 words · 202 tokens_
+_table · pages 82–82 · 107 words · 266 tokens_
 
 ```text
 ## GENERAL SHAREHOLDERS’ INFORMATION:
+A. Preferential Allotment dated December 04, 2024
+Object Amount as per Offer Utilised up to Un-utilised as on
+| Document | March 31, 2025 | March 31, 2025 |
 (Rs. in crore) (Rs. in crore) (Rs. in crore)
 
 | Capital expenditure towards IT | 729.28 | 6.49 | 722.79 |
@@ -5060,10 +5111,12 @@ S. No. Fees Amount
 
 ### Chunk 174
 
-_table · pages 83–83 · 45 words · 105 tokens_
+_table · pages 83–83 · 48 words · 112 tokens_
 
 ```text
 ## GENERAL SHAREHOLDERS’ INFORMATION:
+(Amount in Rs.)
+
 | 1. | Audit Fee | 6,50,000 |
 | 2. | Advisory & Certification charges | 0 |
 | 3. | Reimbursement of expenses | 0 |
@@ -5260,10 +5313,11 @@ Tarun Dua Megha Raheja
 
 ### Chunk 179
 
-_table · pages 86–86 · 38 words · 103 tokens_
+_table · pages 86–86 · 41 words · 109 tokens_
 
 ```text
 ## GENERAL SHAREHOLDERS’ INFORMATION:
+(Amount in Rs.)
 Sd/- Sd/-
 Tarun Dua Megha Raheja
 (Managing Director) (Whole Time Director &
@@ -5865,10 +5919,14 @@ compared to where change is + 25% or more as
 
 ### Chunk 200
 
-_table · pages 95–95 · 45 words · 82 tokens_
+_table · pages 95–95 · 78 words · 142 tokens_
 
 ```text
 ## RATIO ANALYSIS
+ratio decreased due to increase in earnings
+and decrease in loans on account of
+repayment of debt.
+| Ratio | FY 2024-25 FY 2023-24 % Change as Remarks/Reason | for | change |
 compared to where change is + 25% or more as
 
 | previous FY compared to Previous FY |
@@ -5902,10 +5960,15 @@ operating margin during the year.
 
 ### Chunk 202
 
-_table · pages 95–95 · 42 words · 77 tokens_
+_table · pages 95–95 · 96 words · 182 tokens_
 
 ```text
 ## RATIO ANALYSIS
+| Debt Equity Ratio | 0.05 | 2.03 | (97.75%) | The Debt Equity ratio has decreased |
+| due to repayment of borrowings |
+during the year.
+| Operating Profit Margin | 58.95% | 50.75% | 8.20% | The ratio has increased on accounts |
+| (%) increase in revenue and improved |
 operating margin during the year.
 
 | Net Profit Margin (%) | 28.97% | 23.15% | 25.14% | The Net profit ratio has increased |
@@ -6652,9 +6715,11 @@ Particulars As at As at
 
 ### Chunk 221
 
-_table · pages 107–107 · 434 words · 1116 tokens · golden facts: F01 (L4), F02 (L4), F03 (L4), F04 (L4)_
+_table · pages 107–107 · 445 words · 1142 tokens · golden facts: F01 (L4), F02 (L4), F03 (L4), F04 (L4)_
 
 ```text
+## BALANCE SHEET AS AT MARCH 31, 2025
+Place: New Delhi
 ## BALANCE SHEET AS AT MARCH 31, 2025
 (All amounts are in INR lakhs, unless otherwise stated)
 Particulars As at As at
@@ -6794,10 +6859,11 @@ _text · pages 108–108 · 24 words · 46 tokens_
 
 ### Chunk 226
 
-_table · pages 108–108 · 136 words · 283 tokens · golden facts: F08 (L3)_
+_table · pages 108–108 · 145 words · 299 tokens · golden facts: F08 (L3)_
 
 ```text
 ## STATEMENT OF PROFIT AND LOSS FOR THE YEAR ENDED MARCH 31, 2025
+(All amounts are in INR lakhs, unless otherwise stated)
 (i) Items that will not be reclassified to profit or loss
 
 | Re-measurement gains/ (losses) on defined benefit plans | 4.44 | 12.34 |
@@ -6866,10 +6932,16 @@ Changes in equity share capital during the year - -
 
 ### Chunk 229
 
-_table · pages 109–109 · 77 words · 184 tokens_
+_table · pages 109–109 · 124 words · 287 tokens_
 
 ```text
 ## STATEMENT OF CHANGES IN EQUITY FOR THE YEAR ENDED MARCH 31, 2025
+(All amounts are in INR lakhs, unless otherwise stated)
+A. Equity share capital:
+Description Notes Number of Shares Amount
+Equity share capital:
+Issued, subscribed and fully paid
+| Balance as at April 1, 2023 (equity share of INR 10 each) | 12 | 1,44,75,126 | 1,447.51 |
 Changes in equity share capital during the year - -
 
 | Balance as at March 31, 2024 (equity share of INR 10 each) | 12 | 1,44,75,126 | 1,447.51 |
@@ -6893,10 +6965,11 @@ reserve ESOP
 
 ### Chunk 231
 
-_table · pages 109–109 · 495 words · 934 tokens · table part 1/2, header rows repeated_
+_table · pages 109–109 · 504 words · 950 tokens · table part 1/2, header rows repeated_
 
 ```text
 ## STATEMENT OF CHANGES IN EQUITY FOR THE YEAR ENDED MARCH 31, 2025
+(All amounts are in INR lakhs, unless otherwise stated)
 B. Other Equity*
 Reserve & Surplus Items of OCI Total other
 Description equity Shares Securities Treasury General Retained Profit on Issue Revaluation
@@ -6931,10 +7004,11 @@ reserve ESOP
 
 ### Chunk 232
 
-_table · pages 109–109 · 158 words · 341 tokens · table part 2/2, header rows repeated_
+_table · pages 109–109 · 167 words · 357 tokens · table part 2/2, header rows repeated_
 
 ```text
 ## STATEMENT OF CHANGES IN EQUITY FOR THE YEAR ENDED MARCH 31, 2025
+(All amounts are in INR lakhs, unless otherwise stated)
 B. Other Equity*
 Reserve & Surplus Items of OCI Total other
 Description equity Shares Securities Treasury General Retained Profit on Issue Revaluation
@@ -7051,10 +7125,11 @@ Particulars For the year ended For the year ended
 
 ### Chunk 237
 
-_table · pages 111–111 · 249 words · 554 tokens_
+_table · pages 111–111 · 258 words · 570 tokens_
 
 ```text
 ## STATEMENT OF CASH FLOWS FOR THE YEAR ENDED MARCH 31, 2025
+(All amounts are in INR lakhs, unless otherwise stated)
 Particulars For the year ended For the year ended
 
 | March 31, 2025 | March 31, 2024 |
@@ -7287,10 +7362,12 @@ Property, Plant and Equipment Useful Lives
 
 ### Chunk 242
 
-_table · pages 114–114 · 40 words · 72 tokens_
+_table · pages 114–114 · 58 words · 98 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+statements have been rounded off to the nearest lakhs (as per requirement of Schedule III), unless otherwise stated.
+
 | Computer | 3 Years |
 | Computer Equipment | 6 Years |
 | Office Equipment | 5 Years |
@@ -7863,10 +7940,11 @@ The following table presents Capital Work in progress Ageing as on 31st March 20
 
 ### Chunk 254
 
-_table · pages 122–122 · 75 words · 157 tokens_
+_table · pages 122–122 · 84 words · 173 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+(All amounts are in INR lakhs, unless otherwise stated)
 The following table presents Capital Work in progress Ageing as on 31st March 2025:
 
 | Less Than | More than 3 | Particulars | 1-2 Years | 2-3 Years | Total | 1 Year | years |
@@ -7926,10 +8004,11 @@ Set out below are the carrying amounts of lease liabilities and the movements du
 
 ### Chunk 258
 
-_table · pages 123–123 · 89 words · 214 tokens_
+_table · pages 123–123 · 98 words · 230 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+(All amounts are in INR lakhs, unless otherwise stated)
 Set out below are the carrying amounts of lease liabilities and the movements during the year:
 
 | As on | As on | Particulars | March 31, 2025 | March 31, 2024 |
@@ -7952,10 +8031,11 @@ The following is the break-up of current and non-current lease liabilities as at
 
 ### Chunk 260
 
-_table · pages 123–123 · 78 words · 193 tokens_
+_table · pages 123–123 · 87 words · 209 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+(All amounts are in INR lakhs, unless otherwise stated)
 The following is the break-up of current and non-current lease liabilities as at March 31, 2025 and March 31, 2024.
 
 | As on | As on | Particulars | March 31, 2025 | March 31, 2024 |
@@ -7976,10 +8056,11 @@ The table below provides details regarding the contractual maturities of lease l
 
 ### Chunk 262
 
-_table · pages 123–123 · 87 words · 201 tokens_
+_table · pages 123–123 · 96 words · 217 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+(All amounts are in INR lakhs, unless otherwise stated)
 The table below provides details regarding the contractual maturities of lease liabilities as at March 31, 2025 and March
 
 | 31, 2024 on an undiscounted basis: |
@@ -8000,10 +8081,11 @@ The following are the amounts recognised in Profit or Loss:
 
 ### Chunk 264
 
-_table · pages 123–123 · 78 words · 170 tokens_
+_table · pages 123–123 · 87 words · 186 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+(All amounts are in INR lakhs, unless otherwise stated)
 The following are the amounts recognised in Profit or Loss:
 
 | For the year ended | For the year ended | Particulars | March 31, 2025 | March 31, 2024 |
@@ -8082,10 +8164,12 @@ Particulars Amount
 
 ### Chunk 268
 
-_table · pages 124–124 · 74 words · 173 tokens_
+_table · pages 124–124 · 83 words · 190 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+(All amounts are in INR lakhs, unless otherwise stated)
+
 | Balance as at March 31, 2023 | 1,336.05 |
 | Purchases during the year - |
 | Re-measurement recognised in revaluation reserves | (349.81) |
@@ -8106,10 +8190,11 @@ If IP addresses were measured using the cost model. The carrying amounts would b
 
 ### Chunk 270
 
-_table · pages 124–124 · 69 words · 144 tokens_
+_table · pages 124–124 · 78 words · 160 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+(All amounts are in INR lakhs, unless otherwise stated)
 If IP addresses were measured using the cost model. The carrying amounts would be as follows:
 
 | Net book value As at As at |
@@ -8146,10 +8231,12 @@ Unsecured, considered good unless otherwise stated
 
 ### Chunk 272
 
-_table · pages 125–125 · 89 words · 203 tokens_
+_table · pages 125–125 · 98 words · 220 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+(All amounts are in INR lakhs, unless otherwise stated)
+
 | Deposits with original maturity of more than 12 months (refer note 10) | - | 124.63 | - | 386.63 |
 | Security deposit | 27.19 | 40.62 | 36.52 | - |
 | Unbilled revenue | 318.01 | - | 325.08 | - |
@@ -8170,10 +8257,11 @@ Particulars Non- Non- Current Current current current
 
 ### Chunk 274
 
-_table · pages 125–125 · 128 words · 295 tokens_
+_table · pages 125–125 · 137 words · 311 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+(All amounts are in INR lakhs, unless otherwise stated)
 As at March 31, 2025 As at March 31, 2024
 Particulars Non- Non- Current Current current current
 
@@ -8251,10 +8339,13 @@ Balance with Banks
 
 ### Chunk 277
 
-_table · pages 126–126 · 73 words · 180 tokens_
+_table · pages 126–126 · 94 words · 214 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+(All amounts are in INR lakhs, unless otherwise stated)
+9. Cash and cash equivalents
+| Particulars As at As at |
 March 31, 2025 March 31, 2024
 Balance with Banks
 
@@ -8381,10 +8472,13 @@ Year March 31, 2024: INR 10 each) % of % of No. No. Holding Holding
 
 ### Chunk 283
 
-_table · pages 128–128 · 71 words · 199 tokens_
+_table · pages 128–128 · 117 words · 298 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+21, 2024 and INR 1,07,927.80 Lakhs in equity share capital through a preferential issue of 29,79,579 equity shares,
+| (v) | Details of shareholders holding more than 5% shares in the Company |
+| As at March 31, 2025 | As at March 31, 2024 |
 Equity shares of face value INR 10 each (Previous
 Year March 31, 2024: INR 10 each) % of % of No. No. Holding Holding
 
@@ -8412,10 +8506,13 @@ Year March 31, 2024: INR 10 each) No. Amount No. Amount
 
 ### Chunk 285
 
-_table · pages 128–128 · 75 words · 195 tokens_
+_table · pages 128–128 · 131 words · 314 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+21, 2024 and INR 1,07,927.80 Lakhs in equity share capital through a preferential issue of 29,79,579 equity shares,
+Shares held by E2E Networks Limited Employee Welfare Trust against employee share-based payment (vi) plans
+| As at March 31, 2025 | As at March 31, 2024 | Equity shares of face value INR 10 each (Previous |
 Year March 31, 2024: INR 10 each) No. Amount No. Amount
 
 | Opening Balance | 33,625 | 3.36 | 69,000 | 6.90 |
@@ -8479,10 +8576,12 @@ _table · pages 129–129 · 457 words · 1034 tokens_
 
 ### Chunk 288
 
-_table · pages 130–130 · 150 words · 323 tokens_
+_table · pages 130–130 · 159 words · 340 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+(All amounts are in INR lakhs, unless otherwise stated)
+
 | As at | As at | Particulars | Mar 31, 2025 March 31, 2024 |
 | Treasury Shares |
 | Balance as at the beginning of the year | (16.99) | (33.20) |
@@ -8538,10 +8637,12 @@ Note 35.
 
 ### Chunk 290
 
-_table · pages 130–130 · 62 words · 164 tokens_
+_table · pages 130–130 · 71 words · 181 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+(All amounts are in INR lakhs, unless otherwise stated)
+
 | As at March 31, 2025 | As at March 31, 2024 |
 | Particulars Non- Current Current Non-current current |
 | Secured |
@@ -8620,10 +8721,11 @@ Non-current assets
 
 ### Chunk 294
 
-_table · pages 131–131 · 125 words · 289 tokens_
+_table · pages 131–131 · 134 words · 305 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+(All amounts are in INR lakhs, unless otherwise stated)
 16.1 Movement in deferred tax assets/ liabilities
 Significant components of net deferred tax assets and liabilities for the year ended March 31, 2025 are as
 follows:
@@ -8654,10 +8756,11 @@ Provisions
 
 ### Chunk 296
 
-_table · pages 132–132 · 221 words · 503 tokens_
+_table · pages 132–132 · 230 words · 519 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+(All amounts are in INR lakhs, unless otherwise stated)
 Recognised in
 Recognised / reclassified Opening Closing Particulars in profit and from other Balance balance loss comprehensive
 income
@@ -8693,10 +8796,11 @@ Ageing has been considered from the date of transaction (posting date).
 
 ### Chunk 298
 
-_table · pages 132–132 · 105 words · 190 tokens_
+_table · pages 132–132 · 114 words · 206 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+(All amounts are in INR lakhs, unless otherwise stated)
 Trade payable ageing schedule for year ended March 31, 2025
 Ageing has been considered from the date of transaction (posting date).
 
@@ -8722,10 +8826,12 @@ Ageing has been considered from the date of transaction (posting date).
 
 ### Chunk 300
 
-_table · pages 132–132 · 105 words · 192 tokens_
+_table · pages 132–132 · 131 words · 244 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+(All amounts are in INR lakhs, unless otherwise stated)
+| Total | 247.16 | - | 467.37 | - | - | - | 714.53 |
 Trade payable ageing schedule for year ended March 31, 2024
 Ageing has been considered from the date of transaction (posting date).
 
@@ -8754,10 +8860,11 @@ current current
 
 ### Chunk 302
 
-_table · pages 133–133 · 93 words · 210 tokens_
+_table · pages 133–133 · 110 words · 246 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+| Total | 337.70 | - | 266.17 | - | - | - | 603.87 |
 (All amounts are in INR lakhs, unless otherwise stated)
 18. Other financial liabilities
 As at March 31, 2025 As at March 31, 2024
@@ -8784,10 +8891,11 @@ current current
 
 ### Chunk 304
 
-_table · pages 133–133 · 149 words · 329 tokens_
+_table · pages 133–133 · 158 words · 345 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+(All amounts are in INR lakhs, unless otherwise stated)
 19. Other liabilities
 As at March 31, 2025 As at March 31, 2024
 Particulars Current Non- Current Non-
@@ -8822,10 +8930,12 @@ by industry, market and other economic factors.
 
 ### Chunk 306
 
-_table · pages 133–133 · 66 words · 156 tokens_
+_table · pages 133–133 · 75 words · 173 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+(All amounts are in INR lakhs, unless otherwise stated)
+
 | For the year ended | For the year ended | Location of customer | March 31, 2025 | March 31, 2024 |
 | Within India | 10,871.95 | 8,609.01 |
 | Outside India | 5,524.13 | 837.35 |
@@ -8846,10 +8956,11 @@ customers.
 
 ### Chunk 308
 
-_table · pages 133–133 · 81 words · 181 tokens_
+_table · pages 133–133 · 90 words · 197 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+(All amounts are in INR lakhs, unless otherwise stated)
 The following table provides information about receivables, contracts assets, and contract liabilities from contracts with
 customers.
 
@@ -8892,10 +9003,12 @@ March 31, 2024 were as follows:-
 
 ### Chunk 310
 
-_table · pages 134–134 · 55 words · 132 tokens_
+_table · pages 134–134 · 64 words · 149 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+(All amounts are in INR lakhs, unless otherwise stated)
+
 | As at | As at | Particulars | 31 March 2025 | 31 March 2024 |
 | Opening balance | 645.42 | 226.69 |
 | Movement during the year | (175.62) | 418.73 |
@@ -8913,10 +9026,11 @@ Changes in Contract assets during the year ended March 31, 2025 and March 31, 20
 
 ### Chunk 312
 
-_table · pages 134–134 · 73 words · 164 tokens_
+_table · pages 134–134 · 82 words · 180 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+(All amounts are in INR lakhs, unless otherwise stated)
 Changes in Contract assets during the year ended March 31, 2025 and March 31, 2024 were as follows
 
 | As at | As at | Particulars | 31 March 2025 | 31 March 2024 |
@@ -8943,10 +9057,12 @@ equal to the contracted price and there are no adjustments made to the contract 
 
 ### Chunk 314
 
-_table · pages 134–134 · 129 words · 272 tokens_
+_table · pages 134–134 · 146 words · 325 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+The Company has recognized revenue of INR 16,396.08 Lakhs (March 31, 2024: INR 9,446.36 Lakhs) which is
+
 | For the year ended For the year ended | Particulars | March 31, 2025 | March 31, 2024 |
 | Interest income |
 | - on bank deposits | 3,232.16 | 13.55 |
@@ -9101,10 +9217,11 @@ Tax effect of amounts which are not deductible (taxable) in
 
 ### Chunk 322
 
-_table · pages 137–137 · 83 words · 184 tokens_
+_table · pages 137–137 · 92 words · 200 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+(All amounts are in INR lakhs, unless otherwise stated)
 Tax effect of amounts which are not deductible (taxable) in
 
 | calculating taxable income: |
@@ -9126,10 +9243,11 @@ The following reflects the profit/(loss) and shares data used in the basic and
 
 ### Chunk 324
 
-_table · pages 137–137 · 98 words · 235 tokens_
+_table · pages 137–137 · 107 words · 251 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+(All amounts are in INR lakhs, unless otherwise stated)
 The following reflects the profit/(loss) and shares data used in the basic and
 
 | diluted EPS computations: |
@@ -9159,10 +9277,12 @@ The amount recognised as expenses
 
 ### Chunk 326
 
-_table · pages 137–137 · 65 words · 135 tokens_
+_table · pages 137–137 · 74 words · 152 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+(All amounts are in INR lakhs, unless otherwise stated)
+
 | For the year ended For the year ended | Particulars | March 31, 2025 | March 31, 2024 |
 | Employer contribution to ESIC | - | 0.45 |
 | Employer contribution to provident fund | 22.79 | 17.43 |
@@ -9192,10 +9312,12 @@ Defined Benefit Description liability
 
 ### Chunk 328
 
-_table · pages 138–138 · 260 words · 516 tokens_
+_table · pages 138–138 · 290 words · 569 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+(All amounts are in INR lakhs, unless otherwise stated)
+Changes in the defined benefit obligation and fair value of plan assets as at March 31, 2025 and March 31, 2024:
 Defined Benefit Description liability
 
 | As at April 1, 2023 | 64.59 |
@@ -9239,10 +9361,12 @@ The principal assumptions used in determining gratuity obligations for the Compa
 
 ### Chunk 330
 
-_table · pages 139–139 · 136 words · 308 tokens_
+_table · pages 139–139 · 157 words · 338 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+Since the Gratuity plan is unfunded, investment pattern and information related to fair value of plan assets is not being
+provided.
 (All amounts are in INR lakhs, unless otherwise stated)
 The principal assumptions used in determining gratuity obligations for the Company’s plan is shown below:
 
@@ -9268,10 +9392,11 @@ A quantitative sensitivity analysis for significant assumptions is as shown belo
 
 ### Chunk 332
 
-_table · pages 139–139 · 86 words · 191 tokens_
+_table · pages 139–139 · 95 words · 207 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+(All amounts are in INR lakhs, unless otherwise stated)
 A quantitative sensitivity analysis for significant assumptions is as shown below:
 
 | For the year ended For the year ended |
@@ -9298,10 +9423,12 @@ The following payments are expected contributions to the defined benefit plan in
 
 ### Chunk 334
 
-_table · pages 139–139 · 204 words · 431 tokens_
+_table · pages 139–139 · 213 words · 448 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+(All amounts are in INR lakhs, unless otherwise stated)
+
 | For the year ended For the year ended | Description | March 31, 2025 | March 31, 2024 |
 | Within the next 12 months (next annual reporting period) | 3.15 | 2.79 |
 | Between 2 and 5 years | 14.27 | 11.98 |
@@ -9474,10 +9601,12 @@ undiscounted payments.
 
 ### Chunk 341
 
-_table · pages 141–141 · 101 words · 248 tokens_
+_table · pages 141–141 · 110 words · 265 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+(All amounts are in INR lakhs, unless otherwise stated)
+
 | Less than | 1 to 5 | More than | Particulars | Total | 1 year | year | 5 year |
 | As at March 31, 2025 |
 | Trade Payable | 714.53 | - | - | 714.53 |
@@ -9578,10 +9707,11 @@ currency other than INR.
 
 ### Chunk 347
 
-_table · pages 142–142 · 173 words · 386 tokens_
+_table · pages 142–142 · 182 words · 402 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+(All amounts are in INR lakhs, unless otherwise stated)
 * Holding all other variables constant
 (b) Foreign Currency risk
 Foreign currency risk is a risk that the fair value of future cash flows of an exposure will fluctuate because of
@@ -9768,10 +9898,12 @@ For the year ended For the year ended
 
 ### Chunk 352
 
-_table · pages 144–144 · 60 words · 144 tokens_
+_table · pages 144–144 · 69 words · 161 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+(All amounts are in INR lakhs, unless otherwise stated)
+
 | 31 March 2025 | 31 March 2024 |
 | 2018 Scheme |
 | WAEP Number WAEP (INR) Number (INR) |
@@ -9790,10 +9922,11 @@ Lapsed / Forfeited during the year - - - -
 
 ### Chunk 354
 
-_table · pages 144–144 · 70 words · 172 tokens_
+_table · pages 144–144 · 79 words · 188 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+(All amounts are in INR lakhs, unless otherwise stated)
 Lapsed / Forfeited during the year - - - -
 
 | Exercised during the year | 46,944 | 51.30 | - | - |
@@ -9848,10 +9981,12 @@ Share options outstanding at the end of the year have the following exercise pri
 
 ### Chunk 358
 
-_table · pages 145–145 · 83 words · 256 tokens_
+_table · pages 145–145 · 93 words · 272 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+Lakhs) has been charged to statement of profit and loss.
+
 | March 31, 2025 | March 31, 2024 |
 | 2021 Scheme | 2018 | 2021 | 2018 | 2021 |
 | Scheme Scheme Scheme Scheme |
@@ -9877,10 +10012,13 @@ For the year ended For the year ended
 
 ### Chunk 360
 
-_table · pages 145–145 · 70 words · 176 tokens_
+_table · pages 145–145 · 108 words · 236 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+Lakhs) has been charged to statement of profit and loss.
+The following tables list the inputs to the models used for shares option plans which are outstanding as on March 31, 2025
+| and March 31, 2024: |
 For the year ended For the year ended
 
 | 31 March 2025 | 31 March 2024 |
@@ -9929,10 +10067,12 @@ balance as at year end.
 
 ### Chunk 362
 
-_table · pages 146–146 · 140 words · 271 tokens_
+_table · pages 146–146 · 149 words · 288 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+(All amounts are in INR lakhs, unless otherwise stated)
+
 | For the year ended | For the year ended | Nature of transactions | 31 March 2025 | 31 March 2024 |
 | Remuneration of Key Management Personnel* | 329.31 | 284.14 |
 | Reimbursement of expenses to Key Management Personnel | 3.09 | - |
@@ -9960,10 +10100,11 @@ as they are determined on an actuarial basis for the company as a whole.
 
 ### Chunk 364
 
-_table · pages 146–146 · 124 words · 221 tokens_
+_table · pages 146–146 · 133 words · 237 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+(All amounts are in INR lakhs, unless otherwise stated)
 * Remuneration to the key managerial personnel does not include the provisions made for gratuity and leave encashment,
 as they are determined on an actuarial basis for the company as a whole.
 
@@ -10018,10 +10159,13 @@ b) Amount spent during the year ended March 31, 2025: INR 60.61 Lakhs.
 
 ### Chunk 368
 
-_table · pages 147–147 · 77 words · 190 tokens_
+_table · pages 147–147 · 114 words · 271 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+38. Corporate Social responsibility
+a) Gross amount required to be spent by the Company during the year ended March 31, 2025: INR 32.49 Lakhs.
+b) Amount spent during the year ended March 31, 2025: INR 60.61 Lakhs.
 39. Changes in liabilities arising from financing activities:
 
 | As on | Non-Cash Changes | As at | Particulars | Cash Flows | Mar 31, 2025 | /Fair Value Adjustment 31 March 2024 |
@@ -10093,10 +10237,11 @@ and bank balances.
 
 ### Chunk 372
 
-_table · pages 148–148 · 321 words · 529 tokens_
+_table · pages 148–148 · 330 words · 545 tokens_
 
 ```text
 ## 2. BASIS OF PREPARATION OF FINANCIAL STATEMENTS AND MATERIAL ACCOUNTING POLICIES
+(All amounts are in INR lakhs, unless otherwise stated)
 and bank balances.
 
 | The Debt Equity ratio has decreased due | Debt- Equity | Total Debt | Shareholder’s Equity | 0.05 | 2.03 | (97.75%) to repayment of borrowings during the | Ratio | year. |

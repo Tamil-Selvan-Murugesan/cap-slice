@@ -1,0 +1,72 @@
+# bugs_resolved.md
+
+Bugs found and fixed while building the PDF parsing, chunking and evaluation code — written as learning material. Each entry says what we saw, why it happened, what fixed it, and how we caught it, so the same mistake isn't made again.
+
+**When you fix a parser/chunker/scorer bug, add an entry here** (next free ID in its section). Keep entries factual; link the document/page/chunk that exposed it.
+
+Components: `extract.py` + `chunk.py` (baseline pipeline), `parsing/pymupdf_text.py` (Option 1), `parsing/pymupdf4llm_md.py` (Option 2), `parsing/docling_md.py` (Option 3), `structured_chunk.py` (shared by Options 1–3), `compare_parsers.py` (scorer), `index.py`/`embed.py`/`vectorstore.py` (indexing).
+
+## Lessons (read these first)
+
+1. **A score change is a claim, not a fact — open the chunks behind it.** Several "improvements" were bugs, and one big "regression" (Docling at L2) was our chunker, not the parser (S8). Every entry below was found by reading output, not by metrics alone.
+2. **Heuristics that match layout will match the wrong layout too.** Wide gaps mean "table" in a balance sheet and "two columns" in a transcript (P1); repeated text means "letterhead" at the top of a page and "data" inside a table (S2, S3). Scope every heuristic: where on the page, what shape of content.
+3. **Each fix can create the next bug.** S1 → S2 → S3 is one chain: fixing letterhead removal twice deleted real data. Re-run the whole golden set after every fix, not just the case you fixed.
+4. **Parsers disagree on the same text.** The same letterhead is one line on one page and three on the next; different parsers put captions, units and signatures in different orders (S1, S8). Don't key logic on exact strings or on "the line right before".
+5. **Never grade a parser with its own output.** Golden facts are read off rendered page images (`data/golden/`), and a fact only counts on its own page (V3).
+6. **Measure, don't assume, performance knobs.** More threads made Docling slower (P5); the first run included one-off model downloads (L1).
+
+## Baseline pipeline (`extract.py`, `chunk.py`)
+
+| ID | Symptom | Root cause | Fix | Found by | Status |
+|---|---|---|---|---|---|
+| B1 | Balance-sheet rows ran together into one stream: `Property, plant and equipment 3 31,090.82 15,578.50 Capital work-in-progress 3.1 ...` (E2E FY2024-25, chunk 139) | `chunk.py` split paragraphs into words (`para.split()`) and re-joined with spaces, destroying line breaks | Superseded: `structured_chunk.py` keeps lines | Reading chunk 139 next to PDF p. 107 | Superseded (baseline kept for comparison) |
+| B2 | Column alignment lost even before chunking | `extract.clean()` collapses runs of spaces to one, so column gaps vanish | Superseded: Option 1 turns wide gaps into `\|` cells instead | Comparing `get_text(sort=True)` raw output with cleaned text | Superseded |
+| B3 | One chunk held the auditor's sign-off *and* the balance sheet, spanning pp. 106–108; 47 of 190 chunks spanned 3 pages | Fixed 500-word windows ignore page and section boundaries | Superseded: headings start new chunks; tables are atomic | Chunk review file, automatic "spans N pages" flag | Superseded |
+| B4 | Overlap started mid-sentence ("the principles of affordability…") and copied noise (signature block, page footer) into the next chunk | Overlap = last 75 words, regardless of content | `structured_chunk.py`: overlap trimmed to whole sentences, never enters or leaves a table | User review of chunks 0→1 and 139→140 | Fixed in new chunker |
+| B5 | `chunk_pages(..., chunk_words=100)` still produced a 250-word chunk | Paragraphs are pre-split at the module-level `CHUNK_WORDS`, ignoring the argument | Not fixed — baseline to be replaced | Focused unit check (other agent's validation review, re-verified) | Open (moot once `index.py` switches) |
+| B6 | Pages reported as "scanned/image-only" included 42 blank pages and 8 with text drawn as vector outlines | "< 50 characters of text" was labelled as a cause, not a symptom | Wording: "low-text page"; classified the 441 pages by content (image cover, small images, blank, outlines) | Rendering and inspecting the flagged pages | Fixed in docs |
+
+## Parsers
+
+| ID | Parser | Symptom | Root cause | Fix | Found by | Status |
+|---|---|---|---|---|---|---|
+| P1 | Option 1 | 1,031 chunks for one annual report (baseline 190); concall Q&A split apart (3 of 4 concall facts fell to L1); chunks like `## & KEY FINANCIAL METRICS / 29%` | Any 3+ space gap became a table cell. Two-column transcripts (speaker \| speech) and designed pages have wide gaps too, so every line became a "table row" | A line is a table row only if a cell after the first contains a digit and no cell is a run of prose (> 25 words) | Chunk count jump + reading the concall chunks | Fixed 2026-09-26 |
+| P2 | Option 1 | Balance-sheet facts stuck at L2: rows below "Current assets" had no column header | Short sub-heading lines inside a statement ("Current assets", "Financial assets") weren't table rows, so they split the table into pieces and only the first piece kept the header | Short label lines (≤ 8 words, no final period) with table rows within 3 lines above and below are absorbed as rows; blank lines inside a table are dropped | Reading chunk 221 (only part of the balance sheet) | Fixed 2026-09-26; 7/8 digital facts → L4 |
+| P3 | Option 1 | The letterhead address `PHASE-1, WHITEFIELD, BANGALORE- 560066` became every chunk's section heading | ALL-CAPS short line → `##` heading rule | Resolved by the letterhead removal (S1–S3) dropping it before headings are used | Reading C2C allotment chunks | Fixed 2026-09-26 |
+| P4 | PyMuPDF `find_tables()` (diagnostic only) | Whole balance sheet returned as one cell with `<br>` between rows | Detector relies on ruling lines/spacing; these statements are whitespace-aligned | Not used in any option | One-off diagnostic | Finding, not a code bug |
+| P5 | Option 3 (Docling) | 8 threads was *slower* than the default 4 (66 s vs 53 s on the 4-page C2C doc) | Likely thread oversubscription: the laptop has 14 logical CPUs across mixed performance/efficiency cores (Core Ultra 5 135U), and ONNX OCR and PyTorch both run their own thread pools. Not proven — timings also vary run to run (the same 8-thread setting took 104 s in an earlier run) | Reverted to Docling's defaults | Timed 4 vs 8 threads vs no-OCR before the full run | Fixed 2026-09-28 |
+| P6 | Option 2 (environment) | Re-parsing with Option 2 after installing Docling would silently use a different OCR engine | Docling installs `rapidocr` 3.9.2; PyMuPDF4LLM prefers `rapidocr` over `rapidocr_onnxruntime` when both are importable | Not fixed: Option 2 results are from the cache measured on 2026-09-26 with `rapidocr_onnxruntime`. Pin the backend before any Option 2 re-parse | Reading PyMuPDF4LLM's `detect_rapidocr.py` after the install | Open — recorded |
+
+## Shared chunker (`structured_chunk.py`)
+
+| ID | Symptom | Root cause | Fix | Found by | Status |
+|---|---|---|---|---|---|
+| S1 | Letterhead (email, address, CIN) left in chunks for some parsers/pages | Boilerplate detection compared whole lines, but parsers join or split the same letterhead differently from page to page | Split lines into fragments (on `\|`, double spaces, sentence ends), normalise to letters, and drop fragments that repeat on ≥ half the pages | `grep` for the letterhead in chunks after the first run | Fixed 2026-09-26 |
+| S2 | After S1, words inside tables ("Promoter", "Non-Promoter") were treated as boilerplate | Fragments repeated inside a multi-page table look exactly like a letterhead | Only look for boilerplate in the top 8 and bottom 4 lines of each page | Inspecting the boilerplate key set (it contained `promoter`) | Fixed 2026-09-26 |
+| S3 | After S2, a **real table row** at the bottom of page 1 was deleted (`Pravan Holdings LLP … 2,74,99,892`) — fact F25 went to 0 | Tables often run to the bottom edge of the page, so data rows sit in the "edge" zone | Lines starting with `\|` (table rows) are never boilerplate | F25 score drop → traced value through `parsed.md` and `chunks.md` | Fixed 2026-09-26 |
+| S4 | Many 4–15 word chunks from designed pages and infographics | Every small "table" forced a chunk break, and short prose between them became its own chunk | Tables with < 3 rows are treated as text; prose chunks < 80 words merge into the next one | Chunk size histogram | Fixed 2026-09-26 |
+| S5 | A heading's text vanished when it arrived while the current chunk was still small | The heading only updated the section name; with < 50 buffered words the chunk wasn't flushed, so the heading text belonged to no chunk | Keep the heading as a `## ...` text line in the buffer | F24 (image-only slide) stuck at L1 | Fixed 2026-09-26 |
+| S6 | "Srishti Baweja" missing from the chunk holding her bio (F24 still L1 after S5) | The small-chunk merge dropped the next chunk's `## section` line even when the two chunks had *different* sections — and that line was the only place her name appeared | Drop the repeated section line only when both chunks share the section | Same fact, second look | Fixed 2026-09-26 |
+| S7 | Correct OCR values didn't match: `2,294~~.~~41`, `<mark>…</mark>` | PyMuPDF4LLM wraps low-confidence OCR characters in `~~` strikethrough and adds `<mark>`/`<u>` tags; cleaning only removed `**` | Strip `~~`, `<mark>`, `<u>`, `<b>`, `<i>`, `<sup>`, `<sub>` in `_normalise` | Reading `parsed.md` p. 123 of the scanned report | Fixed 2026-09-26 |
+| S8 | Docling's near-perfect balance sheet scored L2 for 7 of 8 facts (unit missing) | Caption = only the single block right before a table. Docling placed "For and on behalf of the board of directors" between the units line and the table, so "INR lakhs" was dropped | Caption = short blocks before the table up to 60 words, **plus** the section's most recent units statement always carried into table chunks | Reading Docling's `parsed.md` p. 107 (table perfect) vs its chunk | Fixed 2026-09-28; Docling FY2024-25 1/8 → 8/8 at L4, no change for other options |
+| S9 | After S8, a table chunk can start with unrelated text: Docling's scanned balance sheet (E2E FY2022-23 p. 123) is preceded by the previous page's auditor sign-off ("Chartered Accountants … UDIN …") | S8's caption takes up to 60 words of short blocks before the table, even across a page break | Not fixed. Candidate: stop the caption at a page boundary or a heading. Re-run the golden set after, since S8 depended on multi-block captions | Opening the chunk behind the F09 score jump (L2 → L4) | Open — noise only, no score impact |
+
+## Evaluation (`compare_parsers.py`)
+
+| ID | Symptom | Root cause | Fix | Status |
+|---|---|---|---|---|
+| V1 | Label–value distance check could pass/fail wrongly | Character positions taken from the raw line for the value but from the normalised line for the label | Both positions measured on the same normalised line | Fixed 2026-09-26 |
+| V2 | Potential crash when a header's text spans two cells | `next(...)` without a default | Default `None`, guarded | Fixed 2026-09-26 |
+| V3 | F13 (profit on a scanned P&L page) scored L1 in every option — none of them had actually read that page | Facts matched any chunk in the document; the directors' report quotes the same number | Only chunks covering the fact's page count (`any_page=True` restores old behaviour) | Fixed 2026-09-26 |
+| V4 | Projection note said the golden docs were "about 14%" OCR pages | Number written from memory, not computed (actual: 17%) | Computed from the results | Fixed 2026-09-28 |
+| V5 | Latency was a single `seconds` figure mixing parsing and chunking, with no memory or machine recorded | Timer wrapped the whole option | Separate `parse_seconds` / `chunk_seconds`, peak memory and growth sampled during parsing, measurement date and machine stored; latency table with projection in `COMPARISON.md` | Fixed 2026-09-28 |
+| L1 | First Docling run: 143 s for 4 pages | Included one-off model download and loading | Separated: ~11 s model load, then per-page time; the load is counted once, in the first document's time | Fixed 2026-09-28 |
+
+## Indexing (`index.py`, `embed.py`, `vectorstore.py`, downloader)
+
+| ID | Symptom | Root cause | Fix | Status |
+|---|---|---|---|---|
+| I1 | A run interrupted mid-upsert would leave a half-written document marked as indexed | "Indexed" meant "at least one point with this file hash" | Each point stores `n_chunks`; a document counts only if the stored count equals it | Fixed 2026-09-23 |
+| I2 | Embedding batch could exceed Voyage's 120K-token request cap (64 × up to 2,591 tokens ≈ 166K) | Fixed 64-chunk batches, sized from an average | Batches sized by token count (≤ 100K, counted locally) | Fixed 2026-09-26 |
+| I3 | Two URLs that returned an HTML page stayed `untested` in the matrix | Non-PDF responses weren't mapped to a status | Recorded as `not found` | Fixed 2026-09-26 |
+| I4 | Estimated 8–9M tokens to embed; actual 11.0M | Assumed 1.3 tokens/word; Voyage's tokenizer gives ~1.56 on filings | Count with the real tokenizer (`count_tokens`, runs locally) | Fixed 2026-09-23 |

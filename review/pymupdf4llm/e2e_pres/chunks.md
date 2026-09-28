@@ -1,7 +1,7 @@
 # Chunks: Option 2: PyMuPDF4LLM (layout + RapidOCR) + structured chunker — e2e_pres
 
 - PDF: `data/E2E/investor_presentations/May-2024.pdf` (page numbers = PDF viewer pages)
-- 27 chunks, 8,605 tokens (4 table chunks)
+- 27 chunks, 8,669 tokens (4 table chunks)
 - Text inside each block is exactly what would be embedded.
 
 ### Chunk 0
@@ -697,10 +697,11 @@ June 2023.
 
 ### Chunk 24
 
-_table · pages 27–27 · 102 words · 716 tokens_
+_table · pages 27–27 · 138 words · 780 tokens_
 
 ```text
 ## HISTORICAL BALANCE SHEET
+per Schedule ll of tileCompanies Act, 2013 and also based on technical evaluation from registered valuer.The impact of the above changes is reduction of depreciation expense by Rs.25.7 Mil in the quarter ending 30th June 2023.
 ## HISTORICAL BALANCE SHEET
 
 |PARTICULARS(INR Mn)|FY22|FY23|FY24|PARTICULARS (INR Mn)|FY22|FY23|FY24|

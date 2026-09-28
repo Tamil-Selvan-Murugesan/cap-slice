@@ -1,7 +1,7 @@
 # Chunks: Option 2: PyMuPDF4LLM (layout + RapidOCR) + structured chunker — e2e_ar_fy25
 
 - PDF: `data/E2E/annual_reports/2025-09-04_FY2024-25.pdf` (page numbers = PDF viewer pages)
-- 465 chunks, 122,956 tokens (135 table chunks)
+- 465 chunks, 125,001 tokens (135 table chunks)
 - Text inside each block is exactly what would be embedded.
 
 ### Chunk 0
@@ -78,10 +78,17 @@ ANNUAL REPORT ANNUALREPOR 2024−25 2024-25
 
 ### Chunk 2
 
-_table · pages 3–3 · 51 words · 172 tokens_
+_table · pages 3–3 · 92 words · 290 tokens_
 
 ```text
 ## TABLE OF CONTENTS
+Digitally signed by RONIT Date: 2025.09.04 16:05:03 +05'30'
+Ronit
+Company Secretary and Compliance Officer Membership No.: A59215
+Encl.: As above
+<!-- Start of picture text -->
+E2ECloud E2E Networks Limited <!-- End of picture text -->
+ANNUAL REPORT ANNUALREPOR 2024−25 2024-25
 ## TABLE OF CONTENTS
 
 |Corporate Information|02|
@@ -887,9 +894,11 @@ The financial performance for the Financial Year ended March 31, 2025 is summari
 
 ### Chunk 30
 
-_table · pages 26–26 · 99 words · 499 tokens_
+_table · pages 26–26 · 144 words · 578 tokens_
 
 ```text
+## FINANCIAL SUMMARY OF OPERATIONS
+The Board of Directors (“Board”) have immense pleasure in presenting the 16th Annual Report on the business and operations of E2E Networks Limited (“the Company”), along with the Audited Financial Statements, for the financial year ended on March 31, 2025.
 ## FINANCIAL SUMMARY OF OPERATIONS
 The financial performance for the Financial Year ended March 31, 2025 is summarized below:
 
@@ -1822,10 +1831,11 @@ The summary of CSR obligations and expenditures for the last two financial years
 
 ### Chunk 71
 
-_table · pages 37–37 · 31 words · 161 tokens_
+_table · pages 37–37 · 67 words · 226 tokens_
 
 ```text
 ## CORPORATE SOCIAL RESPONSIBILITY
+As a result, a fresh surplus CSR expenditure of Rs. 34,53,552.12 has been generated during FY 2024–25, which can be set off against CSR obligations for the next three financial years in accordance with applicable provisions.
 The summary of CSR obligations and expenditures for the last two financial years is as follows:
 
 |Financial Year|CSR Obligation (Rs.)|Actual Expenditure (Rs.)|Surplus Expenditure (Rs.)|
@@ -2512,10 +2522,11 @@ disclosed on the website of the company:
 
 ### Chunk 96
 
-_table · pages 47–47 · 66 words · 248 tokens_
+_table · pages 47–47 · 83 words · 283 tokens_
 
 ```text
 ## 3. Web-link(s) where Composition of CSR Committee, CSR Policy and CSR Projects approved by the board are disclosed on the website of the company:
+_*Mr. Varun Kumar Rajda resigned as Independent Director and member of the Committee w.e.f. December 4, 2024_
 ## 3. Web-link(s) where Composition of CSR Committee, CSR Policy and CSR Projects approved by the board are disclosed on the website of the company:
 
 |Particular|Web-link|
@@ -2560,10 +2571,15 @@ sub-rule (3) of rule 8, if applicable: Not Applicable
 
 ### Chunk 98
 
-_table · pages 48–48 · 98 words · 225 tokens_
+_table · pages 48–48 · 147 words · 336 tokens_
 
 ```text
 ## 3. Web-link(s) where Composition of CSR Committee, CSR Policy and CSR Projects approved by the board are disclosed on the website of the company:
+6. a) Amount Spent on CSR Project: Rs. 60,61,505
+- (both Ongoing Project and other than Ongoing Project)
+- b) Amount spent in Administrative Overheads- Nil
+- c) Amount spent on Impact Assessment, if applicable- Not Applicable
+- d) Total amount spent for the Financial Year (6a+6b+6c)- Rs. 60,61,505
 - e) CSR amount spent or unspent for the Financial Year:
 
 |Total Amount Spent |Amo|unt Unspent(in i|Rs.) i|i|
@@ -2682,10 +2698,11 @@ Officer, Company Secretary or Manager, if any, in the financial year:
 
 ### Chunk 105
 
-_table · pages 50–50 · 138 words · 435 tokens_
+_table · pages 50–50 · 152 words · 456 tokens_
 
 ```text
 ## B. The percentage increase in remuneration of each Director, Chief Financial Officer, Chief Executive Officer, Company Secretary or Manager, if any, in the financial year:
+_* Independent Directors are being paid only sitting fees for attending the Board/Committee Meetings._
 ## B. The percentage increase in remuneration of each Director, Chief Financial Officer, Chief Executive Officer, Company Secretary or Manager, if any, in the financial year:
 
 |S. No.|Name of the Director / CFO / CS /Manager|Category|% Increase in remuneration in the financialyear|
@@ -2926,9 +2943,11 @@ The details relating to composition and category of Directors as on March 31, 20
 
 ### Chunk 113
 
-_table · pages 54–54 · 85 words · 344 tokens_
+_table · pages 54–54 · 109 words · 384 tokens_
 
 ```text
+## KEY INFORMATION OF DIRECTORS:
+None of the Non-Executive Directors were involved in the day-to-day management of the Company during the year under review.
 ## KEY INFORMATION OF DIRECTORS:
 The details relating to composition and category of Directors as on March 31, 2025 are as follows:
 
@@ -3391,10 +3410,12 @@ As on March 31, 2025, the Audit Committee comprises of 3 (three) members viz.
 
 ### Chunk 134
 
-_table · pages 60–60 · 46 words · 127 tokens_
+_table · pages 60–60 · 83 words · 187 tokens_
 
 ```text
 ## 1. Composition of the Committee
+## 1. Composition of the Committee
+The Composition of the Committee as on March 31, 2025 and terms of reference are in compliance with Section 177 of the Act and Regulation 18 of the SEBI Listing Regulations.
 As on March 31, 2025, the Audit Committee comprises of 3 (three) members viz.
 
 |S. No.|Name of Member(s)|Designation|
@@ -3644,10 +3665,11 @@ As on March 31, 2025, the Nomination & Remuneration Committee comprises of 3 (th
 
 ### Chunk 142
 
-_table · pages 63–63 · 48 words · 136 tokens_
+_table · pages 63–63 · 92 words · 227 tokens_
 
 ```text
 ## 2. Nomination and Remuneration Committee:
+The Nomination & Remuneration Committee comprises of three members viz. Mr. Naman K. Sarawagi, Non-Executive Independent Director, Mr. Gaurav Munjal, Non-Executive Independent Director, and Ms. Sonu Gosain Soni, Non-Executive Independent Director. Mr. Naman K. Sarawagi acts as Chairman of the Nomination and Remuneration Committee.
 As on March 31, 2025, the Nomination & Remuneration Committee comprises of 3 (three) members viz.
 
 |S. No.|Name of Member(s)|Designation|
@@ -4067,10 +4089,11 @@ As on March 31, 2025, the Stakeholders’ Relationship Committee comprises of 3 
 
 ### Chunk 164
 
-_table · pages 68–68 · 47 words · 130 tokens_
+_table · pages 68–68 · 88 words · 215 tokens_
 
 ```text
 ## i. Composition of the Committee
+The Stakeholders’ Relationship Committee comprises of three members viz. Mr. Gaurav Munjal, NonExecutive Independent Director, Mr. Naman K. Sarawagi, Non-Executive Independent Director, and Ms. Sonu Gosain Soni, Non-Executive Independent Director, Mr. Gaurav Munjal acts as Chairman of the Stakeholder Relationship Committee.
 As on March 31, 2025, the Stakeholders’ Relationship Committee comprises of 3 (three) members viz.
 
 |S. No.|Name of Member(s)|Designation|
@@ -4326,10 +4349,13 @@ The Company Secretary of the Company acts as the Secretary to the Committee.
 
 ### Chunk 178
 
-_table · pages 71–71 · 42 words · 110 tokens_
+_table · pages 71–71 · 89 words · 205 tokens_
 
 ```text
 ## iii. Meetings and attendance during the year
+5. Borrowing Committee:
+- i. Composition
+The Board of Directors have constituted Borrowing Committee in accordance with Section 179 of the Act. The committee comprises of 3(three) members viz. Mr. Tarun Dua, Managing Director Ms. Srishti Baweja, Whole Time Director, Ms. Sonu Gosain Soni, Non-Executive Independent Director.
 The Company Secretary of the Company acts as the Secretary to the Committee.
 
 |S. No.|Name of Member(s)|Designation|
@@ -4443,10 +4469,11 @@ As on 1st April, 2025, the Risk Management Committee of the Board comprises thre
 
 ### Chunk 182
 
-_table · pages 72–72 · 47 words · 141 tokens_
+_table · pages 72–72 · 87 words · 225 tokens_
 
 ```text
 ## 6. Risk Management Committee (“RMC”) (Effective from 01-04-2025)
+The Risk Management Committee comprises of 3 (three) members viz. Mrs. Srishti Baweja, Whole Time Director, Ms. Megha Raheja, Whole-Time Director and Mr. Gaurav Munjal, Non-Executive and Independent Director. Ms. Srishti Baweja acts as Chairperson of the Risk Management Committee.
 As on 1st April, 2025, the Risk Management Committee of the Board comprises three (3) members:
 
 |S. No.|Name of Member(s)|Designation|
@@ -4689,10 +4716,12 @@ Financial Calendar for the FY 2025-26 (subject to change)
 
 ### Chunk 191
 
-_table · pages 76–76 · 78 words · 199 tokens_
+_table · pages 76–76 · 127 words · 301 tokens_
 
 ```text
 ## 1. Annual General Meeting for the Financial Year 2024-25:
+Date : September 26, 2025 Time : 11:30 A.M (IST) Venue : Through Video Conference / Other Audio-Visual means. Deemed venue at Registered office of the Company at Awfis, First Floor, A-24/9,Mohan Cooperative Industrial Estate, Mathura Road, Saidabad, New Delhi-110044
+The financial calendar of the Company is reproduced below:
 Financial Calendar for the FY 2025-26 (subject to change)
 
 |Adoption of un-audited quarterly results and Annual Results|For the Quarter ended on or before (actual & tentative for future quarters)|
@@ -5065,10 +5094,11 @@ Summary of Fund Raising and Utilisation
 
 ### Chunk 211
 
-_table · pages 81–81 · 99 words · 287 tokens_
+_table · pages 81–81 · 128 words · 324 tokens_
 
 ```text
 ## 25. Details of Utilisation of Fund Raised through Preferential Allotment or Qualified Institutions Placement as Specified Under Regulation 32(7A)
+In accordance with the said regulation, the Company has appointed Care Ratings Limited as the Monitoring Agency to monitor the utilisation of proceeds raised through the said preferential issue.
 Summary of Fund Raising and Utilisation
 
 |Mode of Fund Raising|Date of Allotment|Amount Raised (Rs. in crore)|Purpose of Issue (as stated in the Offer Document / Notice)|Amount Utilised (Rs. in crore) during FY 2024-25|Amount Pending Utilisation (Rs. in crore) as on March 31, 2025|
@@ -5108,10 +5138,12 @@ commercial banks.
 
 ### Chunk 214
 
-_table · pages 82–82 · 59 words · 252 tokens_
+_table · pages 82–82 · 82 words · 306 tokens_
 
 ```text
 ## A. Preferential Allotment dated December 04, 2024
+Deployment of Un-utilised Proceeds:
+As on March 31, 2025, un-utilised proceeds of ₹305.64 crore were deployed in fixed deposits with scheduled commercial banks.
 ## A. Preferential Allotment dated December 04, 2024
 
 |Object|Amount as per Offer Document (Rs. in crore)|Utilised up to March 31, 2025 (Rs. in crore)|Un-utilised as on March 31, 2025 (Rs. in crore)|
@@ -5195,10 +5227,11 @@ auditors are as follows:
 
 ### Chunk 218
 
-_table · pages 83–83 · 53 words · 159 tokens_
+_table · pages 83–83 · 85 words · 205 tokens_
 
 ```text
 ## 31. Disclosure on accounting treatment in preparation of financial statements:
+33. Total Fees for all Services paid by the Company on consolidated basis to Statutory Auditors and all entities in the Network Firm/Network Entity of which the Statutory Auditor is a part
 During the year under review, the total fees for all services paid by E2E Networks Limited to the statutory auditors are as follows:
 
 |||(Amount in Rs.)|
@@ -5399,10 +5432,11 @@ The Company is fully compliant with SEBI Listing Regulations and there are no su
 
 ### Chunk 228
 
-_table · pages 85–85 · 33 words · 105 tokens_
+_table · pages 85–85 · 48 words · 130 tokens_
 
 ```text
 ## On behalf of the Board of Directors
+The Company is fully compliant with SEBI Listing Regulations and there are no such non-compliances.
 ## On behalf of the Board of Directors
 
 ||Sd/- Tarun Dua|Sd/- Srishti Baweja|
@@ -5877,10 +5911,11 @@ The financial performance during the Financial Year 2024-25 has been summarized 
 
 ### Chunk 246
 
-_table · pages 93–93 · 88 words · 478 tokens_
+_table · pages 93–93 · 100 words · 500 tokens_
 
 ```text
 ## FINANCIAL PERFORMANCE AND HIGHLIGHTS
+The financial performance during the Financial Year 2024-25 has been summarized below:
 (Amount in Rs. Lakhs)
 
 |Particulars|FY 2024-25|FY 2023-24|
@@ -6744,9 +6779,13 @@ Date: 17-04-2025 Place: New Delhi
 
 ### Chunk 278
 
-_table · pages 107–107 · 180 words · 1067 tokens · golden facts: F01 (L4), F02 (L4), F03 (L4), F04 (L4)_
+_table · pages 107–107 · 205 words · 1170 tokens · golden facts: F01 (L4), F02 (L4), F03 (L4), F04 (L4)_
 
 ```text
+## BALANCE SHEET AS AT MARCH 31, 2025
+Chartered Accountants FRN: 000257N/N500339
+Tanuj Chugh Partner Membership No. 529619 UDIN: 25529619BMIVFF2848
+Date: 17-04-2025 Place: New Delhi
 ## BALANCE SHEET AS AT MARCH 31, 2025
 (All amounts are in INR lakhs, unless otherwise stated)
 
@@ -6928,10 +6967,11 @@ _text · pages 109–0 · 19 words · 35 tokens_
 
 ### Chunk 284
 
-_table · pages 109–109 · 74 words · 251 tokens_
+_table · pages 109–109 · 83 words · 267 tokens_
 
 ```text
 ## A. Equity share capital:
+(All amounts are in INR lakhs, unless otherwise stated)
 ## A. Equity share capital:
 
 |Description|Notes|Number of Shares|Amount|
@@ -7345,10 +7385,11 @@ on the technical evaluation is as follows:
 
 ### Chunk 298
 
-_table · pages 114–114 · 48 words · 94 tokens_
+_table · pages 114–114 · 78 words · 131 tokens_
 
 ```text
 ## iv. Property, Plant and Equipment
+Considering the application of Schedule II, the management believes that useful life currently used, fairly reflect its estimate of the useful lives and residual value of property plant and equipment,
 The management estimate of the useful lives of the property plant and equipment and intangibles assets based on the technical evaluation is as follows:
 
 |Property, Plant and Equipment|Useful Lives|
@@ -8090,9 +8131,12 @@ Set out below are the carrying amounts of right of use assets recognised and the
 
 ### Chunk 332
 
-_table · pages 123–123 · 71 words · 229 tokens_
+_table · pages 123–123 · 91 words · 268 tokens_
 
 ```text
+## (i) Disclosure as per Ind AS 116:
+(All amounts are in INR lakhs, unless otherwise stated)
+## 4. Leases
 ## (i) Disclosure as per Ind AS 116:
 The weighted average incremental borrowing rate applied to lease liabilities as at March 31, 2025 is 9 to 11%. Set out below are the carrying amounts of right of use assets recognised and the movements during the year:
 
@@ -8271,10 +8315,11 @@ Information of revaluation model:
 
 ### Chunk 344
 
-_table · pages 124–124 · 48 words · 167 tokens_
+_table · pages 124–124 · 101 words · 250 tokens_
 
 ```text
 ## (ii) Revaluation of IP addresses
+The management determined that IP addresses constitute one class of asset, based on the nature and characteristics. The effective date of revaluation is 31 March 2025. The revaluation of IP addresses is based on the valuation by a registered valuer as defined under rule 2 of Companies (Registered Valuers and valuation) Rules, 2017.
 Information of revaluation model:
 
 |Particulars|Amount|
@@ -8375,10 +8420,11 @@ _text · pages 125–0 · 14 words · 27 tokens_
 
 ### Chunk 351
 
-_table · pages 125–125 · 29 words · 163 tokens_
+_table · pages 125–125 · 35 words · 171 tokens_
 
 ```text
 ## 8. Trade receivables
+*Net of provisions for income tax
 ## 8. Trade receivables
 
 |Particulars|As at March 31, 2025|As at March 31, 2024|
@@ -8492,10 +8538,11 @@ _text · pages 127–0 · 19 words · 37 tokens_
 
 ### Chunk 359
 
-_table · pages 127–127 · 53 words · 206 tokens_
+_table · pages 127–127 · 62 words · 222 tokens_
 
 ```text
 ## 10. Other bank balances
+(All amounts are in INR lakhs, unless otherwise stated)
 ## 10. Other bank balances
 
 |Particulars|As at March 31, 2025|As at March 31, 2024|
@@ -8558,10 +8605,11 @@ _text · pages 128–0 · 45 words · 63 tokens_
 
 ### Chunk 363
 
-_table · pages 128–128 · 92 words · 383 tokens_
+_table · pages 128–128 · 101 words · 399 tokens_
 
 ```text
 ## (iii) Reconciliation of the shares outstanding at the beginning and at the end of the reporting year
+(All amounts are in INR lakhs, unless otherwise stated)
 ## (iii) Reconciliation of the shares outstanding at the beginning and at the end of the reporting year
 
 |Equity shares|As at March|31, 2025|As at March|31, 2024|
@@ -8623,10 +8671,11 @@ Shares held by E2E Networks Limited Employee Welfare Trust against employee shar
 
 ### Chunk 367
 
-_table · pages 128–128 · 63 words · 247 tokens_
+_table · pages 128–128 · 83 words · 276 tokens_
 
 ```text
 ## (v) Details of shareholders holding more than 5% shares in the Company
+As per records of the Company, including its register of shareholders/ members, the above shareholding represents legal ownerships of shares.
 Shares held by E2E Networks Limited Employee Welfare Trust against employee share-based payment (vi) plans
 
 |Equity shares of face value INR 10 each (Previous|As at March|31, 2025|As at March|31, 2024|
@@ -8651,10 +8700,11 @@ _text · pages 129–0 · 25 words · 51 tokens_
 
 ### Chunk 369
 
-_table · pages 129–129 · 66 words · 406 tokens_
+_table · pages 129–129 · 75 words · 422 tokens_
 
 ```text
 ## (vii) Shareholding of Promoters and Promoter Group
+(All amounts are in INR lakhs, unless otherwise stated)
 ## (vii) Shareholding of Promoters and Promoter Group
 
 |Promoter Name|No. of shares as on March 31, 2025|% of total shares as on March 31, 2025|No. of shares as on March 31, 2024|% of total shares as on March 31, 2024|% change during the year|
@@ -8932,10 +8982,11 @@ _text · pages 133–0 · 19 words · 37 tokens_
 
 ### Chunk 384
 
-_table · pages 133–133 · 32 words · 183 tokens_
+_table · pages 133–133 · 41 words · 199 tokens_
 
 ```text
 ## 18. Other financial liabilities
+(All amounts are in INR lakhs, unless otherwise stated)
 ## 18. Other financial liabilities
 
 ||As at March|31, 2025|As at Marc|h 31, 2024|
@@ -9145,10 +9196,11 @@ _text · pages 135–0 · 19 words · 37 tokens_
 
 ### Chunk 399
 
-_table · pages 135–135 · 28 words · 109 tokens_
+_table · pages 135–135 · 37 words · 125 tokens_
 
 ```text
 ## 22. Purchase of services
+(All amounts are in INR lakhs, unless otherwise stated)
 ## 22. Purchase of services
 
 |Particulars|For the year ended March 31, 2025|For the year ended March 31, 2024|
@@ -9215,10 +9267,11 @@ _text · pages 136–0 · 17 words · 33 tokens_
 
 ### Chunk 404
 
-_table · pages 136–136 · 111 words · 562 tokens_
+_table · pages 136–136 · 120 words · 578 tokens_
 
 ```text
 ## 26. Other expenses
+(All amounts are in INR lakhs, unless otherwise stated)
 ## 26. Other expenses
 
 |Particulars|For the year ended March 31, 2025|For the year ended March 31, 2024|
@@ -9282,10 +9335,11 @@ the year ended March 31, 2025 and March 31, 2024:
 
 ### Chunk 407
 
-_table · pages 137–137 · 92 words · 324 tokens_
+_table · pages 137–137 · 101 words · 340 tokens_
 
 ```text
 ## 27. Income tax expense
+(All amounts are in INR lakhs, unless otherwise stated)
 Reconciliation of tax expense and the accounting profit/ (loss) multiplied by India’s domestic tax rate for the year ended March 31, 2025 and March 31, 2024:
 
 |Particulars|For the year ended March 31, 2025|For the year ended March 31, 2024|
@@ -9360,10 +9414,11 @@ Changes in the defined benefit obligation and fair value of plan assets as at Ma
 
 ### Chunk 412
 
-_table · pages 138–138 · 97 words · 285 tokens_
+_table · pages 138–138 · 106 words · 301 tokens_
 
 ```text
 ## b) Post-employment obligations - Gratuity Plan
+(All amounts are in INR lakhs, unless otherwise stated)
 Changes in the defined benefit obligation and fair value of plan assets as at March 31, 2025 and March 31, 2024:
 
 |Description|Defined Benefit liability|
@@ -9394,10 +9449,11 @@ Expense recognized in profit or loss
 
 ### Chunk 414
 
-_table · pages 138–138 · 41 words · 123 tokens_
+_table · pages 138–138 · 50 words · 139 tokens_
 
 ```text
 ## b) Post-employment obligations - Gratuity Plan
+(All amounts are in INR lakhs, unless otherwise stated)
 Expense recognized in profit or loss
 
 |Description|For the year ended March 31, 2025|For the year ended March 31, 2024|
@@ -9436,10 +9492,12 @@ The principal assumptions used in determining gratuity obligations for the Compa
 
 ### Chunk 417
 
-_table · pages 139–139 · 73 words · 279 tokens_
+_table · pages 139–139 · 103 words · 323 tokens_
 
 ```text
 ## Amount recognized as other comprehensive income (OCI)
+Since the Gratuity plan is unfunded, investment pattern and information related to fair value of plan assets is not being provided.
+(All amounts are in INR lakhs, unless otherwise stated)
 The principal assumptions used in determining gratuity obligations for the Company’s plan is shown below:
 
 |Description|For the year ended March 31, 2025|For the year ended March 31, 2024|
@@ -9465,10 +9523,11 @@ A quantitative sensitivity analysis for significant assumptions is as shown belo
 
 ### Chunk 419
 
-_table · pages 139–139 · 52 words · 181 tokens_
+_table · pages 139–139 · 61 words · 197 tokens_
 
 ```text
 ## Amount recognized as other comprehensive income (OCI)
+(All amounts are in INR lakhs, unless otherwise stated)
 A quantitative sensitivity analysis for significant assumptions is as shown below:
 
 |Defined Benefit Obligation (Base)|For the ye March 3|ar ended 1, 2025|For the ye March 31|ar ended , 2024|
@@ -9494,10 +9553,11 @@ The following payments are expected contributions to the defined benefit plan in
 
 ### Chunk 421
 
-_table · pages 139–139 · 58 words · 160 tokens_
+_table · pages 139–139 · 67 words · 176 tokens_
 
 ```text
 ## Amount recognized as other comprehensive income (OCI)
+(All amounts are in INR lakhs, unless otherwise stated)
 The following payments are expected contributions to the defined benefit plan in future years:
 
 |Description|For the year ended March 31, 2025|For the year ended March 31, 2024|
@@ -9633,10 +9693,11 @@ Movement in provision:
 
 ### Chunk 428
 
-_table · pages 141–141 · 49 words · 201 tokens_
+_table · pages 141–141 · 58 words · 217 tokens_
 
 ```text
 ## (A) Credit risk
+(All amounts are in INR lakhs, unless otherwise stated)
 Movement in provision:
 
 |Particulars|For the year ended 31 March 2024|Addition during the year| Reversal during the year|For the year ended 31 March 2025|
@@ -9725,10 +9786,11 @@ The exposure of company’s borrowing to interest changes at the end of reportin
 
 ### Chunk 433
 
-_table · pages 142–142 · 46 words · 142 tokens_
+_table · pages 142–142 · 55 words · 158 tokens_
 
 ```text
 ## (a) Interest risk
+(All amounts are in INR lakhs, unless otherwise stated)
 The exposure of company’s borrowing to interest changes at the end of reporting period are as follows:
 
 |Particulars|For the year ended 31 March 2025|For the year ended 31 March 2024|
@@ -9749,10 +9811,11 @@ Sensitivity (Impact on Profit & Loss)
 
 ### Chunk 435
 
-_table · pages 142–142 · 31 words · 137 tokens_
+_table · pages 142–142 · 40 words · 153 tokens_
 
 ```text
 ## (a) Interest risk
+(All amounts are in INR lakhs, unless otherwise stated)
 Sensitivity (Impact on Profit & Loss)
 
 |Particulars|As at 31st March 2025|As at 31st March 2024|
@@ -9779,9 +9842,11 @@ currency other than INR.
 
 ### Chunk 437
 
-_table · pages 142–142 · 62 words · 230 tokens_
+_table · pages 142–142 · 73 words · 247 tokens_
 
 ```text
+## (b) Foreign Currency risk
+* Holding all other variables constant
 ## (b) Foreign Currency risk
 Foreign currency risk is a risk that the fair value of future cash flows of an exposure will fluctuate because of changes in the foreign exchange rates. The company have exposure of amount 8.91 (31 March, 2024: 1.10) in currency other than INR.
 
@@ -9835,10 +9900,11 @@ disclosed in Note 14 to the financial statements. Equity comprises all component
 
 ### Chunk 440
 
-_table · pages 143–143 · 92 words · 443 tokens_
+_table · pages 143–143 · 141 words · 507 tokens_
 
 ```text
 ## 32. Capital management
+The Company monitors the capital structure on the basis of total debt to equity ratio and maturity profile of the overall debt portfolio of the Company. Total borrowings includes all long and short-term borrowings as disclosed in Note 14 to the financial statements. Equity comprises all components of equity.
 (All amounts are in INR lakhs, unless otherwise stated)
 
 |Particulars|For the year ended 31 March 2025|For the year ended 31 March 2024|
@@ -10040,10 +10106,12 @@ Share options outstanding at the end of the year have the following exercise pri
 
 ### Chunk 450
 
-_table · pages 145–145 · 35 words · 240 tokens_
+_table · pages 145–145 · 69 words · 300 tokens_
 
 ```text
 ## The 2021 Scheme
+(All amounts are in INR lakhs, unless otherwise stated)
+The weighted average fair value of options granted during the previous year was INR 255.06. However, no options were granted during the financial year 2024-25.
 Share options outstanding at the end of the year have the following exercise price range:
 
 ||March 31|, 2025|March 3|1, 2024|
@@ -10067,10 +10135,11 @@ March 31, 2025 and March 31, 2024:
 
 ### Chunk 452
 
-_table · pages 145–145 · 67 words · 211 tokens_
+_table · pages 145–145 · 76 words · 227 tokens_
 
 ```text
 ## The 2021 Scheme
+(All amounts are in INR lakhs, unless otherwise stated)
 The following tables list the inputs to the models used for shares option plans which are outstanding as on March 31, 2025 and March 31, 2024:
 
 ||For the year ended 31 March 2025|For the year ended 31 March 2024|
@@ -10161,10 +10230,12 @@ as they are determined on an actuarial basis for the company as a whole.
 
 ### Chunk 457
 
-_table · pages 146–146 · 52 words · 159 tokens_
+_table · pages 146–146 · 84 words · 204 tokens_
 
 ```text
 ## (C) Balances outstanding at the year end:
+* Remuneration to the key managerial personnel does not include the provisions made for gratuity and leave encashment,
+as they are determined on an actuarial basis for the company as a whole.
 ## (C) Balances outstanding at the year end:
 
 |Nature of Balances|For the year ended 31 March 2025|For the year ended 31 March 2024|
@@ -10190,10 +10261,11 @@ _text · pages 147–0 · 21 words · 43 tokens_
 
 ### Chunk 459
 
-_table · pages 147–147 · 38 words · 119 tokens_
+_table · pages 147–147 · 47 words · 135 tokens_
 
 ```text
 ## 37. Contigent Liabilities and Commitments
+(All amounts are in INR lakhs, unless otherwise stated)
 ## 37. Contigent Liabilities and Commitments
 
 |Nature of Balances|For the year ended 31 March 2025|For the year ended 31 March 2024|
@@ -10219,10 +10291,12 @@ a) Gross amount required to be spent by the Company during the year ended March 
 
 ### Chunk 461
 
-_table · pages 147–147 · 43 words · 174 tokens_
+_table · pages 147–147 · 77 words · 248 tokens_
 
 ```text
 ## 39. Changes in liabilities arising from financing activities:
+a) Gross amount required to be spent by the Company during the year ended March 31, 2025: INR 32.49 Lakhs.
+- b) Amount spent during the year ended March 31, 2025: INR 60.61 Lakhs.
 ## 39. Changes in liabilities arising from financing activities:
 
 |Particulars|As on Mar 31, 2025|Cash Flows|Non-Cash Changes /Fair Value Adjustment|As at 31 March 2024|

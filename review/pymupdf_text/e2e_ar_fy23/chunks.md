@@ -1,7 +1,7 @@
 # Chunks: Option 1: PyMuPDF text, line-preserving cleaning + structured chunker — e2e_ar_fy23
 
 - PDF: `data/E2E/annual_reports/2023-09-21_FY2022-23.pdf` (page numbers = PDF viewer pages)
-- 179 chunks, 62,711 tokens (38 table chunks)
+- 179 chunks, 64,255 tokens (38 table chunks)
 - Text inside each block is exactly what would be embedded.
 
 ### Chunk 0
@@ -48,9 +48,13 @@ Particulars Standalone
 
 ### Chunk 3
 
-_table · pages 12–12 · 167 words · 438 tokens_
+_table · pages 12–12 · 208 words · 511 tokens_
 
 ```text
+## FINANCIAL SUMMARY OF OPERATIONS
+Dear Members,
+Your Directors have immense pleasure in presenting the 14th Annual Report on the business and operations of your Company, along with the Audited
+Financial Statements, for the Financial year ended on March 31, 2023.
 ## FINANCIAL SUMMARY OF OPERATIONS
 The financial performance during the Financial Year 2022-23 is summarized below:
 (Amount in INR Lakhs)
@@ -1442,10 +1446,14 @@ No. Committee held during the attended during the year
 
 ### Chunk 48
 
-_table · pages 38–38 · 100 words · 168 tokens_
+_table · pages 38–38 · 145 words · 249 tokens_
 
 ```text
 ## UDIN: F009719E000768862
+Company incurred an average net loss of Rs. 175.64 Lakhs for previous three financial years.
+| E2E Networks Limited | 35 |
+2. Composition of CSR Committee.
+The composition of Corporate Social Responsibility Committee of the Company as on March 31, 2023 is as follows:-
 S. Name of Member Designation Number of meetings of CSR Number of meetings of CSR Committee
 No. Committee held during the attended during the year
 
@@ -1601,10 +1609,16 @@ Fund (in Rs). transfer
 
 ### Chunk 51
 
-_table · pages 41–41 · 71 words · 147 tokens_
+_table · pages 41–41 · 126 words · 238 tokens_
 
 ```text
 ## UDIN: F009719E000768862
+| No. | Year | Account under | CSR Account | Financial Year | per section 135(6), if any | succeeding |
+section 135 (6) under subsection (in Rs.) financial years.
+| (in Rs.) | (6) of | (in Rs.) |
+section 135
+| (in Rs.) |
+| Name of the Amount Date of |
 Fund (in Rs). transfer
 
 | 1 | 2021-2022 | NA | Nil | Nil | NA | Nil | NA | Nil |
@@ -1670,10 +1684,12 @@ No. Employees
 
 ### Chunk 53
 
-_table · pages 43–43 · 106 words · 237 tokens_
+_table · pages 43–43 · 133 words · 277 tokens_
 
 ```text
 ## UDIN: F009719E000768862
+Fund (in Rs). transfer
+1. The ratio of the Remuneration of each director to the median remuneration of the employees of the Company for the financial year:
 S. Name of the Director Category Ratio of the Remuneration to the median remuneration of the
 No. Employees
 
@@ -2072,10 +2088,11 @@ Particulars Standalone
 
 ### Chunk 64
 
-_table · pages 51–51 · 159 words · 424 tokens_
+_table · pages 51–51 · 175 words · 459 tokens_
 
 ```text
 ## FINANCIAL PERFORMANCE AND HIGHLIGHTS
+The ϐinancial performance during the Financial Year 2022-23 has been summarized below: (Amount in INR Lakhs)
 Particulars Standalone
 
 | FY 2022-23 | FY 2021-22 |
@@ -2182,10 +2199,14 @@ increase in lease liability of the Company.
 
 ### Chunk 69
 
-_table · pages 53–53 · 61 words · 122 tokens_
+_table · pages 53–53 · 109 words · 202 tokens_
 
 ```text
 ## RATIO ANALYSIS
+in cash and cash equivalents and other bank balances with a
+corresponding decline in current borrowings of the Company on
+account of debt repayment.
+| Debt Equity Ratio | 0.12 | 0.05 | 118.05% | The Debt Equity ratio has increased during the year on account of |
 increase in lease liability of the Company.
 
 | Operating Profit Margin | 51.05% | 44.88% | 13.75% | The operating Profit Margin has improved due to increase in revenue. |
@@ -2251,10 +2272,11 @@ S. No. Category No. of Directors
 
 ### Chunk 72
 
-_table · pages 54–54 · 41 words · 68 tokens_
+_table · pages 54–54 · 64 words · 107 tokens_
 
 ```text
 ## BOARD STRUCTURE
+The category wise composition of Board of Directors under Regulation 17 of SEBI Listing Regulations as on March 31, 2023 is as under:
 S. No. Category No. of Directors
 
 | 1 | Executive Director | 2 |
@@ -2285,10 +2307,14 @@ Category
 
 ### Chunk 74
 
-_table · pages 55–55 · 123 words · 270 tokens_
+_table · pages 55–55 · 171 words · 352 tokens_
 
 ```text
 ## KEY INFORMATION OF DIRECTORS
+| E2E Networks Limited | 52 |
+## KEY INFORMATION OF DIRECTORS
+The details relating to composition and category of Directors as on March 31, 2023 are as follows:
+| Name of the Director | DIN | Designation/ | Age | Shareholding as on 31st March 2023 |
 Category
 
 | Mr. Tarun Dua* | 02696789 | Managing Director | 43 | 80,60,695 |
@@ -2501,10 +2527,12 @@ Tenure
 
 ### Chunk 80
 
-_table · pages 59–59 · 125 words · 240 tokens_
+_table · pages 59–59 · 146 words · 274 tokens_
 
 ```text
 ## KEY INFORMATION OF DIRECTORS
+| E2E Networks Limited | 56 |
+The details regarding attendance of Directors in the above-mentioned Board Meetings are as follows:
 Name DIN Designation No. of Board Meetings No. of Board Meetings Whether attended last
 held during the attended AGM or not
 Tenure
@@ -2542,10 +2570,12 @@ Director second term
 
 ### Chunk 82
 
-_table · pages 60–60 · 55 words · 156 tokens_
+_table · pages 60–60 · 79 words · 192 tokens_
 
 ```text
 ## INDEPENDENT DIRECTORS:
+| E2E Networks Limited | 57 |
+The tenure of Independent Directors in accordance with the Act and the Listing Regulations is as follows:
 Name of the Independent Date of appointment Date of re-appointment for
 Director second term
 
@@ -2733,10 +2763,11 @@ No.
 
 ### Chunk 89
 
-_table · pages 63–63 · 40 words · 212 tokens_
+_table · pages 63–63 · 62 words · 249 tokens_
 
 ```text
 ## DIRECTORS AND OFFICERS LIABILITY INSURANCE (‘D&O POLICY’)
+The Company has procured an insurance policy for Directors and Ofϐicers Liability, offering coverage up to Rupees Five Crores. This policy encompasses
 Serial Name of the Policy Weblink
 No.
 1. Nomination and https://global-
@@ -2836,10 +2867,12 @@ Bhushan Pratap Rajda Munjal Sarawagi
 
 ### Chunk 92
 
-_table · pages 65–65 · 179 words · 418 tokens_
+_table · pages 65–65 · 182 words · 425 tokens_
 
 ```text
 ## DIRECTORS AND OFFICERS LIABILITY INSURANCE (‘D&O POLICY’)
+(Amount in Rs.)
+
 | DIN | 01148272 | 07468016 | 02363421 | 05295642 |
 | Fee for attending Board Meeting | 50,000 | 30,000 | 50,000 | 40,000 |
 | Fee for attending Audit Committee |
@@ -2874,10 +2907,15 @@ Imran University B.E, C Abdul Hakeem College of Engineering & Technology
 
 ### Chunk 94
 
-_table · pages 66–66 · 67 words · 148 tokens_
+_table · pages 66–66 · 113 words · 228 tokens_
 
 ```text
 ## DIRECTORS AND OFFICERS LIABILITY INSURANCE (‘D&O POLICY’)
+(Amount in Rs.)
+iii. Senior Management:
+The details of the Senior Management of the Company as on March 31, 2023 are as follows:
+Name Designation Qualification Appointment
+| Mohamed | Chief Technical Officer | Master of Science, Information and Communication Engineering from Anna | 16.03.2010 |
 Imran University B.E, C Abdul Hakeem College of Engineering & Technology
 
 | Computer Science |
@@ -3147,10 +3185,12 @@ No. was Entitled to attend
 
 ### Chunk 100
 
-_table · pages 71–71 · 80 words · 137 tokens_
+_table · pages 71–71 · 114 words · 188 tokens_
 
 ```text
 ## COMMITTEES OF THE BOARD OF DIRECTORS:
+v. To review utilisation of loans and/or advances from/ investment by holding company in the subsidiary company exceeding INR 100 crores
+The details regarding attendance of Members in the above Meetings are as follows:
 S. Name of Member Designation No. of Meeting(s) which Member No. of Meeting(s) attended
 No. was Entitled to attend
 
@@ -3273,10 +3313,11 @@ the Tenure
 
 ### Chunk 103
 
-_table · pages 73–73 · 62 words · 107 tokens_
+_table · pages 73–73 · 83 words · 142 tokens_
 
 ```text
 ## COMMITTEES OF THE BOARD OF DIRECTORS:
+v. To review utilisation of loans and/or advances from/ investment by holding company in the subsidiary company exceeding INR 100 crores
 Name Designation No. of Meetings held during No. of Meetings attended
 the Tenure
 
@@ -3348,10 +3389,15 @@ Tenure
 
 ### Chunk 105
 
-_table · pages 75–75 · 62 words · 107 tokens_
+_table · pages 75–75 · 129 words · 217 tokens_
 
 ```text
 ## COMMITTEES OF THE BOARD OF DIRECTORS:
+v. To review utilisation of loans and/or advances from/ investment by holding company in the subsidiary company exceeding INR 100 crores
+iii. Meetings and attendance during the year
+During the year under review, the Stakeholders Relationship Committee (“Committee”) of the Company met once viz February 07, 2023.
+| E2E Networks Limited | 72 |
+The details regarding attendance of Members in the said meeting are as follows:
 Name Designation No. of Meetings held during the No. of Meetings attended
 Tenure
 
@@ -3452,10 +3498,11 @@ Tenure
 
 ### Chunk 108
 
-_table · pages 77–77 · 62 words · 108 tokens_
+_table · pages 77–77 · 83 words · 143 tokens_
 
 ```text
 ## COMMITTEES OF THE BOARD OF DIRECTORS:
+v. To review utilisation of loans and/or advances from/ investment by holding company in the subsidiary company exceeding INR 100 crores
 Name Designation No. of Meetings held during the No. of Meetings attended
 Tenure
 
@@ -3533,10 +3580,14 @@ Tenure
 
 ### Chunk 110
 
-_table · pages 78–78 · 57 words · 101 tokens_
+_table · pages 78–78 · 119 words · 209 tokens_
 
 ```text
 ## COMMITTEES OF THE BOARD OF DIRECTORS:
+v. To review utilisation of loans and/or advances from/ investment by holding company in the subsidiary company exceeding INR 100 crores
+iii. Meetings and attendance during the year
+During the year under review, the Borrowing Committee(“Committee”) of the Company met twice viz September 17, 2022, and December 21,
+2022. The details regarding attendance of Members in the above Meetings are as follows:
 Name Designation No. of Meetings held during the No. of Meetings attended
 Tenure
 
@@ -3760,10 +3811,13 @@ Postal-Ballot Remote e-Votes Total
 
 ### Chunk 118
 
-_table · pages 82–82 · 55 words · 142 tokens_
+_table · pages 82–82 · 93 words · 224 tokens_
 
 ```text
 ## GENERAL MEETINGS AND POSTAL BALLOT
+Resolution No. 1: Re-appointment of Mr. Varun Pratap Rajda (DIN: 07468016) as a Non-Executive Independent Director of the Company for a term
+of 5 consecutive years (Special Resolution) (E-voting mode only)
+a. Details of voting through Remote e-voting:
 Particulars Number of Valid Votes Percentage of total net
 valid votes casted
 Postal-Ballot Remote e-Votes Total
@@ -3788,10 +3842,11 @@ Particulars No of shareholders No. of the Shares Paid-up value of the Shares % o
 
 ### Chunk 120
 
-_table · pages 82–82 · 103 words · 259 tokens_
+_table · pages 82–82 · 111 words · 274 tokens_
 
 ```text
 ## GENERAL MEETINGS AND POSTAL BALLOT
+b. Detailed summary of E-voting is as under:
 Particulars No of shareholders No. of the Shares Paid-up value of the Shares % of Total
 (In Rs.) Paid-up Capital
 (Approx.)
@@ -3823,10 +3878,15 @@ Postal-Ballot Remote e-Votes Total
 
 ### Chunk 122
 
-_table · pages 83–83 · 43 words · 123 tokens_
+_table · pages 83–83 · 96 words · 233 tokens_
 
 ```text
 ## GENERAL MEETINGS AND POSTAL BALLOT
+(In Rs.) Paid-up Capital
+Resolution No. 2: Re-appointment of Mr. Gaurav Munjal (DIN: 02363421) as a Non-Executive Independent Director of the Company for a term of 5
+consecutive years (Special Resolution) (E-voting mode only)
+a. Details of voting through Remote e-voting:
+Particulars Number of Valid Votes Percentage of total net valid votes casted
 Postal-Ballot Remote e-Votes Total
 
 | Assent | NA | 1,09,34,379 | 1,09,34,379 | 99.99 |
@@ -3850,10 +3910,11 @@ Paid-up Capital
 
 ### Chunk 124
 
-_table · pages 83–83 · 96 words · 247 tokens_
+_table · pages 83–83 · 104 words · 262 tokens_
 
 ```text
 ## GENERAL MEETINGS AND POSTAL BALLOT
+b. Detailed summary of E-voting is as under:
 Particulars No of shareholders No. of the Shares Paid-up value of the Shares
 % of Total (In Rs.)
 Paid-up Capital
@@ -4024,10 +4085,13 @@ quarters)
 
 ### Chunk 131
 
-_table · pages 86–86 · 76 words · 163 tokens_
+_table · pages 86–86 · 110 words · 231 tokens_
 
 ```text
 ## GENERAL SHAREHOLDERS’ INFORMATION:
+3. Financial Year
+Financial Year of the Company is from April 1,2022 to March 31, 2023. The financial calendar of the Company is reproduced below:
+Tentative Calendar for the FY 2023-24 (subject to change)
 Adoption of un-audited quarterly results and Annual Results For the Quarter ended on or before (actual & tentative for future
 quarters)
 
@@ -4095,10 +4159,15 @@ Month High Low Total Volume
 
 ### Chunk 133
 
-_table · pages 87–87 · 136 words · 441 tokens_
+_table · pages 87–87 · 183 words · 513 tokens_
 
 ```text
 ## GENERAL SHAREHOLDERS’ INFORMATION:
+10. Stock Code
+The Company is listed on NSE having Stock Code – E2E
+11. Market Price Data
+The Company’s monthly high and low share price data as well as the total volume during each month in the FY 2022-23 on the NSE is as mentioned
+below:
 Month High Low Total Volume
 
 | April 2022 | 169.00 | 123.00 | 2,39,286 |
@@ -4134,10 +4203,13 @@ Shareholders Shareholders Total Share Capital
 
 ### Chunk 135
 
-_table · pages 88–88 · 159 words · 464 tokens_
+_table · pages 88–88 · 173 words · 494 tokens_
 
 ```text
 ## GENERAL SHAREHOLDERS’ INFORMATION:
+12. Stock Market Data:
+E2E Share Price Performance vs. Nifty
+13. Distribution of Shareholding:
 Sr. No. No. of Shares No. of % of Shares % of
 Shareholders Shareholders Total Share Capital
 
@@ -4167,10 +4239,11 @@ Shareholding of Promoter and Promoter Group
 
 ### Chunk 137
 
-_table · pages 89–89 · 190 words · 457 tokens_
+_table · pages 89–89 · 198 words · 478 tokens_
 
 ```text
 ## GENERAL SHAREHOLDERS’ INFORMATION:
+14. Shareholding Pattern as on March 31, 2023:
 Category No. of Shares Held Percentage of Shareholding
 Shareholding of Promoter and Promoter Group
 
@@ -4210,10 +4283,11 @@ Serial No. Name of Shareholder No. of Shares held % of Total Capital
 
 ### Chunk 139
 
-_table · pages 90–90 · 106 words · 266 tokens_
+_table · pages 90–90 · 124 words · 299 tokens_
 
 ```text
 ## GENERAL SHAREHOLDERS’ INFORMATION:
+15. List of Public Shareholders holding more than 1% shareholding of the Company as on March 31, 2023
 Serial No. Name of Shareholder No. of Shares held % of Total Capital
 
 | 1. | Blume Ventures Fund I | 11,96,760 | 8.27 |
@@ -4249,10 +4323,12 @@ Details No. of Shareholders No. of Shares
 
 ### Chunk 141
 
-_table · pages 91–91 · 57 words · 139 tokens_
+_table · pages 91–91 · 82 words · 183 tokens_
 
 ```text
 ## GENERAL SHAREHOLDERS’ INFORMATION:
+As on March 31, 2023, the number of Shares held in dematerialized and physical mode are as under:
+| E2E Networks Limited | 88 |
 Details No. of Shareholders No. of Shares
 
 | No. of shares in dematerialized form in CDSL | 1,173 | 98,95,322 |

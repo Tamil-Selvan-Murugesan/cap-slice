@@ -7,7 +7,9 @@ Compared with chunk.py (the baseline):
 - A ``#`` heading starts a new chunk and is carried as the chunk's section.
 - Tables are atomic: never mixed with prose, never split mid-row. A table too
   big for one chunk is split by rows with its header rows repeated. The short
-  text just before a table (title, units line) is copied in as its caption.
+  text just before a table (title, units line) is copied in as its caption,
+  and the section's latest units statement ("amounts in INR lakhs") is always
+  included, even when other text sits between it and the table.
 - A table that continues at the top of the next page with the same number of
   columns is merged, so rows on page 2 keep the header from page 1.
 - Prose overlap starts at a sentence boundary and never enters a table.
@@ -173,6 +175,7 @@ def chunk_structured(pages: list[ParsedPage]) -> list[StructuredChunk]:
     section = ""
     buf: list[Block] = []  # pending prose
     carry = ""             # overlap text for the next prose chunk
+    units = ""             # latest units statement in the current section
 
     def emit(kind: str, text: str, first: int, last: int, notes: list[str] | None = None) -> None:
         body = (f"## {section}\n" if section else "") + text.strip()
@@ -197,8 +200,11 @@ def chunk_structured(pages: list[ParsedPage]) -> list[StructuredChunk]:
                 # Chunk too small to close: keep the heading as text so it isn't lost.
                 buf.append(Block("text", [f"## {b.lines[0]}"], b.page))
             section = b.lines[0]
+            units = ""
             continue
         if b.kind == "text":
+            units = next((l for l in reversed(b.lines)
+                          if UNIT_HINT.search(l) and len(l.split()) <= 25), units)
             if buf and sum(x.words() for x in buf) + b.words() > TEXT_WORDS:
                 flush_text()
             buf.append(b)
@@ -209,8 +215,16 @@ def chunk_structured(pages: list[ParsedPage]) -> list[StructuredChunk]:
                 flush_text()
             buf.append(b)
             continue
-        # Table: caption = the short text right before it (title, units line).
-        caption = buf[-1].text if buf and buf[-1].words() <= CAPTION_WORDS else ""
+        # Caption: the short text blocks right before the table (title, units
+        # line), up to CAPTION_WORDS, plus the section's units statement.
+        cap_blocks: list[str] = []
+        for x in reversed(buf):
+            if x.words() + sum(len(c.split()) for c in cap_blocks) > CAPTION_WORDS:
+                break
+            cap_blocks.insert(0, x.text)
+        caption = "\n".join(c for c in cap_blocks if c.strip())
+        if units and units not in caption:
+            caption = (units + "\n" + caption).strip()
         flush_text()
         carry = ""
         head = _header_rows(b)

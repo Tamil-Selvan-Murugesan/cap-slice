@@ -1,7 +1,7 @@
 # Chunks: Option 2: PyMuPDF4LLM (layout + RapidOCR) + structured chunker — e2e_ar_fy23
 
 - PDF: `data/E2E/annual_reports/2023-09-21_FY2022-23.pdf` (page numbers = PDF viewer pages)
-- 316 chunks, 99,168 tokens (89 table chunks)
+- 316 chunks, 100,801 tokens (89 table chunks)
 - Text inside each block is exactly what would be embedded.
 
 ### Chunk 0
@@ -22,10 +22,14 @@ E2E Networks Limited
 
 ### Chunk 1
 
-_table · pages 2–2 · 33 words · 130 tokens_
+_table · pages 2–2 · 53 words · 210 tokens_
 
 ```text
 ## 2023 ANNUAL REPORT
+<!-- Start of picture text -->
+E2ECloud <!-- End of picture text -->
+## 2023 ANNUAL REPORT
+E2ENETWORKSLIMITED AWFIS,A-24/9,MohanCo-operativeIndustrial Estate,MathuraRoad,Saidabad,NewDelhi-10044
 E2E Networks Limited
 
 |1.|Corporate Information|1|
@@ -252,10 +256,11 @@ The financial performance during the Financial Year 2022-23 is summarized below:
 
 ### Chunk 7
 
-_table · pages 12–12 · 62 words · 396 tokens_
+_table · pages 12–12 · 73 words · 417 tokens_
 
 ```text
 ## FINANCIAL SUMMARY OF OPERATIONS
+The financial performance during the Financial Year 2022-23 is summarized below:
 (Amount in INR Lakhs)
 
 |Particulars|Stand|alone|
@@ -514,10 +519,11 @@ During the year under review, there have been following changes amongst the dire
 
 ### Chunk 18
 
-_table · pages 18–18 · 278 words · 641 tokens_
+_table · pages 18–18 · 312 words · 686 tokens_
 
 ```text
 ## DIRECTORS
+The Board of Directors of the Company has optimum combination of executive and non-executive directors including independent directors and woman director in compliance with the applicable provisions of the Act and SEBI LODR Regulations.
 During the year under review, there have been following changes amongst the directors of the Company:-
 
 |Sr. No.|Name of Director|Particulars of Change (Appointment / Resignation/Others)|Effective Date of change|
@@ -1467,10 +1473,13 @@ percent of average net profit of the company as per sub-section (5) of section 1
 
 ### Chunk 56
 
-_table · pages 39–39 · 92 words · 202 tokens_
+_table · pages 39–39 · 131 words · 276 tokens_
 
 ```text
 ## Annual Report FY 2022-23
+- iv. Amount required to be set-off for the financial year, if any. Nil
+- v. Total CSR obligation for the financial year [(b)+(c)-(d)]. Nil
+6. Amount Spent on CSR Project (both Ongoing Project and other than Ongoing Project)
 - i. Details of CSR amount spent against ongoing projects for the financial year:
 
 |Sl. No. Name of the Project|Item from the list of activities in schedule|Local area (Yes/No)|Location of the project|Project duration (in years)|Amount allocated for the project (in Rs.|Amount spent in the current financial|Amount transferred to Unspent CSR Account for the project as per|Mode of impleme ntation - Direct (Yes/No)|Mode of implementation -Through implementing agency.|
@@ -1493,10 +1502,12 @@ E2ECloud <!-- End of picture text -->
 
 ### Chunk 58
 
-_table · pages 40–40 · 68 words · 166 tokens_
+_table · pages 40–40 · 81 words · 184 tokens_
 
 ```text
 ## ii. Details of CSR amount spent against other than ongoing projects for the financial year:
+<!-- Start of picture text -->
+E2ECloud <!-- End of picture text -->
 ## ii. Details of CSR amount spent against other than ongoing projects for the financial year:
 
 |Sl. Name|Item from|Local|Location of|Amount Spent for the|Mode of|Mode of|
@@ -1574,10 +1585,11 @@ amount spent in the Financial Year:
 
 ### Chunk 63
 
-_table · pages 42–42 · 59 words · 187 tokens_
+_table · pages 42–42 · 70 words · 201 tokens_
 
 ```text
 ## (i) Yes (ii) No ✔
+If Yes, enter the number of Capital assets created/ acquired NA
 Furnish the details relating to such asset(s) so created or acquired through Corporate Social Responsibility amount spent in the Financial Year:
 
 |S.|Short particulars of the property or|Pincode of the|Date of|Amount of|Details of entity/|Authority|/ beneficiary|
@@ -1645,10 +1657,11 @@ Company Secretary or Manager, if any, in the financial year:
 
 ### Chunk 67
 
-_table · pages 44–44 · 116 words · 335 tokens_
+_table · pages 44–44 · 130 words · 356 tokens_
 
 ```text
 ## 1. The ratio of the Remuneration of each director to the median remuneration of the employees of the Company for the financial year:
+_* Independent Directors are being paid only sitting fees for attending the Board/Committee Meetings._
 2. The percentage increase in remuneration of each Director, Chief Financial Officer, Chief Executive Officer, Company Secretary or Manager, if any, in the financial year:
 
 |S. No.|Name of the Director / CFO / CS /Manager|Category|% Increase in remuneration in the financial year|
@@ -1967,10 +1980,11 @@ The financial performance during the Financial Year 2022-23 has been summarized 
 
 ### Chunk 78
 
-_table · pages 51–51 · 62 words · 400 tokens_
+_table · pages 51–51 · 74 words · 422 tokens_
 
 ```text
 ## FINANCIAL PERFORMANCE AND HIGHLIGHTS
+The financial performance during the Financial Year 2022-23 has been summarized below:
 (Amount in INR Lakhs)
 
 |Particulars|Stand|alone|
@@ -2116,10 +2130,12 @@ the year under review.
 
 ### Chunk 86
 
-_table · pages 55–55 · 85 words · 303 tokens_
+_table · pages 55–55 · 111 words · 344 tokens_
 
 ```text
 ## The details relating to composition and category of Directors as on March 31, 2023 are as follows:
+None of the Non-Executive Directors are and were responsible for the day-to-day affairs of the Company during the year under review.
+## KEY INFORMATION OF DIRECTORS
 ## The details relating to composition and category of Directors as on March 31, 2023 are as follows:
 
 |Name of the Director|DIN|Designation/ Category|Age|Shareholding as on 31stMarch 2023|
@@ -2311,10 +2327,11 @@ The tenure of Independent Directors in accordance with the Act and the Listing R
 
 ### Chunk 94
 
-_table · pages 60–60 · 44 words · 186 tokens_
+_table · pages 60–60 · 87 words · 244 tokens_
 
 ```text
 ## INDEPENDENT DIRECTORS:
+The Board comprises of four Independent Directors as on March 31, 2023. The Company has issued formal letter of appointment to its Independent Directors. The terms and conditions of the appointment of the Independent Directors are published on the website of the Company.
 The tenure of Independent Directors in accordance with the Act and the Listing Regulations is as follows:
 
 |Name of the Independent|Date of appointment|Date of re-appointment for|
@@ -2698,9 +2715,11 @@ The Members of the Audit Committee as on March 31, 2023, are as follows:
 
 ### Chunk 115
 
-_table · pages 68–68 · 29 words · 90 tokens_
+_table · pages 68–68 · 50 words · 123 tokens_
 
 ```text
+## i. Composition
+The Company has constituted an Audit Committee in accordance with Section 177 of Act and the Listing Regulations.
 ## i. Composition
 The Members of the Audit Committee as on March 31, 2023, are as follows:
 
@@ -2839,10 +2858,11 @@ The details regarding attendance of Members in the above Meetings are as follows
 
 ### Chunk 119
 
-_table · pages 71–71 · 54 words · 151 tokens_
+_table · pages 71–71 · 98 words · 242 tokens_
 
 ```text
 ## iii. Meetings and attendance during the year
+During the year under review, the Audit Committee (“Committee”) of the Company met 4 times viz. May 27, 2022; July 25, 2022; November 2, 2022 and February 7, 2023. The Board has accepted all recommendations of the Committee made during the financial year 2022-23.
 The details regarding attendance of Members in the above Meetings are as follows:
 
 |S. Name of Member|Designation|No. of Meeting(s) which Member|No. of Meeting(s) attended|
@@ -2870,9 +2890,11 @@ The Members of the Nomination and Remuneration Committee as on March 31, 2023 ar
 
 ### Chunk 121
 
-_table · pages 71–71 · 31 words · 94 tokens_
+_table · pages 71–71 · 60 words · 141 tokens_
 
 ```text
+## i. Composition
+The Company has constituted Nomination and Remuneration Committee in accordance with the provision of Section 178 of the Act and Regulation 19 of the Listing Regulations.
 ## i. Composition
 The Members of the Nomination and Remuneration Committee as on March 31, 2023 are as follows:
 
@@ -2971,10 +2993,11 @@ the above Meetings are as follows:
 
 ### Chunk 124
 
-_table · pages 73–73 · 67 words · 182 tokens_
+_table · pages 73–73 · 75 words · 194 tokens_
 
 ```text
 ## i. Composition
+- iii. Meetings and attendance during the year
 During the year under review, the Nomination and Remuneration Committee ( “Committee” ) of the Company met 3 times, viz. April 30, 2022; July 25, 2022 and February 7, 2023. The details regarding attendance of Members in the above Meetings are as follows:
 
 |Name|Designation|No. of Meetings held during the Tenure|No. of Meetings attended|
@@ -3001,10 +3024,12 @@ The Members of the Stakeholder’s Relationship Committee as on March 31, 2023 a
 
 ### Chunk 126
 
-_table · pages 74–74 · 32 words · 101 tokens_
+_table · pages 74–74 · 60 words · 141 tokens_
 
 ```text
 ## 3. Stakeholders’ Relationship Committee:
+The Stakeholders Relationship Committee has been constituted to specifically look into various aspects of interest of Shareholders and Investors complaints and other shareholders related issues.
+- i. Composition
 The Members of the Stakeholder’s Relationship Committee as on March 31, 2023 are as follows:
 
 |Name|Designation|
@@ -3054,10 +3079,11 @@ The details regarding attendance of Members in the said meeting are as follows:
 
 ### Chunk 129
 
-_table · pages 75–75 · 42 words · 122 tokens_
+_table · pages 75–75 · 61 words · 159 tokens_
 
 ```text
 ## iii. Meetings and attendance during the year
+During the year under review, the Stakeholders Relationship Committee (“Committee”) of the Company met once viz February 07, 2023.
 The details regarding attendance of Members in the said meeting are as follows:
 
 |Name|Designation|No. of Meetings held during the Tenure|No. of Meetings attended|
@@ -3178,9 +3204,11 @@ The Members of the Borrowing Committee as on March 31, 2023 are as follows:
 
 ### Chunk 136
 
-_table · pages 77–77 · 25 words · 78 tokens_
+_table · pages 77–77 · 44 words · 108 tokens_
 
 ```text
+## i. Composition
+The Company has constituted Borrowing Committee in accordance with of provisions of Section 179 of Act.
 ## i. Composition
 The Members of the Borrowing Committee as on March 31, 2023 are as follows:
 
@@ -3242,10 +3270,11 @@ During the year under review, the Borrowing Committee(“Committee”) of the Co
 
 ### Chunk 138
 
-_table · pages 78–78 · 64 words · 163 tokens_
+_table · pages 78–78 · 72 words · 175 tokens_
 
 ```text
 ## ii. Roles, responsibilities and the terms of reference of the Borrowing Committee:
+- iii. Meetings and attendance during the year
 During the year under review, the Borrowing Committee(“Committee”) of the Company met twice viz September 17, 2022, and December 21, 2022. The details regarding attendance of Members in the above Meetings are as follows:
 
 |Name|Designation|No. of Meetings held during the Tenure|No. of Meetings attended|
@@ -3422,10 +3451,11 @@ a . Details of voting through Remote e-voting:
 
 ### Chunk 148
 
-_table · pages 83–83 · 32 words · 163 tokens_
+_table · pages 83–83 · 62 words · 229 tokens_
 
 ```text
 ## b. Detailed summary of E-voting is as under:
+Resolution No. 2: Re-appointment of Mr. Gaurav Munjal (DIN: 02363421) as a Non-Executive Independent Director of the Company for a term of 5 consecutive years (Special Resolution) (E-voting mode only)
 a . Details of voting through Remote e-voting:
 
 |Particulars|Number of Valid|Votes||Percentage of total net valid votes casted|
@@ -3568,10 +3598,13 @@ Tentative Calendar for the FY 2023-24 (subject to change)
 
 ### Chunk 156
 
-_table · pages 86–86 · 69 words · 186 tokens_
+_table · pages 86–86 · 112 words · 277 tokens_
 
 ```text
 ## 3. Financial Year
+The Corporate Identity Number (CIN) allotted by the Ministry of Corporate Affairs, Government of India is L72900DL2009PLC341980.
+## 3. Financial Year
+Financial Year of the Company is from April 1,2022 to March 31, 2023. The financial calendar of the Company is reproduced below:
 Tentative Calendar for the FY 2023-24 (subject to change)
 
 |Adoption of un-audited quarterly results and Annual Results|For the Quarter ended on or before (actual & tentative for future quarters)|
@@ -3677,10 +3710,12 @@ May-2022 Jun-2022 Jul-2022 Aug-2022 Sep-2022 Oct-2022 Nov-2022 Dec-2022 Jan-2023
 
 ### Chunk 162
 
-_table · pages 88–88 · 44 words · 421 tokens_
+_table · pages 88–88 · 83 words · 567 tokens_
 
 ```text
 ## 13. Distribution of Shareholding:
+<!-- Start of picture text -->
+CapitalMarketInformation 田 1 YearStock Performance (Upto31s March,2023) 80% 60% 40% 20% 0% -20% -40% Apr-2022 May-2022 Jun-2022 Jul-2022 Aug-2022 Sep-2022 Oct-2022 Nov-2022 Dec-2022 Jan-2023 Feb-2023 Mar-2023 -E2E-Nilty <!-- End of picture text -->
 ## 13. Distribution of Shareholding:
 
 |Sr. No.|No. of Shares|No. of Shareholders|% of Shareholders|Shares|% of Total Share Capital|
@@ -4120,10 +4155,12 @@ auditors are as follows:
 
 ### Chunk 182
 
-_table · pages 97–97 · 25 words · 94 tokens_
+_table · pages 97–97 · 82 words · 173 tokens_
 
 ```text
 ## 37. Management Discussion and Analysis Report
+38 . Total Fees for all Services paid by the Company on consolidated basis to Statutory Auditors and all entities in the Network Firm/ Network Entity of which the Statutory Auditor is a part
+During the year under review, the total fees for all services paid by E2E Networks Limited to the statutory auditors are as follows:
 (INR in lakhs)
 
 |Fees|Amount|
@@ -4155,9 +4192,10 @@ mentioned hereunder:
 
 ### Chunk 184
 
-_table · pages 98–98 · 97 words · 185 tokens_
+_table · pages 98–98 · 116 words · 228 tokens_
 
 ```text
+## 39. Disclosures in Relation to the Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013
 ## 39. Disclosures in Relation to the Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013
 As per the requirement of the Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013 and Rules made thereunder, the details of the cases reported during the Financial Year 2022-23 are mentioned hereunder:
 
@@ -5156,10 +5194,11 @@ CI N: L72900DL2009PLC341980
 
 ### Chunk 217
 
-_table · pages 123–123 · 231 words · 1172 tokens · golden facts: F09 (L2)_
+_table · pages 123–123 · 234 words · 1195 tokens · golden facts: F09 (L2)_
 
 ```text
 ## BalanceSheetasatMarch31,2023
+CI N: L72900DL2009PLC341980
 (AllamountsareinINRlakhs,unlessotherwisestated)
 
 ||Notes|Asat As at March31,2023 March 31,2022|
@@ -6216,10 +6255,12 @@ CI N: L72900DL2009PLC341980
 
 ### Chunk 259
 
-_table · pages 141–141 · 158 words · 1302 tokens_
+_table · pages 141–141 · 162 words · 1346 tokens_
 
 ```text
 ## 3Property, plant and equ ip ment
+CI N: L72900DL2009PLC341980
+(AllamountsareinINRlakhs,unlessotherwisestated)
 ## 3Property, plant and equ ip ment
 
 |Particulars|Furniture |Office |Computers|Computer |Total|
@@ -6288,10 +6329,12 @@ Fair value hierarchydisclosures for revalued intangible assetshavebeen provided 
 
 ### Chunk 261
 
-_table · pages 142–142 · 59 words · 273 tokens_
+_table · pages 142–142 · 108 words · 381 tokens_
 
 ```text
 ## Informa t ionofrevalua ti onmodel:
+The management determined that IP addresses constituteoneclass of asset,basedonthe natureand characteristics. The effective date of revaluation is April 1,202 0 .Therevaluation of IP addresses isbased on thevaluationby a registered valuer as defined under rule 2of Companies(RegisteredValuers and valuation)Rules,2017 .
+Fair value hierarchydisclosures for revalued intangible assetshavebeen provided inNote 41.
 ## Informa t ionofrevalua ti onmodel:
 
 |Particulars||Amount|
@@ -6329,9 +6372,10 @@ limitedbytime,oranyotherfactors,thelifeoftheseassetshavebeenestimatedasindefinit
 
 ### Chunk 263
 
-_table · pages 142–142 · 88 words · 418 tokens_
+_table · pages 142–142 · 99 words · 437 tokens_
 
 ```text
+## (ii）Assetsw it hi n def ini teuseful l i fe
 ## (ii）Assetsw it hi n def ini teuseful l i fe
 Indefinit e- lived intangible assets consist of Internet Protocol (IP")addresse s. IP are the numerical addresses used to identify a particularpiece ofhardware connected to theIntern e t.Since theIPAddress's usefulness to thebusiness is not limitedbytime,oranyotherfactors,thelifeoftheseassetshavebeenestimatedasindefinite .
 
@@ -6364,10 +6408,11 @@ _text · pages 142–0 · 10 words · 33 tokens_
 
 ### Chunk 265
 
-_table · pages 143–143 · 159 words · 889 tokens_
+_table · pages 143–143 · 165 words · 897 tokens_
 
 ```text
 ## Deferredtaxassets/(liability)(net)
+*Net of provisions for income tax
 ## Deferredtaxassets/(liability)(net)
 
 |Deferredtaxassets/(liability)(net)|||As at |As at|
@@ -6434,10 +6479,11 @@ orprivate companies respectivelyinwhichanydirectorisapartner,adirectororamember 
 
 ### Chunk 267
 
-_table · pages 144–144 · 259 words · 1238 tokens_
+_table · pages 144–144 · 269 words · 1255 tokens_
 
 ```text
 ## 7 . 1Movement i ndeferredtaxassets/li a b ili t i es
+- (i) Trade receivables are non- in terest bearing .
 (ii) No trade or other receivable are due from directors or other officers of the company either severally or jointly with any other perso n .Except as disclosed inNote 37 no trade or other receivable are due from firms orprivate companies respectivelyinwhichanydirectorisapartner,adirectororamember .
 
 |Trade Agei |receivablesageingschedulefortheyearendedMa ng hasbeen considered from the dateof transaction(p |rch31,20 osting dat |23 e). ||||||
@@ -6615,10 +6661,11 @@ For the details of sharesreserved forissueunder the EmployeeStockOptionPlan(ESOP
 
 ### Chunk 272
 
-_table · pages 147–147 · 34 words · 170 tokens_
+_table · pages 147–147 · 68 words · 225 tokens_
 
 ```text
 ## 13.2 Shares held under ESOP Trust(Treasury Shares)
+The Company has created an EmployeeStock OptionPlan(ESOP)forproviding share- b ased payment to its of the Company.The Company treats ESOPTrust as its extension and shares held by ESOP trust are treated as treasury shares .
 For the details of sharesreserved forissueunder the EmployeeStockOptionPlan(ESOP)of the Companyrefer Note 36.
 
 |14Borrowings|As atMarch31,2023 Current Non-current|AsatMarc Current|h31,2022 Non-current|
@@ -7077,10 +7124,11 @@ Rentalexpenserecordedforsho rt -termleaseswasINR6 1 .33lakhsfortheyearendedMarch
 
 ### Chunk 290
 
-_table · pages 154–155 · 74 words · 474 tokens · table continues across pages 154-155_
+_table · pages 154–155 · 80 words · 527 tokens · table continues across pages 154-155_
 
 ```text
 ## Thefollowing is thebrea k- upof current andno n -current leaseliabilities as atMarch31,2023and March31,2022
+TheCompanydoesnotfaceasignificant liquidityriskwithregard to itsleaseliabilitiesasthecurrentassetsare sufficienttomeettheobligationsrelatedtoleaseliabilitiesasandwhentheyfalldue .
 Rentalexpenserecordedforsho rt -termleaseswasINR6 1 .33lakhsfortheyearendedMarch31,2023(March31, 2022 : INR 33 . 68lakhs)
 
 |31Fairvaluemeasurements a)Financialinstrumentsbycategory|||||
@@ -7219,10 +7267,11 @@ bearing orfixed interest bearing instruments .
 
 ### Chunk 297
 
-_table · pages 156–156 · 42 words · 171 tokens_
+_table · pages 156–156 · 45 words · 180 tokens_
 
 ```text
 ## (C) Market ri sk
+(a)Interestrate ri sk
 Interestrateriskistheriskthatthefairvalueorfuturecashflowsofafinancial instrumentwillfluctuatebecauseof bearing orfixed interest bearing instruments .
 
 |The exposure of company's borrowing tointerest changes at t|he end of reporting per|iod are as follows:|
@@ -7256,10 +7305,11 @@ the financial statements . Equity comprises all components of equity .
 
 ### Chunk 299
 
-_table · pages 157–157 · 107 words · 554 tokens_
+_table · pages 157–157 · 144 words · 622 tokens_
 
 ```text
 ## 33 Capi t al management
+the Company and all other equity reserves . The primary objective of the Company's capital management is to ensure that it maintains an efficient capital structure and maximize shareholder valu e .The Company manages its capitall structureandmakesadjustmentsinlightofchangesineconomicconditionsandtherequirementsofthefinancial
 TheCompanymonitorsthecapitalstructureonthebasisoftotaldebttoequityratioandmaturityprofileoftheoverall debtportfolioof theCompany.Totalborrowings includes alllong and sho rt -termborrowingsasdisclosed inNote14to the financial statements . Equity comprises all components of equity .
 
 |Particulars|As at year ended 31 March2023|As at year ended 31 March2022|
@@ -7339,10 +7389,11 @@ optionsduring theyea r:
 
 ### Chunk 303
 
-_table · pages 158–159 · 143 words · 739 tokens · table continues across pages 158-159_
+_table · pages 158–159 · 193 words · 847 tokens · table continues across pages 158-159_
 
 ```text
 ## Thekeyfeaturesoftheschemesareoutlinedbelo w:
+Further, on June 17 2022, the Company had granted 1,44,000 equity settled options at an exercise price as defined in the scheme . This schemegave employees theright to subscribe to stock optionsrepresenting an equal number of equitysharesoffacevalueRs.10each.Theseoptionsvestuniformlyoveraperiodof4yearscommencingoneyear after the dateof grant asper terms and conditions specified inoption grant letters .
 optionsduring theyea r:
 
 |2018Scheme|For the y 31Mar Number|ear ended ch 2023 WAEP(INR)|For the 31 Ma Number|year ended rch 2022 WAEP (INR)|
