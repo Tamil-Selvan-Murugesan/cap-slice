@@ -1,0 +1,175 @@
+{
+  "AIMTRON": {
+    "dc6d2fd4f949a6a2": {
+      "kind": "concall_transcript",
+      "title": "H2/FY 2024 earnings call transcript (1 July 2024)",
+      "period": "2024-03-31",
+      "sha256": "47d494bb9cd957787ac16dc69f1a4e0e54c531a86323ba7d4ff6cb6d5b0703a6"
+    },
+    "5e871933720dfca9": {
+      "kind": "investor_presentation",
+      "title": "Investor presentation, July 2024",
+      "period": "2024-07",
+      "sha256": "6dc55ebb42d3ce83964b56fad4be395fc76d2124694130320256b0d30aeebc8c"
+    },
+    "d1c3a9052211c89b": {
+      "kind": "financial_results",
+      "title": "Machine-readable audited financial results, H2/FY 2024",
+      "period": "2024-03-31",
+      "sha256": "9f4138dbf13df021aafc06fed1f8720ba79fc281df34c1e3134055ed8ca825c7",
+      "supersedes": [
+        "06f5c13e524c414c",
+        "163432"
+      ]
+    },
+    "163432": {
+      "kind": "financial_results",
+      "title": "Audited financial results, H2/FY 2024",
+      "period": "2024-03-31",
+      "sha256": "74154f4a77e77017b980fa53e87f8895a5e6a24688a1bee5bb82634f6b613676"
+    },
+    "06f5c13e524c414c": {
+      "kind": "financial_results",
+      "title": "Audited financial results, H2/FY 2024",
+      "period": "2024-03-31",
+      "sha256": "513e2000e1208e93634fd3d3c2dfe1a1402757134e386b80b86747679127bf64"
+    },
+    "7e12826504a8d2a3": {
+      "kind": "concall_transcript",
+      "title": "H1 FY 2025 earnings call transcript (12 November 2024)",
+      "period": "2024-09-30",
+      "sha256": "62fb7883dae4fe76001c8adee6837bced6a52eaa228a6fe3f0d990fd77e80b58"
+    },
+    "e660fa6b7c300496": {
+      "kind": "investor_presentation",
+      "title": "Investor presentation, November 2024",
+      "period": "2024-11",
+      "sha256": "186dee25729f1eae1ee2669a00d08baa9440e26b01ffdc62c6557fdcf3b971fb"
+    },
+    "166673": {
+      "kind": "financial_results",
+      "title": "Unaudited financial results, H1 FY 2025",
+      "period": "2024-09-30",
+      "sha256": "ff5adf48aec0feb6cc5aaf7cbc920d9b1481257c505701bc2cfb01db3e2cf20e"
+    },
+    "74262d680c272bf7": {
+      "kind": "concall_transcript",
+      "title": "H2/FY 2025 earnings call transcript (24 April 2025)",
+      "period": "2025-03-31",
+      "sha256": "00cf4e31a4821e1a3ed1a03d6f96035b7f9e630bad3cf7a5ac9094cd324bad17"
+    },
+    "b24cf4392c7d3dc9": {
+      "kind": "investor_presentation",
+      "title": "Investor presentation, April 2025",
+      "period": "2025-04",
+      "sha256": "74af458bfc01cce4d79815f5681a73aba1c45b31ec37ccca189b01c92508f7cf"
+    },
+    "86e57142c8810f3a": {
+      "kind": "financial_results",
+      "title": "Audited financial results, H2/FY 2025",
+      "period": "2025-03-31",
+      "sha256": "905c238a0c841e7bf21dd31455d850b576dfc79848b4b3695b194dac394d9d59"
+    },
+    "106509082": {
+      "kind": "investor_presentation",
+      "title": "Investor presentation, January 2026",
+      "period": "2026-01",
+      "sha256": "366d227270122080612aa990495a546629d183c63d5e451b3882f92ba68f2fca"
+    },
+    "106438041": {
+      "kind": "concall_transcript",
+      "title": "H1 FY 2026 earnings call transcript (6 November 2025)",
+      "period": "2025-09-30",
+      "sha256": "0278c543ac4c293cc420326d61688712834335a1048faa80160f3ae9ea226e39"
+    },
+    "106428855": {
+      "kind": "investor_presentation",
+      "title": "Investor presentation, November 2025",
+      "period": "2025-11",
+      "sha256": "7b13dae17946ab96004747e56868fd9739f221bbfb5d6c911c1ec4dc6c0d8564"
+    },
+    "106425880": {
+      "kind": "financial_results",
+      "title": "Unaudited financial results, H1 FY 2026",
+      "period": "2025-09-30",
+      "sha256": "bb5e52f899c7fc827e46896c86efd282c8b5fa51d1385034a7c3ee244c6c10c1"
+    },
+    "106607466": {
+      "kind": "concall_transcript",
+      "title": "H2/FY 2026 earnings call transcript (April 2026)",
+      "period": "2026-03-31",
+      "sha256": "a531fa0e5b2e0b4316b15ec7ea2e2cc94c0eb628f57d40a6e339123e0c9cb84c"
+    },
+    "106604375": {
+      "kind": "investor_presentation",
+      "title": "Investor presentation, April 2026",
+      "period": "2026-04",
+      "sha256": "4017194fbc9b39395d5e318f249d67a0e980868f4db51f0258f7c5ac80012ea3",
+      "supersedes": [
+        "106602567"
+      ]
+    },
+    "106602567": {
+      "kind": "investor_presentation",
+      "title": "Investor presentation, April 2026",
+      "period": "2026-04",
+      "sha256": "c46ac22ec369f21ef4c6549dd464d0567c4b1df3374e15c535bd6e6c0e278547"
+    },
+    "106602556": {
+      "kind": "financial_results",
+      "title": "Re-submitted audited standalone financial results, H2/FY 2026",
+      "period": "2026-03-31",
+      "sha256": "189fc36400a9e783d0773f11806afd0a0ebf95f5b2eaafcd80a5f8d15eb2b8da",
+      "supersedes": [
+        "106601677"
+      ]
+    },
+    "106602524": {
+      "kind": "financial_results",
+      "title": "Re-submitted audited consolidated financial results, H2/FY 2026",
+      "period": "2026-03-31",
+      "sha256": "a893055a9cb8f2f74a1e60457a8cd59782400400b4e2e4dc050ec87bad481377",
+      "supersedes": [
+        "106601656"
+      ]
+    },
+    "106601677": {
+      "kind": "financial_results",
+      "title": "Audited standalone financial results, H2/FY 2026",
+      "period": "2026-03-31",
+      "sha256": "4ac697ce2a227523eb185add368b25e61a579bb681ba25d8b7f0837f7537a080"
+    },
+    "106601656": {
+      "kind": "financial_results",
+      "title": "Audited consolidated financial results, H2/FY 2026",
+      "period": "2026-03-31",
+      "sha256": "d07878d433957b2d8ff5eb8c2c1f3c9a7951b6e57634606ce18cb7f29346e09e"
+    }
+  },
+  "ADISOFT": {
+    "106698929": {
+      "kind": "financial_results",
+      "title": "Clarified audited financial results tables, FY 2026",
+      "period": "2026-03-31",
+      "sha256": "6a31b25c33310ffeb6541fe69bb2cc0ec3af24026f6f05a9dd240d73632b9aa7"
+    },
+    "106659097": {
+      "kind": "concall_transcript",
+      "title": "H2/FY 2026 earnings call transcript (2 June 2026)",
+      "period": "2026-03-31",
+      "sha256": "4ca392d40184d352242f65f8b5412157436e1f6e532340bce0af6663c0093807"
+    },
+    "106644345": {
+      "kind": "financial_results",
+      "title": "Audited standalone and consolidated financial results, FY 2026",
+      "period": "2026-03-31",
+      "sha256": "669aba1f7291e57c4efdfec2d11b2f12bbedacfcc6ffacad92f0ba2c574f5047"
+    },
+    "106731981": {
+      "kind": "investor_presentation",
+      "title": "Investor presentation, August 2026",
+      "period": "2026-08",
+      "sha256": "d45cb3767598a8b9ae6843e2c1b8f529615c9b12705aefed7b7983d372a35416"
+    }
+  }
+}

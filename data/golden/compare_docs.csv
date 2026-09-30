@@ -1,6 +1,0 @@
-key,path,tests
-e2e_ar_fy25,data/E2E/annual_reports/2025-09-04_FY2024-25.pdf,Digital annual report: balance sheet and P&L tables (text layer)
-e2e_ar_fy23,data/E2E/annual_reports/2023-09-21_FY2022-23.pdf,Annual report whose financial statements (pp. 123-164) are scanned images
-c2c_concall,data/C2C/concall_transcripts/2025-11-25_Nov-2025.pdf,Concall transcript: question/answer pairs; letterhead repeated on every page
-e2e_pres,data/E2E/investor_presentations/May-2024.pdf,Investor presentation: table slides plus 9 image-only slides
-c2c_allotment,data/C2C/periodic_results/2025-10-22_H1-FY2025-26-half-yearly-SME.pdf,Allotment outcome (catalogued as H1 results - it is not): table continues from p1 to p2 with header only on p1
