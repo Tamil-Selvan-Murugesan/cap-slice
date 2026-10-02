@@ -60,7 +60,7 @@ Docling's accuracy matters most on the pages that are hardest and rarest: scanne
 
 **2. Scanned financial statements (E2E FY2022-23, F09–F14) — only Docling passes**
 - Baseline and Option 1: no OCR, pages 123–164 are simply missing (0/6).
-- Option 2: OCR recovers text on all 52 image pages, but only 4/6 values are found on the scanned pages and none at L3+: RapidOCR drops spaces (`BalanceSheetasatMarch31,2023`), reads some commas as dots (`6.840.73`), and **puts both year columns in one cell** (`1,631.31 384.34`), so the year of each number is lost. 300 dpi OCR did not fix it. See `pymupdf4llm/e2e_ar_fy23/parsed.md`, page 123.
+- Option 2: OCR recovers text on all 52 image pages, but only 4/6 values are found on the scanned pages and none at L3+: RapidOCR drops spaces (`BalanceSheetasatMarch31,2023`) and reads some commas as dots (`6.840.73`); then PyMuPDF4LLM's **table-grid step puts both year columns in one cell** (`1,631.31 384.34`), so the year of each number is lost. (OCR itself read the two values correctly as separate boxes — the merge is a column-detection failure; checked 2026-10-02.) 300 dpi OCR did not fix it. See `pymupdf4llm/e2e_ar_fy23/parsed.md`, page 123.
 - **Docling: 5/6 at L4.** Its table model rebuilds the scanned statements as real tables with "As at March 31, 2023 | As at March 31, 2022" columns. See `docling/e2e_ar_fy23/parsed.md` pages 123–124. The one miss, F13, is a genuine OCR error: the double-underlined profit **990.99 was read as `6960969`**. Same OCR engine as Option 2 (RapidOCR) — the difference is Docling's layout and table-structure models deciding *where* cells are before reading them.
 
 **3. Concall transcript (C2C, F15–F18)**

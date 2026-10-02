@@ -1,0 +1,14 @@
+[
+ {"id": "s01_title", "say": "Here is one page from E2E Networks' annual report for 2022-23: the balance sheet. Let's watch two PDF parsers read it, step by step: PyMuPDF for LLMs, and Docling."},
+ {"id": "s02_problem", "say": "To a computer, this page is just one picture. The PDF contains no text at all: zero characters. So before anything else, the text has to be read from the image. That's OCR, optical character recognition."},
+ {"id": "s03_p4l_decide", "say": "Part one: PyMuPDF for LLMs. It starts from the PDF's own text, and finds none. So a tiny classifier decides whether this page needs OCR. Its answer: yes, with a probability of 0.98, above its threshold of 0.93."},
+ {"id": "s04_p4l_ocr", "say": "RapidOCR then finds every line of text and reads it: 172 boxes on this page. Look at the cash row. Both numbers are read correctly, as two separate boxes."},
+ {"id": "s05_p4l_layout", "say": "Next, a small graph neural network labels the boxes: page header, section headers, text, and one large table."},
+ {"id": "s06_p4l_grid", "say": "Now it has to work out the table's columns from where those boxes sit. Here it finds only three columns, so both years' values end up in the same cell. The numbers are right, but you can no longer tell which year each one belongs to."},
+ {"id": "s07_dl_layout", "say": "Part two: Docling. It works the other way round. First it looks at the whole page as an image. A vision model called RT-DETR draws a box around every region, twenty of them, and labels each one: header, text, table, footer."},
+ {"id": "s08_dl_ocr", "say": "It runs OCR only where the PDF has no text of its own. On this scanned page, that's everywhere: 178 pieces of text."},
+ {"id": "s09_dl_table", "say": "Then TableFormer, a transformer trained on tables, looks at the image of the table and predicts its grid: 45 rows and four columns, including the two year headers."},
+ {"id": "s10_dl_output", "say": "Each piece of text is placed into its predicted cell. And the cash row comes out right: the 2023 value under March 2023, and the 2022 value under March 2022."},
+ {"id": "s11_compare", "say": "Both parsers read the same characters. The difference is the order. PyMuPDF for LLMs reads the text first, then guesses the structure. Docling finds the structure first, then fills it in. On our 28 test facts, Docling kept 27 fully intact, against 21. But it is about five times slower: 15 seconds a page on this laptop, versus about three."},
+ {"id": "s12_takeaway", "say": "So the practical answer is to route pages: a fast parser for ordinary pages, and Docling only for scanned and table-heavy pages."}
+]

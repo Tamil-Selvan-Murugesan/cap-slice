@@ -27,6 +27,8 @@ Target: roughly 2015–2026 (or from listing date if later), eventually for ~3,0
 |---|---|
 | `data/document_availability_matrix.csv` | Pilot catalog: one row per document, 5 companies |
 | `docs/document-sourcing-report.md` | Findings report: sources, workarounds, ToS, scaling issues, open questions |
+| `docs/pdf-parsers-pymupdf4llm-vs-docling.md` | Explainer: what PyMuPDF4LLM and Docling do, their models, how each does OCR, and our measured results |
+| `docs/media/pymupdf4llm-vs-docling.mp4`, `tools/explainer_video/` | 3-min captioned video of both parsers on one scanned page (real outputs), and the scripts that build it |
 | `data/<SYMBOL>/<doc_type>s/` | Downloaded documents, e.g. `data/E2E/annual_reports/`. Files named `<filed_date>_<period>.pdf`. Gitignored — re-create with the downloader |
 | `data/download_manifest.csv` | One row per download attempt: result, HTTP code, bytes, sha256, local path |
 | `src/cap_slice/downloader.py` | Downloads every matrix row that has a URL (`uv run cap-slice-download`) |
