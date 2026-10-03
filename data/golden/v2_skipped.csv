@@ -1,0 +1,10 @@
+candidate,path,page,stratum,reason
+1,data/APARINDS/annual_reports/FY2015-16.pdf,100,digital_statement,Accounting-policy prose with no extractable fact (keyword filter matched 'Statement of profit and loss' in text)
+12,data/HEROMOTOCO/annual_reports/FY2021-22.pdf,26,low_text_numeric,Full-page photo; no factual text. Use as hallucination check (parser output should be ~empty)
+13,data/E2E/investor_presentations/Nov-2022.pdf,14,low_text_numeric,'Thank you' slide image; hallucination check
+14,data/E2E/investor_presentations/Jun-2023.pdf,14,low_text_numeric,'Business Overview' divider image; hallucination check
+15,data/E2E/investor_presentations/Mar-2023.pdf,35,low_text_numeric,'Thank you' slide image; hallucination check
+16,data/APARINDS/investor_presentations/Nov-2022.pdf,16,low_text_numeric,'Annexures' divider illustration; hallucination check
+17,data/APARINDS/investor_presentations/Jul-2024-b.pdf,64,low_text_numeric,'Annexures' divider photo collage; hallucination check
+21,data/APARINDS/investor_presentations/Aug-2023-a.pdf,103,low_text_numeric,'Thank you' slide photo; hallucination check
+23,data/APARINDS/investor_presentations/Nov-2023.pdf,34,low_text_numeric,'Annexures' divider photo collage; hallucination check

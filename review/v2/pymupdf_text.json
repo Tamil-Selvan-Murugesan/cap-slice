@@ -1,0 +1,1461 @@
+{
+ "summary": {
+  "parser": "pymupdf_text",
+  "facts": 150,
+  "scored": 150,
+  "docs_missing": [],
+  "levels": {
+   "L1+": 135,
+   "L2+": 128,
+   "L3+": 110,
+   "L4+": 76
+  },
+  "l4_by_group": {
+   "kind:chart": "3/3",
+   "kind:prose": "13/27",
+   "kind:qa": "20/20",
+   "kind:table": "40/100",
+   "stratum:concall_qa": "22/22",
+   "stratum:digital_statement": "15/28",
+   "stratum:low_text_numeric": "0/10",
+   "stratum:prose_footnote": "7/19",
+   "stratum:results_columns": "9/27",
+   "stratum:segment_or_continued": "8/24",
+   "stratum:slide_numbers": "15/20",
+   "tag:bad_text_layer": "1/8",
+   "tag:image_only_page": "0/10",
+   "tag:two_level_header": "2/11"
+  },
+  "hallucination_check": [
+   {
+    "path": "data/HEROMOTOCO/annual_reports/FY2021-22.pdf",
+    "page": 26,
+    "chars": 2,
+    "sample": "24"
+   },
+   {
+    "path": "data/E2E/investor_presentations/Nov-2022.pdf",
+    "page": 14,
+    "chars": 43,
+    "sample": "## THANK YOU /  / | E2E Networks Limited | 13 |"
+   },
+   {
+    "path": "data/E2E/investor_presentations/Jun-2023.pdf",
+    "page": 14,
+    "chars": 48,
+    "sample": "Business Overview /  / | E2E Networks Limited | 11 |"
+   },
+   {
+    "path": "data/E2E/investor_presentations/Mar-2023.pdf",
+    "page": 35,
+    "chars": 43,
+    "sample": "## THANK YOU /  / | E2E Networks Limited | 34 |"
+   },
+   {
+    "path": "data/APARINDS/investor_presentations/Nov-2022.pdf",
+    "page": 16,
+    "chars": 9,
+    "sample": "ANNEXURES"
+   },
+   {
+    "path": "data/APARINDS/investor_presentations/Jul-2024-b.pdf",
+    "page": 64,
+    "chars": 9,
+    "sample": "ANNEXURES"
+   },
+   {
+    "path": "data/APARINDS/investor_presentations/Aug-2023-a.pdf",
+    "page": 103,
+    "chars": 9,
+    "sample": "Thank You"
+   },
+   {
+    "path": "data/APARINDS/investor_presentations/Nov-2023.pdf",
+    "page": 34,
+    "chars": 9,
+    "sample": "ANNEXURES"
+   }
+  ]
+ },
+ "facts": [
+  {
+   "id": "V001",
+   "level": 1,
+   "chunk": 769,
+   "groups": [
+    "stratum:digital_statement",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V002",
+   "level": 1,
+   "chunk": 767,
+   "groups": [
+    "stratum:digital_statement",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V003",
+   "level": 1,
+   "chunk": 767,
+   "groups": [
+    "stratum:digital_statement",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V004",
+   "level": 4,
+   "chunk": 204,
+   "groups": [
+    "stratum:digital_statement",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V005",
+   "level": 2,
+   "chunk": 208,
+   "groups": [
+    "stratum:digital_statement",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V006",
+   "level": 2,
+   "chunk": 208,
+   "groups": [
+    "stratum:digital_statement",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V007",
+   "level": 4,
+   "chunk": 345,
+   "groups": [
+    "stratum:digital_statement",
+    "kind:prose"
+   ]
+  },
+  {
+   "id": "V008",
+   "level": 4,
+   "chunk": 345,
+   "groups": [
+    "stratum:digital_statement",
+    "kind:prose"
+   ]
+  },
+  {
+   "id": "V009",
+   "level": 4,
+   "chunk": 346,
+   "groups": [
+    "stratum:digital_statement",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V010",
+   "level": 4,
+   "chunk": 346,
+   "groups": [
+    "stratum:digital_statement",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V011",
+   "level": 4,
+   "chunk": 347,
+   "groups": [
+    "stratum:digital_statement",
+    "kind:prose"
+   ]
+  },
+  {
+   "id": "V012",
+   "level": 4,
+   "chunk": 130,
+   "groups": [
+    "stratum:digital_statement",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V013",
+   "level": 4,
+   "chunk": 130,
+   "groups": [
+    "stratum:digital_statement",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V014",
+   "level": 4,
+   "chunk": 130,
+   "groups": [
+    "stratum:digital_statement",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V015",
+   "level": 4,
+   "chunk": 175,
+   "groups": [
+    "stratum:digital_statement",
+    "kind:prose"
+   ]
+  },
+  {
+   "id": "V016",
+   "level": 0,
+   "chunk": null,
+   "groups": [
+    "stratum:digital_statement",
+    "kind:prose"
+   ]
+  },
+  {
+   "id": "V017",
+   "level": 2,
+   "chunk": 397,
+   "groups": [
+    "stratum:digital_statement",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V018",
+   "level": 2,
+   "chunk": 397,
+   "groups": [
+    "stratum:digital_statement",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V019",
+   "level": 3,
+   "chunk": 395,
+   "groups": [
+    "stratum:digital_statement",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V020",
+   "level": 4,
+   "chunk": 717,
+   "groups": [
+    "stratum:digital_statement",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V021",
+   "level": 4,
+   "chunk": 717,
+   "groups": [
+    "stratum:digital_statement",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V022",
+   "level": 4,
+   "chunk": 719,
+   "groups": [
+    "stratum:digital_statement",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V023",
+   "level": 3,
+   "chunk": 773,
+   "groups": [
+    "stratum:digital_statement",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V024",
+   "level": 2,
+   "chunk": 775,
+   "groups": [
+    "stratum:digital_statement",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V025",
+   "level": 4,
+   "chunk": 772,
+   "groups": [
+    "stratum:digital_statement",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V026",
+   "level": 3,
+   "chunk": 347,
+   "groups": [
+    "stratum:digital_statement",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V027",
+   "level": 2,
+   "chunk": 352,
+   "groups": [
+    "stratum:digital_statement",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V028",
+   "level": 4,
+   "chunk": 351,
+   "groups": [
+    "stratum:digital_statement",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V029",
+   "level": 0,
+   "chunk": null,
+   "groups": [
+    "stratum:low_text_numeric",
+    "kind:prose",
+    "tag:image_only_page"
+   ]
+  },
+  {
+   "id": "V030",
+   "level": 0,
+   "chunk": null,
+   "groups": [
+    "stratum:low_text_numeric",
+    "kind:prose",
+    "tag:image_only_page"
+   ]
+  },
+  {
+   "id": "V031",
+   "level": 0,
+   "chunk": null,
+   "groups": [
+    "stratum:low_text_numeric",
+    "kind:prose",
+    "tag:image_only_page"
+   ]
+  },
+  {
+   "id": "V032",
+   "level": 0,
+   "chunk": null,
+   "groups": [
+    "stratum:low_text_numeric",
+    "kind:prose",
+    "tag:image_only_page"
+   ]
+  },
+  {
+   "id": "V033",
+   "level": 0,
+   "chunk": null,
+   "groups": [
+    "stratum:low_text_numeric",
+    "kind:prose",
+    "tag:image_only_page"
+   ]
+  },
+  {
+   "id": "V034",
+   "level": 0,
+   "chunk": null,
+   "groups": [
+    "stratum:low_text_numeric",
+    "kind:prose",
+    "tag:image_only_page"
+   ]
+  },
+  {
+   "id": "V035",
+   "level": 0,
+   "chunk": null,
+   "groups": [
+    "stratum:low_text_numeric",
+    "kind:prose",
+    "tag:image_only_page"
+   ]
+  },
+  {
+   "id": "V036",
+   "level": 0,
+   "chunk": null,
+   "groups": [
+    "stratum:low_text_numeric",
+    "kind:prose",
+    "tag:image_only_page"
+   ]
+  },
+  {
+   "id": "V037",
+   "level": 0,
+   "chunk": null,
+   "groups": [
+    "stratum:low_text_numeric",
+    "kind:prose",
+    "tag:image_only_page"
+   ]
+  },
+  {
+   "id": "V038",
+   "level": 0,
+   "chunk": null,
+   "groups": [
+    "stratum:low_text_numeric",
+    "kind:prose",
+    "tag:image_only_page"
+   ]
+  },
+  {
+   "id": "V039",
+   "level": 4,
+   "chunk": 7,
+   "groups": [
+    "stratum:results_columns",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V040",
+   "level": 2,
+   "chunk": 11,
+   "groups": [
+    "stratum:results_columns",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V041",
+   "level": 3,
+   "chunk": 7,
+   "groups": [
+    "stratum:results_columns",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V042",
+   "level": 2,
+   "chunk": 11,
+   "groups": [
+    "stratum:results_columns",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V043",
+   "level": 2,
+   "chunk": 11,
+   "groups": [
+    "stratum:results_columns",
+    "kind:table",
+    "tag:bad_text_layer"
+   ]
+  },
+  {
+   "id": "V044",
+   "level": 1,
+   "chunk": 11,
+   "groups": [
+    "stratum:results_columns",
+    "kind:table",
+    "tag:bad_text_layer"
+   ]
+  },
+  {
+   "id": "V045",
+   "level": 0,
+   "chunk": null,
+   "groups": [
+    "stratum:results_columns",
+    "kind:table",
+    "tag:bad_text_layer"
+   ]
+  },
+  {
+   "id": "V046",
+   "level": 2,
+   "chunk": 2,
+   "groups": [
+    "stratum:results_columns",
+    "kind:table",
+    "tag:bad_text_layer"
+   ]
+  },
+  {
+   "id": "V047",
+   "level": 2,
+   "chunk": 2,
+   "groups": [
+    "stratum:results_columns",
+    "kind:table",
+    "tag:bad_text_layer"
+   ]
+  },
+  {
+   "id": "V048",
+   "level": 2,
+   "chunk": 4,
+   "groups": [
+    "stratum:results_columns",
+    "kind:table",
+    "tag:bad_text_layer"
+   ]
+  },
+  {
+   "id": "V049",
+   "level": 4,
+   "chunk": 5,
+   "groups": [
+    "stratum:results_columns",
+    "kind:prose",
+    "tag:bad_text_layer"
+   ]
+  },
+  {
+   "id": "V050",
+   "level": 0,
+   "chunk": null,
+   "groups": [
+    "stratum:results_columns",
+    "kind:prose",
+    "tag:bad_text_layer"
+   ]
+  },
+  {
+   "id": "V051",
+   "level": 3,
+   "chunk": 743,
+   "groups": [
+    "stratum:results_columns",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V052",
+   "level": 3,
+   "chunk": 745,
+   "groups": [
+    "stratum:results_columns",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V053",
+   "level": 4,
+   "chunk": 745,
+   "groups": [
+    "stratum:results_columns",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V054",
+   "level": 3,
+   "chunk": 35,
+   "groups": [
+    "stratum:results_columns",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V055",
+   "level": 3,
+   "chunk": 35,
+   "groups": [
+    "stratum:results_columns",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V056",
+   "level": 3,
+   "chunk": 35,
+   "groups": [
+    "stratum:results_columns",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V057",
+   "level": 4,
+   "chunk": 541,
+   "groups": [
+    "stratum:results_columns",
+    "kind:chart"
+   ]
+  },
+  {
+   "id": "V058",
+   "level": 4,
+   "chunk": 541,
+   "groups": [
+    "stratum:results_columns",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V059",
+   "level": 0,
+   "chunk": null,
+   "groups": [
+    "stratum:results_columns",
+    "kind:prose"
+   ]
+  },
+  {
+   "id": "V060",
+   "level": 4,
+   "chunk": 54,
+   "groups": [
+    "stratum:results_columns",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V061",
+   "level": 4,
+   "chunk": 54,
+   "groups": [
+    "stratum:results_columns",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V062",
+   "level": 4,
+   "chunk": 54,
+   "groups": [
+    "stratum:results_columns",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V063",
+   "level": 4,
+   "chunk": 599,
+   "groups": [
+    "stratum:results_columns",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V064",
+   "level": 3,
+   "chunk": 603,
+   "groups": [
+    "stratum:results_columns",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V065",
+   "level": 3,
+   "chunk": 603,
+   "groups": [
+    "stratum:results_columns",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V066",
+   "level": 2,
+   "chunk": 570,
+   "groups": [
+    "stratum:segment_or_continued",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V067",
+   "level": 4,
+   "chunk": 569,
+   "groups": [
+    "stratum:segment_or_continued",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V068",
+   "level": 4,
+   "chunk": 572,
+   "groups": [
+    "stratum:segment_or_continued",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V069",
+   "level": 3,
+   "chunk": 68,
+   "groups": [
+    "stratum:segment_or_continued",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V070",
+   "level": 3,
+   "chunk": 68,
+   "groups": [
+    "stratum:segment_or_continued",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V071",
+   "level": 3,
+   "chunk": 68,
+   "groups": [
+    "stratum:segment_or_continued",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V072",
+   "level": 2,
+   "chunk": 545,
+   "groups": [
+    "stratum:segment_or_continued",
+    "kind:table",
+    "tag:two_level_header"
+   ]
+  },
+  {
+   "id": "V073",
+   "level": 1,
+   "chunk": 545,
+   "groups": [
+    "stratum:segment_or_continued",
+    "kind:table",
+    "tag:two_level_header"
+   ]
+  },
+  {
+   "id": "V074",
+   "level": 4,
+   "chunk": 92,
+   "groups": [
+    "stratum:segment_or_continued",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V075",
+   "level": 4,
+   "chunk": 92,
+   "groups": [
+    "stratum:segment_or_continued",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V076",
+   "level": 4,
+   "chunk": 92,
+   "groups": [
+    "stratum:segment_or_continued",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V077",
+   "level": 4,
+   "chunk": 1036,
+   "groups": [
+    "stratum:segment_or_continued",
+    "kind:table",
+    "tag:two_level_header"
+   ]
+  },
+  {
+   "id": "V078",
+   "level": 2,
+   "chunk": 1036,
+   "groups": [
+    "stratum:segment_or_continued",
+    "kind:table",
+    "tag:two_level_header"
+   ]
+  },
+  {
+   "id": "V079",
+   "level": 2,
+   "chunk": 1038,
+   "groups": [
+    "stratum:segment_or_continued",
+    "kind:table",
+    "tag:two_level_header"
+   ]
+  },
+  {
+   "id": "V080",
+   "level": 3,
+   "chunk": 643,
+   "groups": [
+    "stratum:segment_or_continued",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V081",
+   "level": 3,
+   "chunk": 641,
+   "groups": [
+    "stratum:segment_or_continued",
+    "kind:table",
+    "tag:two_level_header"
+   ]
+  },
+  {
+   "id": "V082",
+   "level": 3,
+   "chunk": 639,
+   "groups": [
+    "stratum:segment_or_continued",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V083",
+   "level": 3,
+   "chunk": 978,
+   "groups": [
+    "stratum:segment_or_continued",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V084",
+   "level": 3,
+   "chunk": 970,
+   "groups": [
+    "stratum:segment_or_continued",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V085",
+   "level": 4,
+   "chunk": 976,
+   "groups": [
+    "stratum:segment_or_continued",
+    "kind:prose"
+   ]
+  },
+  {
+   "id": "V086",
+   "level": 4,
+   "chunk": 972,
+   "groups": [
+    "stratum:segment_or_continued",
+    "kind:prose"
+   ]
+  },
+  {
+   "id": "V087",
+   "level": 3,
+   "chunk": 483,
+   "groups": [
+    "stratum:segment_or_continued",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V088",
+   "level": 3,
+   "chunk": 485,
+   "groups": [
+    "stratum:segment_or_continued",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V089",
+   "level": 3,
+   "chunk": 485,
+   "groups": [
+    "stratum:segment_or_continued",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V090",
+   "level": 4,
+   "chunk": 25,
+   "groups": [
+    "stratum:slide_numbers",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V091",
+   "level": 4,
+   "chunk": 25,
+   "groups": [
+    "stratum:slide_numbers",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V092",
+   "level": 4,
+   "chunk": 21,
+   "groups": [
+    "stratum:slide_numbers",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V093",
+   "level": 1,
+   "chunk": 21,
+   "groups": [
+    "stratum:slide_numbers",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V094",
+   "level": 4,
+   "chunk": 32,
+   "groups": [
+    "stratum:slide_numbers",
+    "kind:chart"
+   ]
+  },
+  {
+   "id": "V095",
+   "level": 4,
+   "chunk": 32,
+   "groups": [
+    "stratum:slide_numbers",
+    "kind:chart"
+   ]
+  },
+  {
+   "id": "V096",
+   "level": 3,
+   "chunk": 80,
+   "groups": [
+    "stratum:slide_numbers",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V097",
+   "level": 3,
+   "chunk": 80,
+   "groups": [
+    "stratum:slide_numbers",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V098",
+   "level": 4,
+   "chunk": 54,
+   "groups": [
+    "stratum:slide_numbers",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V099",
+   "level": 4,
+   "chunk": 54,
+   "groups": [
+    "stratum:slide_numbers",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V100",
+   "level": 4,
+   "chunk": 31,
+   "groups": [
+    "stratum:slide_numbers",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V101",
+   "level": 4,
+   "chunk": 31,
+   "groups": [
+    "stratum:slide_numbers",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V102",
+   "level": 3,
+   "chunk": 13,
+   "groups": [
+    "stratum:slide_numbers",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V103",
+   "level": 4,
+   "chunk": 14,
+   "groups": [
+    "stratum:slide_numbers",
+    "kind:prose"
+   ]
+  },
+  {
+   "id": "V104",
+   "level": 1,
+   "chunk": 133,
+   "groups": [
+    "stratum:slide_numbers",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V105",
+   "level": 4,
+   "chunk": 133,
+   "groups": [
+    "stratum:slide_numbers",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V106",
+   "level": 4,
+   "chunk": 28,
+   "groups": [
+    "stratum:slide_numbers",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V107",
+   "level": 4,
+   "chunk": 28,
+   "groups": [
+    "stratum:slide_numbers",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V108",
+   "level": 4,
+   "chunk": 50,
+   "groups": [
+    "stratum:slide_numbers",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V109",
+   "level": 4,
+   "chunk": 50,
+   "groups": [
+    "stratum:slide_numbers",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V110",
+   "level": 4,
+   "chunk": 22,
+   "groups": [
+    "stratum:concall_qa",
+    "kind:qa"
+   ]
+  },
+  {
+   "id": "V111",
+   "level": 4,
+   "chunk": 22,
+   "groups": [
+    "stratum:concall_qa",
+    "kind:qa"
+   ]
+  },
+  {
+   "id": "V112",
+   "level": 4,
+   "chunk": 14,
+   "groups": [
+    "stratum:concall_qa",
+    "kind:qa"
+   ]
+  },
+  {
+   "id": "V113",
+   "level": 4,
+   "chunk": 13,
+   "groups": [
+    "stratum:concall_qa",
+    "kind:qa"
+   ]
+  },
+  {
+   "id": "V114",
+   "level": 4,
+   "chunk": 27,
+   "groups": [
+    "stratum:concall_qa",
+    "kind:qa"
+   ]
+  },
+  {
+   "id": "V115",
+   "level": 4,
+   "chunk": 28,
+   "groups": [
+    "stratum:concall_qa",
+    "kind:qa"
+   ]
+  },
+  {
+   "id": "V116",
+   "level": 4,
+   "chunk": 28,
+   "groups": [
+    "stratum:concall_qa",
+    "kind:qa"
+   ]
+  },
+  {
+   "id": "V117",
+   "level": 4,
+   "chunk": 20,
+   "groups": [
+    "stratum:concall_qa",
+    "kind:qa"
+   ]
+  },
+  {
+   "id": "V118",
+   "level": 4,
+   "chunk": 20,
+   "groups": [
+    "stratum:concall_qa",
+    "kind:qa"
+   ]
+  },
+  {
+   "id": "V119",
+   "level": 4,
+   "chunk": 62,
+   "groups": [
+    "stratum:concall_qa",
+    "kind:prose"
+   ]
+  },
+  {
+   "id": "V120",
+   "level": 4,
+   "chunk": 61,
+   "groups": [
+    "stratum:concall_qa",
+    "kind:prose"
+   ]
+  },
+  {
+   "id": "V121",
+   "level": 4,
+   "chunk": 12,
+   "groups": [
+    "stratum:concall_qa",
+    "kind:qa"
+   ]
+  },
+  {
+   "id": "V122",
+   "level": 4,
+   "chunk": 12,
+   "groups": [
+    "stratum:concall_qa",
+    "kind:qa"
+   ]
+  },
+  {
+   "id": "V123",
+   "level": 4,
+   "chunk": 13,
+   "groups": [
+    "stratum:concall_qa",
+    "kind:qa"
+   ]
+  },
+  {
+   "id": "V124",
+   "level": 4,
+   "chunk": 8,
+   "groups": [
+    "stratum:concall_qa",
+    "kind:qa"
+   ]
+  },
+  {
+   "id": "V125",
+   "level": 4,
+   "chunk": 9,
+   "groups": [
+    "stratum:concall_qa",
+    "kind:qa"
+   ]
+  },
+  {
+   "id": "V126",
+   "level": 4,
+   "chunk": 47,
+   "groups": [
+    "stratum:concall_qa",
+    "kind:qa"
+   ]
+  },
+  {
+   "id": "V127",
+   "level": 4,
+   "chunk": 48,
+   "groups": [
+    "stratum:concall_qa",
+    "kind:qa"
+   ]
+  },
+  {
+   "id": "V128",
+   "level": 4,
+   "chunk": 13,
+   "groups": [
+    "stratum:concall_qa",
+    "kind:qa"
+   ]
+  },
+  {
+   "id": "V129",
+   "level": 4,
+   "chunk": 12,
+   "groups": [
+    "stratum:concall_qa",
+    "kind:qa"
+   ]
+  },
+  {
+   "id": "V130",
+   "level": 4,
+   "chunk": 7,
+   "groups": [
+    "stratum:concall_qa",
+    "kind:qa"
+   ]
+  },
+  {
+   "id": "V131",
+   "level": 4,
+   "chunk": 8,
+   "groups": [
+    "stratum:concall_qa",
+    "kind:qa"
+   ]
+  },
+  {
+   "id": "V132",
+   "level": 3,
+   "chunk": 504,
+   "groups": [
+    "stratum:prose_footnote",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V133",
+   "level": 4,
+   "chunk": 506,
+   "groups": [
+    "stratum:prose_footnote",
+    "kind:prose"
+   ]
+  },
+  {
+   "id": "V134",
+   "level": 3,
+   "chunk": 214,
+   "groups": [
+    "stratum:prose_footnote",
+    "kind:table",
+    "tag:two_level_header"
+   ]
+  },
+  {
+   "id": "V135",
+   "level": 3,
+   "chunk": 214,
+   "groups": [
+    "stratum:prose_footnote",
+    "kind:table",
+    "tag:two_level_header"
+   ]
+  },
+  {
+   "id": "V136",
+   "level": 2,
+   "chunk": 255,
+   "groups": [
+    "stratum:prose_footnote",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V137",
+   "level": 2,
+   "chunk": 255,
+   "groups": [
+    "stratum:prose_footnote",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V138",
+   "level": 3,
+   "chunk": 1200,
+   "groups": [
+    "stratum:prose_footnote",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V139",
+   "level": 4,
+   "chunk": 1201,
+   "groups": [
+    "stratum:prose_footnote",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V140",
+   "level": 3,
+   "chunk": 525,
+   "groups": [
+    "stratum:prose_footnote",
+    "kind:table",
+    "tag:two_level_header"
+   ]
+  },
+  {
+   "id": "V141",
+   "level": 4,
+   "chunk": 525,
+   "groups": [
+    "stratum:prose_footnote",
+    "kind:table",
+    "tag:two_level_header"
+   ]
+  },
+  {
+   "id": "V142",
+   "level": 4,
+   "chunk": 286,
+   "groups": [
+    "stratum:prose_footnote",
+    "kind:prose"
+   ]
+  },
+  {
+   "id": "V143",
+   "level": 3,
+   "chunk": 253,
+   "groups": [
+    "stratum:prose_footnote",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V144",
+   "level": 4,
+   "chunk": 253,
+   "groups": [
+    "stratum:prose_footnote",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V145",
+   "level": 3,
+   "chunk": 676,
+   "groups": [
+    "stratum:prose_footnote",
+    "kind:table",
+    "tag:two_level_header"
+   ]
+  },
+  {
+   "id": "V146",
+   "level": 4,
+   "chunk": 676,
+   "groups": [
+    "stratum:prose_footnote",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V147",
+   "level": 4,
+   "chunk": 204,
+   "groups": [
+    "stratum:prose_footnote",
+    "kind:prose"
+   ]
+  },
+  {
+   "id": "V148",
+   "level": 0,
+   "chunk": null,
+   "groups": [
+    "stratum:prose_footnote",
+    "kind:prose"
+   ]
+  },
+  {
+   "id": "V149",
+   "level": 3,
+   "chunk": 119,
+   "groups": [
+    "stratum:prose_footnote",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "V150",
+   "level": 3,
+   "chunk": 119,
+   "groups": [
+    "stratum:prose_footnote",
+    "kind:table"
+   ]
+  }
+ ]
+}

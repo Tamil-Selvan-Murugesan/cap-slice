@@ -1,0 +1,3 @@
+# MinerU GPU image: MinerU 4 with vLLM (serves MinerU2.5-Pro) + what cap-slice's runner imports.
+mineru[full]==4.0.10
+pymupdf==1.28.2

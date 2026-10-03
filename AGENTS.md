@@ -26,6 +26,7 @@ Target: roughly 2015–2026 (or from listing date if later), eventually for ~3,0
 | Path | What it is |
 |---|---|
 | `data/document_availability_matrix.csv` | Pilot catalog: one row per document, 5 companies |
+| `docs/plan.md` | Agreed plan for scaling to all 12,980 pages (golden set → GPU parse with Docling + MinerU → parser choice → retrieval → chunking → embeddings) |
 | `docs/document-sourcing-report.md` | Findings report: sources, workarounds, ToS, scaling issues, open questions |
 | `docs/pdf-parsers-pymupdf4llm-vs-docling.md` | Explainer: what PyMuPDF4LLM and Docling do, their models, how each does OCR, and our measured results |
 | `docs/media/pymupdf4llm-vs-docling.mp4`, `tools/explainer_video/` | 3-min captioned video of both parsers on one scanned page (real outputs), and the scripts that build it |
@@ -34,15 +35,21 @@ Target: roughly 2015–2026 (or from listing date if later), eventually for ~3,0
 | `src/cap_slice/downloader.py` | Downloads every matrix row that has a URL (`uv run cap-slice-download`) |
 | `src/cap_slice/extract.py` → `chunk.py` → `embed.py` → `vectorstore.py` | Indexing pipeline stages; `index.py` runs them (`uv run cap-slice-index`) |
 | `src/cap_slice/parsing/`, `structured_chunk.py`, `compare_parsers.py` | Parser comparison: Option 1 (`pymupdf_text`), Option 2 (`pymupdf4llm`), Option 3 (`docling`), shared structure-aware chunker, runner `uv run cap-slice-compare` |
-| `data/golden/` | Golden set: `compare_docs.csv` (5 docs) and `parse_facts.csv` (28 facts read off page images, not from any parser) |
+| `data/golden/` | Golden sets — v1: `compare_docs.csv` + `parse_facts.csv` (28 facts, 5 docs, partly seen during chunker fixes); **v2: `v2_facts.csv` (150 facts, 61 pages, 45 unseen docs)** + page inventory and sampling. All read off page images, never from a parser. See `data/golden/README.md` |
+| `tools/golden/inventory.py` | Page inventory of all PDFs + seeded stratified sample of candidate pages for golden facts |
 | `review/` | Parser-comparison outputs (committed): `README.md` verdict, `COMPARISON.md` scores, `<option>/<doc>/parsed.md` (raw parser output), `chunks.md` (what would be embedded), `parsed.json` (parse cache — `cap-slice-compare` reuses it; `--reparse` to redo) |
+| `src/cap_slice/batch_parse.py` (`cap-slice-parse`) | Batch runner for any parser: per-document cache in `parsed/<parser>/<doc_id>/` (pages.json + raw JSON + meta.json), resume, per-run logs and GPU sampling in `_runs/` |
+| `src/cap_slice/parsing/mineru_vlm.py`, `html_table.py` | MinerU 4 adapter (MinerU2.5-Pro via a VLM server; tier `standard`/`advanced`) and HTML-table → pipe-table converter |
+| `src/cap_slice/score.py` (`cap-slice-score`) | Scores a parser's cache against golden v2 → `review/v2/<parser>.md` |
+| `docker/`, `tools/gpu/`, `docs/gpu-run.md` | GPU images (Docling; MinerU + vLLM), session scripts, benchmark builder/report, and the copy-paste runbook |
+| `parsed*/` | Batch caches (gitignored; synced with rsync) |
 | `data/qdrant/` | Local Qdrant store (gitignored; re-create with `cap-slice-index`) |
 | `PROGRESS.md` | Living status + decision log |
 | `bugs_resolved.md` | Parser/chunker/scorer/indexing bugs with root cause and fix — read the Lessons first; add an entry whenever you fix one |
 
 Tooling: Python 3.12, `uv` for env/deps (`uv run`, `uv add`).
 
-**Disk:** the Linux disk is a virtual disk (`ext4.vhdx`, ~100 GB) on the Windows C: drive. It grows but never shrinks on its own, and on 2026-09-28 C: reached **~210 MB free**. Check `df -h /mnt/c` before any install or large write; don't trust the ~900 GB Linux `df -h /` shows. PyTorch must be CPU-only (configured in `pyproject.toml` via the `pytorch-cpu` index). Docling added ~2 GB (packages + ~0.5 GB models in `~/.cache/huggingface`).
+**Disk:** keep C: above **500 MB** free (user's floor, 2026-10-03). The Linux disk is a virtual disk (`ext4.vhdx`, ~100 GB) on the Windows C: drive. It grows but never shrinks on its own, and on 2026-09-28 C: reached **~210 MB free**. Check `df -h /mnt/c` before any install or large write; don't trust the ~900 GB Linux `df -h /` shows. PyTorch must be CPU-only (configured in `pyproject.toml` via the `pytorch-cpu` index). Docling added ~2 GB (packages + ~0.5 GB models in `~/.cache/huggingface`).
 
 ## Pilot companies
 

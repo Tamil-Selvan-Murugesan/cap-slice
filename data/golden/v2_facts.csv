@@ -1,0 +1,151 @@
+id,stratum,path,page,kind,label,value,context,unit,note
+V001,digital_statement,data/APARINDS/annual_reports/FY2023-24.pdf,151,table,Plant and machinery,197.06,Additions,crore,Two-page spread; table rotated 90 degrees; grouped headers Gross block/Depreciation/Net block
+V002,digital_statement,data/APARINDS/annual_reports/FY2023-24.pdf,151,table,Building,336.62,Net block,crore,Rotated table; last column
+V003,digital_statement,data/APARINDS/annual_reports/FY2023-24.pdf,151,table,Grand Total,"1,250.61",Net block,crore,Rotated table; bottom row
+V004,digital_statement,data/APARINDS/annual_reports/FY2014-15.pdf,64,table,Forfeited during the year,"75,856",31 March 2014,,ESOP options table; prior-year column; count not money
+V005,digital_statement,data/APARINDS/annual_reports/FY2014-15.pdf,64,table,Total Reserves and Surplus,598.42,31 March 2015,crore,
+V006,digital_statement,data/APARINDS/annual_reports/FY2014-15.pdf,64,table,Profit for the year,68.79,31 March 2014,crore,Prior-year column
+V007,digital_statement,data/APARINDS/annual_reports/FY2018-19.pdf,79,prose,Sharp & Tannan LLP,127145W/W100218,,,"Page is auditor-report prose, not a statement (keyword filter noise); firm registration no."
+V008,digital_statement,data/APARINDS/annual_reports/FY2018-19.pdf,79,prose,Firdosh D. Buchia,038332,,,Auditor membership no.
+V009,digital_statement,data/APARINDS/annual_reports/FY2015-16.pdf,90,table,Deemed exports,151.48,31 March 2015,crore,Prior-year column
+V010,digital_statement,data/APARINDS/annual_reports/FY2015-16.pdf,90,table,Export of goods,"1,503.56",31 March 2016,crore,
+V011,digital_statement,data/APARINDS/annual_reports/FY2015-16.pdf,90,prose,Milind P. Phadke,033013,,,Signatory membership no.
+V012,digital_statement,data/APARINDS/annual_reports/FY2013-14.pdf,42,table,Trade payables,"1,386.40",31-March-14,crore,Balance sheet
+V013,digital_statement,data/APARINDS/annual_reports/FY2013-14.pdf,42,table,Cash and bank balances,"1,032.09",31-March-13,crore,Prior-year column
+V014,digital_statement,data/APARINDS/annual_reports/FY2013-14.pdf,42,table,Inventories,"1,010.44",31-March-14,crore,
+V015,digital_statement,data/C2C/annual_reports/2026-09-08_FY2025-26.pdf,94,prose,none of the directors is disqualified as on,"March 31, 2026",,,Auditor-report prose with company watermark behind the text
+V016,digital_statement,data/APARINDS/annual_reports/FY2021-22.pdf,178,prose,Appendix B to Ind AS 21,"Rules, 2018",,,Two-column policy prose; fact in right column
+V017,digital_statement,data/HEROMOTOCO/annual_reports/FY2020-21.pdf,153,table,"Balance as at March 31, 2021","15,158.47",Total,crores,Statement of changes in equity; grouped headers; label also appears in section A with a different value
+V018,digital_statement,data/HEROMOTOCO/annual_reports/FY2020-21.pdf,153,table,"Balance as at March 31, 2020","11,416.82",Retained earnings,crores,SOCE; 6 value columns
+V019,digital_statement,data/HEROMOTOCO/annual_reports/FY2020-21.pdf,153,table,"Balance as at March 31, 2021","19,97,80,217",Number of shares,,Section A; Indian digit grouping
+V020,digital_statement,data/HEROMOTOCO/annual_reports/FY2014-15.pdf,197,table,Present value of Defined benefit plan,109.55,2012-13,crores,Five year columns
+V021,digital_statement,data/HEROMOTOCO/annual_reports/FY2014-15.pdf,197,table,Experience gain / (loss) adjustments on plan liabilities,15.28,2011-12,crores,Five year columns
+V022,digital_statement,data/HEROMOTOCO/annual_reports/FY2014-15.pdf,197,table,On others,10.04,"March 31, 2014",crores,Finance costs; prior-year column
+V023,digital_statement,data/APARINDS/annual_reports/FY2025-26.pdf,164,table,Reserves and surplus,"5,057.38","March 31, 2026",crore,Two-page spread with six small tables
+V024,digital_statement,data/APARINDS/annual_reports/FY2025-26.pdf,164,table,Foreign currency term loans from banks,298.33,"March 31, 2025",crore,Prior-year column
+V025,digital_statement,data/APARINDS/annual_reports/FY2025-26.pdf,164,table,Profit for the year,973.91,"March 31, 2026",crore,
+V026,digital_statement,data/HEROMOTOCO/annual_reports/FY2019-20.pdf,185,table,Audit fee,0.65,"March 31, 2019",crore,Prior-year column
+V027,digital_statement,data/HEROMOTOCO/annual_reports/FY2019-20.pdf,185,table,Diluted earnings per share,169.47,"March 31, 2019",,EPS; prior-year column
+V028,digital_statement,data/HEROMOTOCO/annual_reports/FY2019-20.pdf,185,table,Profit before tax,"4,573.69","March 31, 2020",crore,
+V029,low_text_numeric,data/APARINDS/investor_presentations/Nov-2017-a.pdf,1,prose,Scrip Code,532259,,,Scanned cover letter (no text layer)
+V030,low_text_numeric,data/APARINDS/investor_presentations/Nov-2017-a.pdf,1,prose,Scrip Symbol,APARINDS,,,Scanned cover letter
+V031,low_text_numeric,data/APARINDS/annual_reports/FY2012-13.pdf,105,prose,Type of Audit Observation,Unqualified,,,Scanned Form A; key-value table with signatures over text
+V032,low_text_numeric,data/APARINDS/annual_reports/FY2012-13.pdf,105,prose,Milind P. Phadke,033013,,,Scanned Form A; signature crosses nearby text
+V033,low_text_numeric,data/APARINDS/annual_reports/FY2012-13.pdf,105,prose,Sharp & Tannan,109982W,,,Scanned Form A; signature crosses 'Reg. No.'
+V034,low_text_numeric,data/HEROMOTOCO/annual_reports/FY2014-15.pdf,1,prose,Firm Registration No.,015125N,,,Scanned Form A; signature crosses 'Firm'
+V035,low_text_numeric,data/HEROMOTOCO/annual_reports/FY2014-15.pdf,1,prose,JAIDEEP BHARGAVA,090295,,,Scanned Form A; membership no.
+V036,low_text_numeric,data/HEROMOTOCO/annual_reports/FY2014-15.pdf,1,prose,Audit Report dated,"May 7, 2015",,,Scanned Form A
+V037,low_text_numeric,data/E2E/annual_reports/2024-08-20_FY2023-24.pdf,17,prose,Srishti Baweja,COO & Whole Time Director,,,Image text: white on blue background
+V038,low_text_numeric,data/E2E/annual_reports/2024-08-20_FY2023-24.pdf,17,prose,remain focused on our core mission,empowering businesses through innovative cloud solutions,,,Image text; sentence wraps across lines
+V039,results_columns,data/ESCONET/periodic_results/2025-11-14_H1-FY26-half-yearly-SME.pdf,5,table,Reserves and Surplus,"2,660.78",September 2024,lakhs,Grouped headers (Half-Yearly / Yearly); 4 period columns
+V040,results_columns,data/ESCONET/periodic_results/2025-11-14_H1-FY26-half-yearly-SME.pdf,5,table,Cash and cash equivalents,"3,132.97",March 2025,lakhs,
+V041,results_columns,data/ESCONET/periodic_results/2025-11-14_H1-FY26-half-yearly-SME.pdf,5,table,Short-term borrowings,"2,283.10",September 2025,lakhs,Header text wraps across lines
+V042,results_columns,data/ESCONET/periodic_results/2025-11-14_H1-FY26-half-yearly-SME.pdf,5,table,Trade receivables,9124.78,September 2025,lakhs,Printed without a comma while neighbouring cells have one
+V043,results_columns,data/E2E/periodic_results/2026-04-20_Q4-FY2025-26-quarterly.pdf,4,table,Depreciation of property,"4,161.00","March 31, 2025",Lakhs,"Cash flow statement; scanned-looking print with stamp; prior-year column; PDF has an embedded OCR text layer WITH ERRORS (e.g. 'rrom operating activitirs', '(1 .26,245.03)', 'JNR 2,490per'); facts read from the image are correct — tests whether a parser trusts a bad text layer"
+V044,results_columns,data/E2E/periodic_results/2026-04-20_Q4-FY2025-26-quarterly.pdf,4,table,Net cash flow from operating activities,"12,205.68","March 31, 2026",Lakhs,"Label and value separated by '(A)' column; PDF has an embedded OCR text layer WITH ERRORS (e.g. 'rrom operating activitirs', '(1 .26,245.03)', 'JNR 2,490per'); facts read from the image are correct — tests whether a parser trusts a bad text layer"
+V045,results_columns,data/E2E/periodic_results/2026-04-20_Q4-FY2025-26-quarterly.pdf,4,table,Purchase of fixed assets,"(1,26,245.03)","March 31, 2026",Lakhs,"Negative in parentheses; Indian digit grouping; PDF has an embedded OCR text layer WITH ERRORS (e.g. 'rrom operating activitirs', '(1 .26,245.03)', 'JNR 2,490per'); facts read from the image are correct — tests whether a parser trusts a bad text layer"
+V046,results_columns,data/E2E/periodic_results/2026-04-20_Q4-FY2025-26-quarterly.pdf,2,table,Revenue from operations,"7,002.23",31-Dec-25,Lakhs,"Quarterly results; 5 columns under Quarter Ended / Year Ended; 31-Mar-26 appears twice so the unique column is used; PDF has an embedded OCR text layer WITH ERRORS (e.g. 'rrom operating activitirs', '(1 .26,245.03)', 'JNR 2,490per'); facts read from the image are correct — tests whether a parser trusts a bad text layer"
+V047,results_columns,data/E2E/periodic_results/2026-04-20_Q4-FY2025-26-quarterly.pdf,2,table,Depreciation and amortization expenses,"4,764.86",31-Dec-25,Lakhs,"PDF has an embedded OCR text layer WITH ERRORS (e.g. 'rrom operating activitirs', '(1 .26,245.03)', 'JNR 2,490per'); facts read from the image are correct — tests whether a parser trusts a bad text layer"
+V048,results_columns,data/E2E/periodic_results/2026-04-20_Q4-FY2025-26-quarterly.pdf,2,table,Basic earnings per share,(2.85),31-Dec-25,,"Negative EPS in parentheses; PDF has an embedded OCR text layer WITH ERRORS (e.g. 'rrom operating activitirs', '(1 .26,245.03)', 'JNR 2,490per'); facts read from the image are correct — tests whether a parser trusts a bad text layer"
+V049,results_columns,data/E2E/periodic_results/2026-04-20_Q4-FY2025-26-quarterly.pdf,2,prose,Jarvis Labs AI Private Limited,"August 28, 2025",,,"Note 4 prose below the table; PDF has an embedded OCR text layer WITH ERRORS (e.g. 'rrom operating activitirs', '(1 .26,245.03)', 'JNR 2,490per'); facts read from the image are correct — tests whether a parser trusts a bad text layer"
+V050,results_columns,data/E2E/periodic_results/2026-04-20_Q4-FY2025-26-quarterly.pdf,2,prose,premium of INR,"2,490 per share",,,"Note 5 prose; PDF has an embedded OCR text layer WITH ERRORS (e.g. 'rrom operating activitirs', '(1 .26,245.03)', 'JNR 2,490per'); facts read from the image are correct — tests whether a parser trusts a bad text layer"
+V051,results_columns,data/HEROMOTOCO/annual_reports/FY2023-24.pdf,145,table,Diluted earnings per share,145.52,"March 31, 2023",,Two-page spread of small tables; prior-year column
+V052,results_columns,data/HEROMOTOCO/annual_reports/FY2023-24.pdf,145,table,Weighted average number of equity shares for the purposes of diluted earnings per share,"20,02,24,343","March 31, 2024",,Long label; Indian digit grouping
+V053,results_columns,data/HEROMOTOCO/annual_reports/FY2023-24.pdf,145,table,Sale of products,"1,460.09",Outside India,crores,"Period is only in the table title ('For the year ended March 31, 2024'); an identical table for 2023 follows"
+V054,results_columns,data/APARINDS/investor_presentations/Nov-2019.pdf,24,table,EBITDA,141.2,Q1 FY20,crore,Slide table with 9 columns; '% Chg YoY' header repeats so unique columns used
+V055,results_columns,data/APARINDS/investor_presentations/Nov-2019.pdf,24,table,Depreciation,31.9,H1FY19,crore,
+V056,results_columns,data/APARINDS/investor_presentations/Nov-2019.pdf,24,table,Cost of Raw Materials,"2,968.5",H1FY20,crore,
+V057,results_columns,data/HEROMOTOCO/annual_reports/FY2025-26.pdf,136,chart,DIVIDEND PAYOUT RATIO,263.34,,,Chart data label (EPS 2025-26); value exists only as a label on a bar chart
+V058,results_columns,data/HEROMOTOCO/annual_reports/FY2025-26.pdf,136,table,Domestic Institutions,24.62,Percentage,,Category-wise shareholding table in the annual report
+V059,results_columns,data/HEROMOTOCO/annual_reports/FY2025-26.pdf,136,prose,final dividend,75/- per equity share,,,Dividend paragraph in a narrow column
+V060,results_columns,data/APARINDS/investor_presentations/Nov-2020.pdf,28,table,Finance costs,90.0,"Sep 30, 2019",crore,Cash flow slide; prior-period column
+V061,results_columns,data/APARINDS/investor_presentations/Nov-2020.pdf,28,table,(Increase)/ decrease in inventories,-94.2,"Sep 30, 2019",crore,Negative with minus sign
+V062,results_columns,data/APARINDS/investor_presentations/Nov-2020.pdf,28,table,Net cash generated by / (used in) operating activities,-101.4,"Sep 30, 2020",crore,
+V063,results_columns,data/APARINDS/annual_reports/FY2023-24.pdf,122,table,Provision for leave encashment,9.29,"March 31, 2023",crore,Spread with six small tables; prior-year column
+V064,results_columns,data/APARINDS/annual_reports/FY2023-24.pdf,122,table,Derivatives contracts - Current,21.42,"March 31, 2023",crore,Same value also appears as the column total
+V065,results_columns,data/APARINDS/annual_reports/FY2023-24.pdf,122,table,Trade payable,(845.12),Difference,crore,"'Trade payable' repeats in three quarter blocks; only the block heading ('quarter ended June 30, 2023') gives the period"
+V066,segment_or_continued,data/HEROMOTOCO/annual_reports/FY2022-23.pdf,128,table,Pawan Munjal Family Trust,"2,01,100",No. of shares,,"Year only in table title ('...end of March 31, 2023'); an identically labelled 2022 table below has 1,58,000"
+V067,segment_or_continued,data/HEROMOTOCO/annual_reports/FY2022-23.pdf,128,table,ESOP 2018,"61,780","March 31, 2022",,Two-level header (Share Options Outstanding > As at ...)
+V068,segment_or_continued,data/HEROMOTOCO/annual_reports/FY2022-23.pdf,128,table,Retained earnings,"13,031.60","March 31, 2022",crores,Other equity; prior-year column
+V069,segment_or_continued,data/APARINDS/investor_presentations/Nov-2017-a.pdf,35,table,Power and Telecom Cables,16.4,Q1 FY18,Cr,"Segment results row; revenue section uses 'Power & Telecom Cables' (different label, value 271.0)"
+V070,segment_or_continued,data/APARINDS/investor_presentations/Nov-2017-a.pdf,35,table,Transformer & Specialty Oils,"1,061.5",H1FY18,Cr,Row label repeats in four sections; value unique
+V071,segment_or_continued,data/APARINDS/investor_presentations/Nov-2017-a.pdf,35,table,Less : Finance costs (net),59.6,H1FY17,Cr,
+V072,segment_or_continued,data/HEROMOTOCO/annual_reports/FY2015-16.pdf,147,table,Dynamic Bond Fund,139.20,"As at March 31, 2016",crores,"TWO-LEVEL HEADER (As at March 31, 2016 > Current); investments note continued from the previous page"
+V073,segment_or_continued,data/HEROMOTOCO/annual_reports/FY2015-16.pdf,147,table,Medium Term Fund,"15,950,540","March 31, 2016",,TWO-LEVEL HEADER; units column; Western digit grouping in an Indian report
+V074,segment_or_continued,data/APARINDS/investor_presentations/Feb-2019-a.pdf,37,table,Conductors,"1,721.3",9MFY18,Cr,Revenue section; 'Conductors' repeats in four sections
+V075,segment_or_continued,data/APARINDS/investor_presentations/Feb-2019-a.pdf,37,table,Profit before Tax,145.8,9MFY19,Cr,
+V076,segment_or_continued,data/APARINDS/investor_presentations/Feb-2019-a.pdf,37,table,Less : Unallocable expenditure net of income,6.9,Q2 FY19,Cr,
+V077,segment_or_continued,data/HEROMOTOCO/annual_reports/FY2023-24.pdf,190,table,Turnover,"5,716.63",BDT,MN,TWO-LEVEL HEADER; Form AOC-1 (subsidiary x currency); label has superscript footnote marker 'Turnover5'
+V078,segment_or_continued,data/HEROMOTOCO/annual_reports/FY2023-24.pdf,190,table,Share Capital,399.74,HMCL Netherlands B.V.,Crore,TWO-LEVEL HEADER; Form AOC-1; INR column of the Netherlands subsidiary
+V079,segment_or_continued,data/HEROMOTOCO/annual_reports/FY2023-24.pdf,190,table,Percentage holding,55%,HMCL Niloy,,TWO-LEVEL HEADER; Form AOC-1
+V080,segment_or_continued,data/HEROMOTOCO/annual_reports/FY2022-23.pdf,139,table,Trade payables,"4,704.46","March 31, 2023",crores,Financial instruments categories; label nested under Liabilities > Current
+V081,segment_or_continued,data/HEROMOTOCO/annual_reports/FY2022-23.pdf,139,table,Investments in preference shares,808.47,Level 2,crores,"TWO-LEVEL HEADER (Fair value as at March 31, 2023 > Level 2)"
+V082,segment_or_continued,data/HEROMOTOCO/annual_reports/FY2022-23.pdf,139,table,Equity reserves,"15,742.96","March 31, 2022",crores,Prior-year column
+V083,segment_or_continued,data/HEROMOTOCO/annual_reports/FY2024-25.pdf,176,table,"As at March 31, 2024",275.74,More than 5 years,crores,Maturity table where the row label is itself a date
+V084,segment_or_continued,data/HEROMOTOCO/annual_reports/FY2024-25.pdf,176,table,Benefit paid,(61.30),"March 31, 2024",crores,Same value appears in a 'Benefits paid' row of another table on the facing page
+V085,segment_or_continued,data/HEROMOTOCO/annual_reports/FY2024-25.pdf,176,prose,expects to make a contribution of,22.90 crores,,,Prose under 'Other disclosures'; rupee symbol between label and value
+V086,segment_or_continued,data/HEROMOTOCO/annual_reports/FY2024-25.pdf,176,prose,50 basis points higher,27.28 crores,,,Sensitivity bullet; several similar numbers in the same sentence
+V087,segment_or_continued,data/APARINDS/annual_reports/FY2021-22.pdf,157,table,Segment profit (loss) before tax & Finance Cost,248.33,Transformer,crore,Segment table for 2022; an identical-layout 2021 table follows; year only in title row
+V088,segment_or_continued,data/APARINDS/annual_reports/FY2021-22.pdf,157,table,Depreciation and Amortisation expense,30.55,Telecom,crore,2021 table (second on page); year only in title row; header 'Power/ Telecom Cables' wraps
+V089,segment_or_continued,data/APARINDS/annual_reports/FY2021-22.pdf,157,table,Profit after tax,136.82,Total,crore,2021 table; only the Total column is filled for this row
+V090,slide_numbers,data/E2E/investor_presentations/Jun-2023.pdf,33,table,EBITDA,230,FY22,Mn,Slide table; small integers
+V091,slide_numbers,data/E2E/investor_presentations/Jun-2023.pdf,33,table,Diluted EPS,(0.86),FY21,,Negative EPS in parentheses
+V092,slide_numbers,data/E2E/investor_presentations/Jun-2023.pdf,30,table,Platform as a Service (PaaS),"1,10,677",2022,Mn,Two tables side by side with identical headers (Worldwide | India) sharing text lines; this is the Worldwide table
+V093,slide_numbers,data/E2E/investor_presentations/Jun-2023.pdf,30,table,Desktop as a Service (DaaS),95.4,2023,Mn,Side-by-side tables; this is the India table (right)
+V094,slide_numbers,data/APARINDS/investor_presentations/Jun-2021.pdf,21,chart,Conductors revenue,"3,915",,,Bar chart; value only as a data label (FY19 bar); axis year not checked by the scorer
+V095,slide_numbers,data/APARINDS/investor_presentations/Jun-2021.pdf,21,chart,Specialty Oils & Lubricants revenue,"2,630",,,Bar chart; six charts on one slide
+V096,slide_numbers,data/APARINDS/investor_presentations/Feb-2020-a.pdf,38,table,Transformer & Specialty Oils,"1,933.6",9M FY19,Cr,Segment slide with 9 columns; label repeats across sections
+V097,slide_numbers,data/APARINDS/investor_presentations/Feb-2020-a.pdf,38,table,Less : Finance costs (net),67.4,Q2 FY20,Cr,
+V098,slide_numbers,data/APARINDS/investor_presentations/Feb-2017-a.pdf,31,table,Trade payables,1367,FY14,Cr,Six-year balance sheet slide; this value is printed without a comma while the rest of the row has commas
+V099,slide_numbers,data/APARINDS/investor_presentations/Feb-2017-a.pdf,31,table,Cash and bank balances,"1,055",FY13,Cr,
+V100,slide_numbers,data/APARINDS/investor_presentations/May-2025.pdf,10,table,Interest costs,263.75,31-Mar-25,crores,Cash flow statement embedded small on a portrait page in a presentation
+V101,slide_numbers,data/APARINDS/investor_presentations/May-2025.pdf,10,table,Provision for Doubtful Debts,45.55,31-Mar-25,crores,
+V102,slide_numbers,data/APARINDS/investor_presentations/Feb-2017-b.pdf,10,table,Q3 FY16,"8,156",EBITDA per MT,,Infographic: two rows separated by arrow graphics; row labels are periods
+V103,slide_numbers,data/APARINDS/investor_presentations/Feb-2017-b.pdf,10,prose,Order book at Rs,"1,611 Cr",,,Bullet text under the infographic
+V104,slide_numbers,data/APARINDS/investor_presentations/Sep-2024.pdf,149,table,Cost of raw materials,"11,076.22",12M FY23,,Letter-spaced font; some parsers may emit spaced digits
+V105,slide_numbers,data/APARINDS/investor_presentations/Sep-2024.pdf,149,table,Share in net profit / (loss) of associate,2950.0%,% Chg YoY,,Letter-spaced font; percentage column
+V106,slide_numbers,data/APARINDS/investor_presentations/May-2023.pdf,17,table,Power and Telecom Cables,101.4,Q3 FY23,crore,Unit appears only in the slide footer ('amounts in INR crore')
+V107,slide_numbers,data/APARINDS/investor_presentations/May-2023.pdf,17,table,Less : Finance costs (net),45.8,Q4 FY22,crore,Unit only in footer
+V108,slide_numbers,data/APARINDS/investor_presentations/Feb-2022.pdf,26,table,Transformer & Specialty Oils,"1,645.2",9MFY21,crore,Segment slide with 9 columns
+V109,slide_numbers,data/APARINDS/investor_presentations/Feb-2022.pdf,26,table,Less : Unallocable expenditure net of income,8.6,Q2FY22,crore,
+V110,concall_qa,data/HEROMOTOCO/concall_transcripts/Feb-2026.pdf,15,qa,update on the ABS regulation,we are awaiting further guidelines,,,Question and answer from different speakers; must share a chunk
+V111,concall_qa,data/HEROMOTOCO/concall_transcripts/Feb-2026.pdf,15,qa,EV models is approved under the PLI,one model that was approved under PLI,,,Answered by a third speaker
+V112,concall_qa,data/APARINDS/concall_transcripts/Nov-2024.pdf,18,qa,still just 20%,25% execution,,,Two percentages in one sentence of a question
+V113,concall_qa,data/APARINDS/concall_transcripts/Nov-2024.pdf,18,qa,wind capacity has started picking,APAR has a fairly strong position,,,Within one answer spanning paragraphs
+V114,concall_qa,data/C2C/concall_transcripts/2026-08-04_Aug-2026.pdf,20,qa,India revenue was,112 crores,,,Question text over watermark; 'FY2025' in same sentence
+V115,concall_qa,data/C2C/concall_transcripts/2026-08-04_Aug-2026.pdf,20,qa,40 crore PAT in 2026,PAT is 18 crores,,,
+V116,concall_qa,data/C2C/concall_transcripts/2026-08-04_Aug-2026.pdf,20,qa,put 14 crores in suspense,IFRS requirement,,,Answer to the previous question
+V117,concall_qa,data/APARINDS/concall_transcripts/Nov-2023.pdf,28,qa,already spent about,150 Crore,,,Bold transcript font throughout
+V118,concall_qa,data/APARINDS/concall_transcripts/Nov-2023.pdf,28,qa,phenomenal volume growth rate of,18%,,,Speaker label on the same line as the question
+V119,concall_qa,data/APARINDS/concall_transcripts/Sep-2024.pdf,76,prose,fully insulating up to,60 kV,,,Investor-day transcript; long monologue page with no speaker labels
+V120,concall_qa,data/APARINDS/concall_transcripts/Sep-2024.pdf,76,prose,two types of cooling,immersion cooling,,,
+V121,concall_qa,data/HEROMOTOCO/concall_transcripts/May-2022.pdf,9,qa,margin range for Hero was,14%,,,Question; answer follows on the same page
+V122,concall_qa,data/HEROMOTOCO/concall_transcripts/May-2022.pdf,9,qa,6 weeks as a norm,inventory,,,Answer about inventory weeks
+V123,concall_qa,data/HEROMOTOCO/concall_transcripts/May-2022.pdf,9,qa,priced between,7% and 10%,,,Numbers inside a long answer
+V124,concall_qa,data/APARINDS/concall_transcripts/May-2025.pdf,11,qa,45% of the products,AL-59,,,
+V125,concall_qa,data/APARINDS/concall_transcripts/May-2025.pdf,11,qa,tariff falls has happened up to the,9th of July,,,
+V126,concall_qa,data/C2C/concall_transcripts/2026-08-04_Aug-2026.pdf,34,qa,Nine levels of approval,We're at nine,,,Question and answer several speaker turns apart
+V127,concall_qa,data/C2C/concall_transcripts/2026-08-04_Aug-2026.pdf,34,qa,credited in the company's bank accounts,Closer to 25 crores,,,
+V128,concall_qa,data/E2E/concall_transcripts/May-2024.pdf,11,qa,putting a lot of the debt towards GPUs,CPU side also continues to be helped,,,Transcript with no header/letterhead; speaker labels far from text
+V129,concall_qa,data/E2E/concall_transcripts/May-2024.pdf,11,qa,couple of 100 activities,security,,,
+V130,concall_qa,data/APARINDS/concall_transcripts/Aug-2023-b.pdf,11,qa,42% versus 47%,HEC is just 20% versus 26%,,,Question with four percentages
+V131,concall_qa,data/APARINDS/concall_transcripts/Aug-2023-b.pdf,11,qa,domestic market can deliver higher volume,mix is not going to vary very much,,,Answer starts on this page and continues to the next
+V132,prose_footnote,data/HEROMOTOCO/annual_reports/FY2019-20.pdf,239,table,In current accounts,178.78,"March 31, 2019",crore,Small note table; prior-year column
+V133,prose_footnote,data/HEROMOTOCO/annual_reports/FY2019-20.pdf,239,prose,fixed deposits aggregating,25.00 crore with Dena Bank,,,Footnote (*) under a table
+V134,prose_footnote,data/HEROMOTOCO/annual_reports/FY2017-18.pdf,106,table,50001 - 100000,"7,381,791",Shares,,TWO-LEVEL HEADER (Shares of 2 paid-up > Numbers); row label is a numeric range; page also has a line chart
+V135,prose_footnote,data/HEROMOTOCO/annual_reports/FY2017-18.pdf,106,table,Total,"100,261",Shareholders,,TWO-LEVEL HEADER; value carries a footnote marker '#'
+V136,prose_footnote,data/HEROMOTOCO/annual_reports/FY2023-24.pdf,66,table,Total Income,"38,348",FY 2023-24,crore,Financial-performance table inside a designed MD&A spread; unit inside the row label
+V137,prose_footnote,data/HEROMOTOCO/annual_reports/FY2023-24.pdf,66,table,Earning per Equity Share on Profit After Tax,146,FY 2022-23,,Small integer; prior-year column
+V138,prose_footnote,data/HEROMOTOCO/annual_reports/FY2025-26.pdf,233,table,Warranties (Refer note (ii) below),430.05,"March 31, 2025",crore,Label repeats in non-current and current sections; this is non-current
+V139,prose_footnote,data/HEROMOTOCO/annual_reports/FY2025-26.pdf,233,table,Amount utilised during the year,(232.61),"March 31, 2026",crore,Second table under a numbered note
+V140,prose_footnote,data/HEROMOTOCO/annual_reports/FY2016-17.pdf,151,table,Closing Balance,"199,696,838",March 31,,"TWO-LEVEL HEADER (As at March 31, 2017 > Nos.); value in red"
+V141,prose_footnote,data/HEROMOTOCO/annual_reports/FY2016-17.pdf,151,table,Issued during the year,"2,588",March 31,,"TWO-LEVEL HEADER (As at March 31, 2016 > Nos.); long label containing other amounts"
+V142,prose_footnote,data/APARINDS/annual_reports/FY2025-26.pdf,90,prose,Capex Cycles,inherently cyclical in nature,,,Three-column MD&A page; bullet text
+V143,prose_footnote,data/APARINDS/annual_reports/FY2011-12.pdf,69,table,Petroleum Specialities Pte. Ltd.,"1,493.27","March 31, 2012",million,Related-party table; unit is million (not crore)
+V144,prose_footnote,data/APARINDS/annual_reports/FY2011-12.pdf,69,table,Uniflex Cables Ltd.,27.34,"March 31, 2011",million,Child row label repeats under every parent (Lease assets here); prior-year column
+V145,prose_footnote,data/APARINDS/annual_reports/FY2021-22.pdf,207,table,Financial assumptions,4.54,"March 31, 2022",crore,"TWO-LEVEL HEADER (March 31, 2022 > Gratuity)"
+V146,prose_footnote,data/APARINDS/annual_reports/FY2021-22.pdf,207,table,Gratuity Payable to Directors,(1.45),"March 31, 2021",crore,One-row table
+V147,prose_footnote,data/HEROMOTOCO/annual_reports/FY2016-17.pdf,80,prose,meetings of the Committee,8 (eight),,,Two-column governance prose
+V148,prose_footnote,data/HEROMOTOCO/annual_reports/FY2016-17.pdf,80,prose,Section 188(1) of the Act,arm's length basis,,,Two-column prose
+V149,prose_footnote,data/APARINDS/annual_reports/FY2021-22.pdf,64,table,Kheda,CSR00006972,CSR registration number,,"CSR table: multi-line cells, numbered header row, two-level headers"
+V150,prose_footnote,data/APARINDS/annual_reports/FY2021-22.pdf,64,table,Nagpur,CSR00007633,CSR registration number,,"Same layout; amount 40,00,000 identical in both rows"

@@ -1,0 +1,49 @@
+# Plan: scaling to all 12,980 pages
+
+Agreed 2026-10-02. Status of each step is tracked in [`PROGRESS.md`](../PROGRESS.md); this page records the plan and the reasoning behind it.
+
+## The decision: a modified Option 1
+
+Four options were on the table:
+
+| Option | What it meant | Verdict |
+|---|---|---|
+| 1 | Run Docling and MinerU on all 12,980 pages on a rented A100, with a broader golden set | **Chosen, modified:** expand the golden set *first*, then run both parsers on everything in one GPU session; decide chunking only once retrieval can be measured |
+| 2 | Compare MinerU and Docling on the current 375 golden pages only | **Dropped.** Docling already scores 27/28 there, so MinerU can't show a meaningful difference. The 28 facts also helped tune the chunker, so they're partly "seen" data. GPU time spent, nothing learned |
+| 3 | Skip the VLM; go straight to local embeddings and retrieval, then GPU for Docling only | **Not chosen.** Retrieval measured on 375 pages flatters every method (few competing documents); real difficulty comes from thousands of similar pages across companies and years, which needs the full collection parsed. And once the GPU is rented, adding MinerU is a second run in the same session — dropping it saves little and leaves "is the VLM better?" unanswered |
+| 4 | Question: is structure-aware chunking enough, or experiment with chunking before retrieval? | **Keep the current chunker; don't tune it until retrieval can be measured** (see "Chunking" below) |
+
+## Steps
+
+| # | Step | Where | What | Why |
+|---|---|---|---|---|
+| 1 | **Expand the golden set** | Laptop, no GPU | ~120–150 new facts read off page images, from documents *not* in v1, weighted to hard cases: scanned statements, tables across pages, nested/merged headers, slide charts, footnotes, continued sections, concall Q&A | Removes the ceiling and the "seen data" problem *before* the GPU decision rests on it. **Done 2026-10-02: 150 facts (`data/golden/v2_facts.csv`)** |
+| 2 | **One GPU session** | RTX 5090 32 GB (A40 fallback) — runbook: [`gpu-run.md`](gpu-run.md) | Run **Docling and MinerU on all 12,980 pages**, with per-document caching and resume; record latency and failures. Benchmark on a few hundred pages in the first hour before committing to the full run | Parse the whole collection once; then compare both on the expanded golden set |
+| 3 | **Choose the parser** | Laptop | Score both from the caches (no re-parsing). Also try routing: fast parser for ordinary pages, Docling/MinerU for scanned and table-heavy pages | Accuracy, speed and failure types measured on data neither parser was tuned on |
+| 4 | **Retrieval golden set** | Laptop | ~100 questions with known answer pages, across companies and years | Needs the full-collection parse in place |
+| 5 | **Chunking × retrieval experiments** | Laptop | Compare the chunking variants below, scored by retrieval | Chunking only matters through retrieval, so it's judged there |
+| 6 | **Embedding model, then full indexing** | Laptop or GPU | Voyage (current choice) or a local model, compared on the same questions; then index everything | Last, because it depends on all the choices above |
+
+## Chunking
+
+The current structure-aware chunker (`structured_chunk.py`) is good at what we've measured: it keeps table rows, headers and units together, so information *survives*. Whether it gets *found* is a separate question — chunk size, overlap and what goes into each chunk all affect that — and tuning it against 28 facts would overfit.
+
+- **Before the GPU run:** only parser-side fixes that are certain to help. Fix the S9 caption noise (stop a table's caption at a page boundary) — it adds unrelated text to table chunks regardless of what else we choose.
+- **In step 5, compare:**
+  1. Current structure-aware chunker (baseline)
+  2. Tables as their own chunks, plus a one-line summary that's embedded, with the full table kept for the answer
+  3. Document-type-specific splits: Q&A pairs for concalls, one slide per chunk for presentations
+  4. Small-to-big: search small chunks, return the surrounding section
+  5. Possibly semantic chunking, for long prose sections only
+
+Semantic chunking is deferred, not rejected: it can help inside long prose sections with no headings, but not with tables or Q&A, which are our main problems.
+
+## Before renting the GPU
+
+- **Model confirmed (2026-10-03):** [`opendatalab/MinerU2.5-Pro-2604-1.2B`](https://huggingface.co/opendatalab/MinerU2.5-Pro-2604-1.2B) — 1.2B parameters, same Qwen2-VL-based architecture as MinerU2.5, retrained on 65.5M pages (arXiv 2604.04771, April 2026). OmniDocBench v1.6 overall 95.69 (MinerU2.5: 92.98). Published speed: **2.12 pages/s on one A100** with vLLM. MinerU needs ≥ 8 GB VRAM, Volta or newer.
+- **Licence (checked 2026-10-03):** weights Apache 2.0; code under the [MinerU Open Source License](https://github.com/opendatalab/MinerU/blob/master/LICENSE.md) = Apache 2.0 plus: a separate commercial licence above 100M monthly active users or USD 20M monthly revenue, and visible attribution if offered as an online service to third parties.
+- **Scale arithmetic:** 200k–250k documents × ~57 pages (pilot average) ≈ **11–14M pages**. At MinerU's published 2.12 pages/s that is ~1,500–1,900 A100-hours if every page goes through the VLM — so GPU cost per page, and routing only hard pages to the VLM, decide the budget.
+- **Cost and time:** both parsers should be much faster on an A100 than on this laptop, but that's unmeasured. Benchmark a few hundred pages in the first hour, then decide whether to run everything.
+- **Done 2026-10-03:** v2 scorer (`cap-slice-score`), batch runner, MinerU + Docling adapters, two Docker images, session scripts, runbook.
+- **GPU choice (2026-10-03):** RTX 5090 at $0.99/h; A40 ($0.53/h) if the 5090 fails the smoke test. The benchmark's measured $ per 1,000 pages decides the GPU for the 11–14M-page run.
+- **MinerU version:** MinerU 4.0.10 ships `MinerU2.5-Pro-2605-1.2B` (May 2026), a newer checkpoint than the `2604` above; that is what runs. MinerU 4 is a hybrid: tier `standard` uses small models + native PDF text and calls the VLM where needed; `advanced` lets the VLM do layout too.

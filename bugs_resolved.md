@@ -13,7 +13,8 @@ Components: `extract.py` + `chunk.py` (baseline pipeline), `parsing/pymupdf_text
 3. **Each fix can create the next bug.** S1 → S2 → S3 is one chain: fixing letterhead removal twice deleted real data. Re-run the whole golden set after every fix, not just the case you fixed.
 4. **Parsers disagree on the same text.** The same letterhead is one line on one page and three on the next; different parsers put captions, units and signatures in different orders (S1, S8). Don't key logic on exact strings or on "the line right before".
 5. **Never grade a parser with its own output.** Golden facts are read off rendered page images (`data/golden/`), and a fact only counts on its own page (V3).
-6. **Measure, don't assume, performance knobs.** More threads made Docling slower (P5); the first run included one-off model downloads (L1).
+6. **Check that the expensive component actually ran** (P8): a passing test can quietly take a cheap path.
+7. **Measure, don't assume, performance knobs.** More threads made Docling slower (P5); the first run included one-off model downloads (L1).
 
 ## Baseline pipeline (`extract.py`, `chunk.py`)
 
@@ -36,6 +37,9 @@ Components: `extract.py` + `chunk.py` (baseline pipeline), `parsing/pymupdf_text
 | P4 | PyMuPDF `find_tables()` (diagnostic only) | Whole balance sheet returned as one cell with `<br>` between rows | Detector relies on ruling lines/spacing; these statements are whitespace-aligned | Not used in any option | One-off diagnostic | Finding, not a code bug |
 | P5 | Option 3 (Docling) | 8 threads was *slower* than the default 4 (66 s vs 53 s on the 4-page C2C doc) | Likely thread oversubscription: the laptop has 14 logical CPUs across mixed performance/efficiency cores (Core Ultra 5 135U), and ONNX OCR and PyTorch both run their own thread pools. Not proven — timings also vary run to run (the same 8-thread setting took 104 s in an earlier run) | Reverted to Docling's defaults | Timed 4 vs 8 threads vs no-OCR before the full run | Fixed 2026-09-28 |
 | P6 | Option 2 (environment) | Re-parsing with Option 2 after installing Docling would silently use a different OCR engine | Docling installs `rapidocr` 3.9.2; PyMuPDF4LLM prefers `rapidocr` over `rapidocr_onnxruntime` when both are importable | Not fixed: Option 2 results are from the cache measured on 2026-09-26 with `rapidocr_onnxruntime`. Pin the backend before any Option 2 re-parse | Reading PyMuPDF4LLM's `detect_rapidocr.py` after the install | Open — recorded |
+| P7 | MinerU (CPU test) | `ConnectionResetError` from MinerU's page-rendering worker on the first run | MinerU renders pages in worker processes; a script fed through stdin can't be re-imported by those workers | Run MinerU from a real `.py` file with an `if __name__ == "__main__":` guard (the batch runner is a module, so it's fine) | First local MinerU run | Fixed 2026-10-03 |
+| P8 | MinerU (CPU test) | A "MinerU2.5-Pro" test passed — but the VLM server received **zero** requests | MinerU 4 is a hybrid: on a digital PDF the `standard` tier uses native text + native table detection and only calls the VLM where those fall short | Test the VLM path on a scanned page (it then sent ~30 requests and read the scanned balance sheet correctly) | Counting requests in the server log | Fixed 2026-10-03 — lesson: verify the expensive component actually ran |
+| P9 | MinerU | `mineru_structured.json` was 961 KB for 4 pages (~3 GB for the collection) | `structured_content()` embeds page images as base64 | Not saved; `mineru_middle.json` (12 KB / 4 pages) is the lossless record | File sizes after the first run | Fixed 2026-10-03 |
 
 ## Shared chunker (`structured_chunk.py`)
 
@@ -70,3 +74,7 @@ Components: `extract.py` + `chunk.py` (baseline pipeline), `parsing/pymupdf_text
 | I2 | Embedding batch could exceed Voyage's 120K-token request cap (64 × up to 2,591 tokens ≈ 166K) | Fixed 64-chunk batches, sized from an average | Batches sized by token count (≤ 100K, counted locally) | Fixed 2026-09-26 |
 | I3 | Two URLs that returned an HTML page stayed `untested` in the matrix | Non-PDF responses weren't mapped to a status | Recorded as `not found` | Fixed 2026-09-26 |
 | I4 | Estimated 8–9M tokens to embed; actual 11.0M | Assumed 1.3 tokens/word; Voyage's tokenizer gives ~1.56 on filings | Count with the real tokenizer (`count_tokens`, runs locally) | Fixed 2026-09-23 |
+| I5 | Batch runner crashed (instead of recording a failed document) when `pymupdf` was missing in the MinerU test environment | Page counting ran outside the try/except | Everything per document, including page counting, is inside the error handling | Fixed 2026-10-03 |
+| I6 | Docling stage timings always empty | Docling only records them with `settings.debug.profile_pipeline_timings = True` | Enabled in `docling_md.py`; meta.json now has per-stage seconds (CPU: OCR 65% of time) | Fixed 2026-10-03 |
+| I7 | `pkill -f "uv pip compile"` killed my own shell (exit 144), and the disk watchdog with it | `pkill -f` matches the full command line, which contained the same text | Use a bracket pattern, e.g. `pkill -f "[u]v pip compile"` | Fixed 2026-10-03 |
+| I8 | Docker dependency resolution failed: torch 2.14.0 not found; then `mineru-llama-cpp` not found | torch 2.14 is published for CUDA 13.0 (cu130), not 12.8; mineru-llama-cpp wheels need glibc ≥ 2.34 | Resolve with `--torch-backend cu130 --python-platform x86_64-manylinux_2_39` (Ubuntu 24.04) | Fixed 2026-10-03 |

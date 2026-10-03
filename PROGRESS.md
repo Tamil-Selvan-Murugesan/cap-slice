@@ -2,7 +2,7 @@
 
 Living status for `cap-slice`. Update at the end of every session. Stable rules and facts are in [`AGENTS.md`](AGENTS.md).
 
-**Last updated:** 2026-10-02
+**Last updated:** 2026-10-03
 
 ## Current status
 
@@ -18,6 +18,8 @@ Living status for `cap-slice`. Update at the end of every session. Stable rules 
 
 ## Done
 
+- **2026-10-02** — Saved the user's question about why a dedicated public-company document chatbot is useful when general assistants can access public data, and the full response, in `docs/public-data-chatbot-value.md`. Conversation record only; no implementation decision. Next steps remain unchanged.
+
 - **2026-09-21** — Tested direct NSE access: homepage loads, `/api/*` blocked by Akamai even with cookies/headers. BSE main site and company IR pages also 403.
 - **2026-09-21** — Found the open archive layer (`nsearchives.nseindia.com`, `archives.nseindia.com`, `bseindia.com/xml-data/corpfiling`); confirmed direct PDF fetch across all 5 companies.
 - **2026-09-21** — Built `data/document_availability_matrix.csv`: 267 documents (APAR 121, Hero 66, E2E 58, Esconet 14, C2C 8). 17 URLs verified `200`, 224 `untested`, 18 `blocked`, 8 `not found`.
@@ -32,6 +34,8 @@ Living status for `cap-slice`. Update at the end of every session. Stable rules 
 - **2026-09-28** — **Docling (Option 3) run on the golden set.** Installed with CPU-only PyTorch (`pyproject.toml` `pytorch-cpu` index; no CUDA packages; ~2 GB incl. 0.5 GB models). Defaults kept (8 threads measured slower than 4). Result, re-scored with the fixed chunker: **27/28 facts at L4** (Option 2: 21, Option 1: 15, baseline: 4); scanned statements 5/6 at L4 (Option 2: 0). Latency: 95 min for 375 pages (15.2 s/page) vs 21 min for Option 2 and 6 s for plain PyMuPDF; peak 6.1 GB RAM. Runner now records parse vs chunk time, memory, machine and measurement date, and writes a latency table with a full-collection projection (`review/COMPARISON.md`). Chunker fix S8 (units line carried into table chunks) — Docling first scored 1/8 on digital tables because of it. New `bugs_resolved.md` (27 bugs with root causes and 6 lessons). Side effect found: installing Docling makes PyMuPDF4LLM switch OCR engine on re-parse (P6).
 - **2026-10-02** — Wrote `docs/pdf-parsers-pymupdf4llm-vs-docling.md`: what each parser does, the models they run (PyMuPDF4LLM: `BoxRFDGNN` layout GNN + table-grid + OCR-decision models, all ONNX; Docling: RT-DETRv2 "Heron" layout + TableFormer, PyTorch), how each decides what to OCR, why Docling reads scanned tables. Checked against the installed packages and model cards. Correction found while writing it: PyMuPDF4LLM's `~~` is MuPDF's strikethrough flag, not a low-confidence OCR marker (`bugs_resolved.md` S7 corrected).
 - **2026-10-02** — Explainer video `docs/media/pymupdf4llm-vs-docling.mp4` (2:52, 1.2 MB, captions only): one scanned page through both parsers, step by step, drawn from their real outputs (`tools/explainer_video/`). Narration not added — ElevenLabs returned HTTP 402; the renderer picks up clips automatically if generated later. **Correction found while extracting the data:** PyMuPDF4LLM's scanned-table failure is in its table-grid step (3 columns found instead of 4), not OCR — RapidOCR read both values correctly as separate boxes. Fixed in the explainer doc, `review/README.md` and Open gaps.
+- **2026-10-02** — **Golden set v2: 150 facts** from 61 pages of 45 documents not in v1 (`data/golden/v2_facts.csv`, guide `data/golden/README.md`). Pages drawn by a seeded stratified sample over an inventory of all 12,980 pages (`tools/golden/inventory.py`); every fact read off the rendered image; 137/140 cross-checked against the text layer. Mix: 100 table, 27 prose, 20 Q&A, 3 chart labels; 11 two-level-header facts; 10 facts on image-only pages; 8 decorative image pages kept as hallucination checks. **Finding:** E2E's Q4 FY2025-26 results PDF has a wrong embedded OCR text layer ("rrom operating activitirs", "(1 .26,245.03)") — parsers that trust text layers will get it wrong. Next: wire v2 into the scorer, then plan the GPU run.
+- **2026-10-03** — **GPU-run tooling built and tested on CPU** (images not built — no Docker/disk on the laptop): batch runner `cap-slice-parse` (per-document cache + raw JSON, resume, run logs, GPU sampling); MinerU 4 adapter (MinerU2.5-Pro-2605 via a VLM server, tiers standard/advanced, HTML tables → pipe tables); Docling adapter with GPU device, batch size and per-stage timings; golden-v2 scorer `cap-slice-score`; 200-page benchmark builder; two pinned Docker images (Docling: torch 2.14.0+cu130; MinerU: vLLM 0.28.0, torch 2.13.0+cu130); `tools/gpu/session.sh`; runbook `docs/gpu-run.md`. MinerU verified end to end against MinerU's llama.cpp CPU server, including the VLM path on the scanned E2E balance sheet (4 columns, all values right). **First v2 scores (L4 of 150):** baseline 36, PyMuPDF text 76 — two-level headers 2/11, bad-text-layer PDF 1/8, image-only 0/10 (`review/v2/`). GPU: RTX 5090 ($0.99/h), A40 fallback.
 
 ## Open gaps
 
@@ -60,6 +64,7 @@ Living status for `cap-slice`. Update at the end of every session. Stable rules 
 
 ## Next steps
 
+0. **GPU run** — follow `docs/gpu-run.md` (rent RTX 5090 with driver R580+, rsync PDFs, `session.sh build → models → smoke → bench → full-mineru → full-docling`, rsync caches back). Plan: `docs/plan.md`.
 1. **Free disk space on C:** (~210 MB left on 2026-09-28): compact/sparse the WSL virtual disk (`ext4.vhdx`, ~100 GB for 51 GB used) — needs `wsl --shutdown`; optionally `uv cache clean` (~1.9 GB).
 2. **Parser decision** (review `review/README.md`): route pages by need vs Docling everywhere vs GPU. Before deciding, add golden facts from unseen documents (the current 28 also guided the chunker fixes) and test routing on the golden set.
 3. **Reconcile branch `tamil/codex-pilot-verification` (`a6ca47b`)** into main: its verification doc, catalogue/history corrections and APAR issuer sources. Resolve `AGENTS.md`/`PROGRESS.md` conflicts by hand, keeping both agents' findings.
@@ -85,6 +90,8 @@ Living status for `cap-slice`. Update at the end of every session. Stable rules 
 | 2026-09-26 | Semantic chunking deferred | Tables and Q&A are our main problems and it helps neither; test later on the chosen parser |
 | 2026-09-26 | Docling deferred; PyTorch must be CPU-only (superseded 2026-09-28: Docling run with CPU PyTorch) | C: drive has ~8 GB free and the WSL disk never shrinks; default Linux PyTorch pulls several GB of unusable CUDA libraries |
 | 2026-09-26 | Commit comparison outputs (`review/`, incl. parse caches) | So the user and other agents can review without re-running (~21 min for Option 2) |
+| 2026-10-03 | GPU: RTX 5090 ($0.99/h), A40 ($0.53/h) fallback; two Docker images; MinerU first, then Docling, never in parallel | Memory isn't the constraint (MinerU needs 8 GB); 5090 likely cheapest per page; sequential keeps speed measurements clean |
+| 2026-10-02 | Scale up via the modified Option 1 in `docs/plan.md`: expand golden set first, then Docling + MinerU on all pages in one A100 session; drop the 375-page-only comparison; tune chunking only against retrieval | Docling is at 27/28 on v1, so v1 can't separate parsers; retrieval needs the full collection |
 | 2026-09-28 | Run Docling with its default settings (4 threads) | Fairest "as shipped" comparison; 8 threads measured slower |
 | 2026-09-28 | Keep Option 2's 2026-09-26 cached timings instead of re-parsing | Re-parse would take 21 min and use a different OCR engine version (P6), so results wouldn't be comparable |
 | 2026-09-28 | Log every parser/chunker/scorer fix in `bugs_resolved.md` | User request: learning material for other agents |

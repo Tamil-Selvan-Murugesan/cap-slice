@@ -17,3 +17,7 @@ data/*/*/*.part
 # Local Qdrant vector store (re-create with cap-slice-index)
 data/qdrant/
 
+
+# Batch parser caches (big; synced with rsync, not git)
+/parsed*/
+/data/bench/
