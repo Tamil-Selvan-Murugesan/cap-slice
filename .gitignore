@@ -21,3 +21,4 @@ data/qdrant/
 # Batch parser caches (big; synced with rsync, not git)
 /parsed*/
 /data/bench/
+tools/gpu/env.sh

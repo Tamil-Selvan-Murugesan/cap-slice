@@ -41,7 +41,7 @@ Target: roughly 2015–2026 (or from listing date if later), eventually for ~3,0
 | `src/cap_slice/batch_parse.py` (`cap-slice-parse`) | Batch runner for any parser: per-document cache in `parsed/<parser>/<doc_id>/` (pages.json + raw JSON + meta.json), resume, per-run logs and GPU sampling in `_runs/` |
 | `src/cap_slice/parsing/mineru_vlm.py`, `html_table.py` | MinerU 4 adapter (MinerU2.5-Pro via a VLM server; tier `standard`/`advanced`) and HTML-table → pipe-table converter |
 | `src/cap_slice/score.py` (`cap-slice-score`) | Scores a parser's cache against golden v2 → `review/v2/<parser>.md` |
-| `docker/`, `tools/gpu/`, `docs/gpu-run.md` | GPU images (Docling; MinerU + vLLM), session scripts, benchmark builder/report, and the copy-paste runbook |
+| `docker/`, `tools/gpu/`, `docs/gpu-run.md` | Pinned GPU environments (`docker/requirements-*-{cu130,cu128}.txt`), Dockerfiles, RunPod setup (`setup_runpod.sh`: venvs, since pods can't run Docker), session scripts, benchmark builder/report, and the copy-paste runbook |
 | `parsed*/` | Batch caches (gitignored; synced with rsync) |
 | `data/qdrant/` | Local Qdrant store (gitignored; re-create with `cap-slice-index`) |
 | `PROGRESS.md` | Living status + decision log |

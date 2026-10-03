@@ -7,7 +7,7 @@
 # Plain Ubuntu base: the CUDA build of PyTorch ships its own CUDA libraries as
 # pip packages, so the host only needs the NVIDIA driver (+ nvidia-container-toolkit).
 # TORCH_BACKEND=cu130 needs driver R580+; on an older driver build with
-# --build-arg TORCH_BACKEND=cu126 (not for RTX 50xx: Blackwell needs CUDA >= 12.8).
+# --build-arg TORCH_BACKEND=cu128 (pins in docker/requirements-*-cu128.txt).
 FROM ubuntu:24.04
 
 ARG TORCH_BACKEND=cu130
@@ -27,7 +27,7 @@ COPY --from=ghcr.io/astral-sh/uv:0.12.5 /uv /usr/local/bin/uv
 
 # Pinned dependency set (resolved for Linux x86_64 + CUDA; see docker/README.md).
 RUN uv venv /opt/venv -p python3.12
-COPY docker/requirements-docling.txt /tmp/requirements.txt
+COPY docker/requirements-docling-${TORCH_BACKEND}.txt /tmp/requirements.txt
 RUN uv pip install --no-cache --torch-backend ${TORCH_BACKEND} -r /tmp/requirements.txt
 
 # The project itself (deps already installed above; editable so a mounted repo

@@ -29,7 +29,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY --from=ghcr.io/astral-sh/uv:0.12.5 /uv /usr/local/bin/uv
 
 RUN uv venv /opt/venv -p python3.12
-COPY docker/requirements-mineru.txt /tmp/requirements.txt
+COPY docker/requirements-mineru-${TORCH_BACKEND}.txt /tmp/requirements.txt
 RUN uv pip install --no-cache --torch-backend ${TORCH_BACKEND} -r /tmp/requirements.txt
 
 # cap-slice without its own dependencies: the runner only needs pymupdf (pinned

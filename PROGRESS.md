@@ -18,6 +18,8 @@ Living status for `cap-slice`. Update at the end of every session. Stable rules 
 
 ## Done
 
+- **2026-10-03** — Reviewed RunPod deployment compatibility: `tools/gpu/session.sh` assumes a Docker-capable host, while a GPU Pod runs the workload container itself. Recommended Ubuntu 24.04 Pod with separate parser environments, or externally built custom images; CUDA 13 pins require a compatible host driver. No Pod rented, dependencies installed, or GPU tests run. Next step: adapt the session wrapper for direct execution before the paid benchmark.
+
 - **2026-10-02** — Saved the user's question about why a dedicated public-company document chatbot is useful when general assistants can access public data, and the full response, in `docs/public-data-chatbot-value.md`. Conversation record only; no implementation decision. Next steps remain unchanged.
 
 - **2026-09-21** — Tested direct NSE access: homepage loads, `/api/*` blocked by Akamai even with cookies/headers. BSE main site and company IR pages also 403.
@@ -64,7 +66,7 @@ Living status for `cap-slice`. Update at the end of every session. Stable rules 
 
 ## Next steps
 
-0. **GPU run** — follow `docs/gpu-run.md` (rent RTX 5090 with driver R580+, rsync PDFs, `session.sh build → models → smoke → bench → full-mineru → full-docling`, rsync caches back). Plan: `docs/plan.md`.
+0. **GPU run on a RunPod pod** — follow `docs/gpu-run.md`: pod `runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404` + RTX 5090 + ≥ 80 GB volume + exposed SSH → `setup_runpod.sh` → rsync PDFs → `session.sh models → smoke → bench → full-mineru → full-docling` → rsync caches back. Plan: `docs/plan.md`.
 1. **Free disk space on C:** (~210 MB left on 2026-09-28): compact/sparse the WSL virtual disk (`ext4.vhdx`, ~100 GB for 51 GB used) — needs `wsl --shutdown`; optionally `uv cache clean` (~1.9 GB).
 2. **Parser decision** (review `review/README.md`): route pages by need vs Docling everywhere vs GPU. Before deciding, add golden facts from unseen documents (the current 28 also guided the chunker fixes) and test routing on the golden set.
 3. **Reconcile branch `tamil/codex-pilot-verification` (`a6ca47b`)** into main: its verification doc, catalogue/history corrections and APAR issuer sources. Resolve `AGENTS.md`/`PROGRESS.md` conflicts by hand, keeping both agents' findings.
@@ -90,6 +92,7 @@ Living status for `cap-slice`. Update at the end of every session. Stable rules 
 | 2026-09-26 | Semantic chunking deferred | Tables and Q&A are our main problems and it helps neither; test later on the chosen parser |
 | 2026-09-26 | Docling deferred; PyTorch must be CPU-only (superseded 2026-09-28: Docling run with CPU PyTorch) | C: drive has ~8 GB free and the WSL disk never shrinks; default Linux PyTorch pulls several GB of unusable CUDA libraries |
 | 2026-09-26 | Commit comparison outputs (`review/`, incl. parse caches) | So the user and other agents can review without re-running (~21 min for Option 2) |
+| 2026-10-03 | Run on RunPod pods (user's subscription): no Docker inside pods, so `setup_runpod.sh` builds the two environments as venvs from the same pinned files; CUDA 12.8 pin sets added alongside 13.0 | Pods are containers; the base image is CUDA 12.8, and torch 2.14 only exists for CUDA 13 |
 | 2026-10-03 | GPU: RTX 5090 ($0.99/h), A40 ($0.53/h) fallback; two Docker images; MinerU first, then Docling, never in parallel | Memory isn't the constraint (MinerU needs 8 GB); 5090 likely cheapest per page; sequential keeps speed measurements clean |
 | 2026-10-02 | Scale up via the modified Option 1 in `docs/plan.md`: expand golden set first, then Docling + MinerU on all pages in one A100 session; drop the 375-page-only comparison; tune chunking only against retrieval | Docling is at 27/28 on v1, so v1 can't separate parsers; retrieval needs the full collection |
 | 2026-09-28 | Run Docling with its default settings (4 threads) | Fairest "as shipped" comparison; 8 threads measured slower |
