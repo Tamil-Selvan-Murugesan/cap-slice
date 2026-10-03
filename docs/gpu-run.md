@@ -13,7 +13,7 @@ Parse all 228 PDFs (12,980 pages) with **MinerU 4 + MinerU2.5-Pro** and **Doclin
 | Container image | `runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404` (Ubuntu 24.04 — the pins target it; its own PyTorch is not used) |
 | Volume disk | **≥ 80 GB**, mounted at `/workspace` (venvs ~15 GB, models ~5 GB, PDFs ~1 GB, caches ~1 GB) |
 | Container disk | ≥ 30 GB (system packages) |
-| CUDA version filter | Optional. ≥ 12.8 is required; the setup picks CUDA 13.0 pins if the driver supports it, else 12.8 pins |
+| CUDA version filter | **≥ 13.0 required** (MinerU's vLLM is a CUDA 13 build). Docling would also run on 12.8 |
 | Ports | **Expose TCP port 22** and add your SSH public key in RunPod settings. rsync needs this direct SSH; the `ssh.runpod.io` proxy doesn't support rsync/scp |
 
 Note the hourly price — the report needs it. **Stop** the pod when idle (the volume keeps everything; only the volume is billed while stopped).
