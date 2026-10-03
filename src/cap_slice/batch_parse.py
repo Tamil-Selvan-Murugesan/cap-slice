@@ -188,7 +188,8 @@ def main(argv: list[str] | None = None) -> int:
     if args.limit:
         todo = todo[: args.limit]
 
-    run_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    # pid suffix: parallel processes started in the same second must not share a run id
+    run_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ") + f"_{os.getpid()}"
     header = {"run_id": run_id, "parser": args.parser, "workers": args.workers,
               "docs_total": len(pdfs), "docs_todo": len(todo), "machine": machine(),
               "versions": versions(), "env": {k: v for k, v in os.environ.items()
@@ -228,6 +229,7 @@ def main(argv: list[str] | None = None) -> int:
     log.close()
     wall = time.perf_counter() - t_run
     summary = {**header, "docs_ok": ok, "docs_failed": done - ok, "pages_ok": pages,
+               "started_unix": round(time.time() - wall, 1), "ended_unix": round(time.time(), 1),
                "wall_seconds": round(wall, 1), "pages_per_second": round(pages / max(wall, 1e-9), 3)}
     (runs / f"{run_id}_summary.json").write_text(json.dumps(summary, indent=1))
     print(f"done: {ok} ok, {done - ok} failed, {pages} pages in {wall:.0f}s "

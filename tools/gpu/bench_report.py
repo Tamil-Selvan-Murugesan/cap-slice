@@ -36,17 +36,26 @@ def main() -> None:
     ap.add_argument("--price", type=float, required=True, help="GPU $/hour")
     ap.add_argument("--root", default="parsed_bench")
     args = ap.parse_args()
-    rows = []
+    # Group every summary of a variant: parallel processes (several runner processes
+    # writing to the same --out) count together — total pages / overall wall time.
+    groups: dict[str, list[tuple[dict, Path]]] = {}
     for summ in sorted((REPO / args.root).glob("*/*/_runs/*_summary.json")):
         s = json.loads(summ.read_text())
-        if not s.get("pages_ok"):
-            continue
-        variant = summ.parents[2].name
-        pps = s["pages_per_second"]
+        if s.get("pages_ok"):
+            groups.setdefault(summ.parents[2].name, []).append((s, summ))
+    rows = []
+    for variant, items in groups.items():
+        pages = sum(s["pages_ok"] for s, _ in items)
+        failed = sum(s["docs_failed"] for s, _ in items)
+        if all("started_unix" in s for s, _ in items):
+            wall = max(s["ended_unix"] for s, _ in items) - min(s["started_unix"] for s, _ in items)
+        else:  # older summaries: assume the processes ran side by side
+            wall = max(s["wall_seconds"] for s, _ in items)
+        pps = pages / max(wall, 1e-9)
         per_k = args.price / (pps * 3600) * 1000
-        rows.append((variant, s["pages_ok"], s["docs_failed"], pps, per_k,
-                     gpu_stats(summ.with_name(summ.name.replace("_summary.json", "_gpu.csv"))),
-                     s["machine"].get("gpus", ["?"])[0]))
+        gpu = gpu_stats(items[0][1].with_name(items[0][1].name.replace("_summary.json", "_gpu.csv")))
+        label = variant + (f" ({len(items)} processes)" if len(items) > 1 else "")
+        rows.append((label, pages, failed, pps, per_k, gpu, items[0][0]["machine"].get("gpus", ["?"])[0]))
     if not rows:
         print("no benchmark summaries found under", args.root)
         return
