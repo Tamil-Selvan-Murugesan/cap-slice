@@ -1,0 +1,38 @@
+{
+ "run_id": "20261003T115741Z",
+ "parser": "docling",
+ "workers": 1,
+ "docs_total": 4,
+ "docs_todo": 4,
+ "machine": {
+  "host": "5165e0110c5c",
+  "cpus": 120,
+  "python": "3.12.3",
+  "cpu": "AMD EPYC 7543 32-Core Processor",
+  "gpus": [
+   "NVIDIA GeForce RTX 5090, 32607 MiB, 570.195.03"
+  ]
+ },
+ "versions": {
+  "docling": "2.130.0",
+  "docling-core": "2.99.0",
+  "docling-ibm-models": "4.0.3",
+  "torch": "2.11.0+cu128",
+  "pymupdf": "1.28.2",
+  "pymupdf4llm": "1.28.2",
+  "rapidocr": "3.9.2",
+  "rapidocr-onnxruntime": "1.4.4"
+ },
+ "env": {
+  "CAP_SLICE_DOCLING_BATCH": "16",
+  "CAP_SLICE_DEVICE": "cuda",
+  "MINERU_HOME": "/workspace/models/mineru",
+  "CUDA_VERSION": "12.8.1",
+  "CAP_SLICE_MINERU_SERVER": "http://127.0.0.1:30000"
+ },
+ "docs_ok": 4,
+ "docs_failed": 0,
+ "pages_ok": 200,
+ "wall_seconds": 462.9,
+ "pages_per_second": 0.432
+}

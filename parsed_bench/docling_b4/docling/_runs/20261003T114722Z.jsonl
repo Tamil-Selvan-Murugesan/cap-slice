@@ -1,0 +1,4 @@
+{"status": "ok", "doc": "data/bench/bench_01.pdf", "page_count": 50, "seconds": 124.443, "seconds_per_page": 2.4889, "error": null}
+{"status": "ok", "doc": "data/bench/bench_02.pdf", "page_count": 50, "seconds": 95.614, "seconds_per_page": 1.9123, "error": null}
+{"status": "ok", "doc": "data/bench/bench_03.pdf", "page_count": 50, "seconds": 106.979, "seconds_per_page": 2.1396, "error": null}
+{"status": "ok", "doc": "data/bench/bench_04.pdf", "page_count": 50, "seconds": 112.809, "seconds_per_page": 2.2562, "error": null}
