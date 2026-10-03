@@ -8,8 +8,8 @@
 # can clash with Docling's) from the same pinned files the Dockerfiles use:
 #   /workspace/venvs/docling   docker/requirements-docling-<cuda>.txt + cap-slice
 #   /workspace/venvs/mineru    docker/requirements-mineru-<cuda>.txt  + cap-slice (no deps)
-# docling: cu130 when the driver supports CUDA >= 13.0, else cu128. mineru: always cu130
-# (vLLM >= 0.19 wheels are CUDA 13 builds) — needs a CUDA 13 driver.
+# docling: cu130 when the driver supports CUDA >= 13.0, else cu128.
+# mineru: cu130 on CUDA 13 drivers, else cu129 (vLLM's +cu129 build; runs on 12.x drivers).
 # Writes tools/gpu/env.sh (sourced by session.sh): model/cache locations on /workspace.
 # Everything lives on /workspace (the persistent volume); the container disk is wiped on restart.
 set -euo pipefail
@@ -45,9 +45,11 @@ if [ "$cuda" -ge 130 ]; then BACKEND=cu130; elif [ "$cuda" -ge 128 ]; then BACKE
 # MinerU's vLLM wheels (>= 0.19, required by MinerU 4) are built for CUDA 13, so the
 # MinerU env always uses cu130 pins and needs a CUDA 13 driver. (A cu128 MinerU set
 # resolved fine but mixed CUDA 12.8 torch with CUDA-13 vLLM: libcudart.so.13 errors.)
-if [ "$cuda" -lt 130 ]; then
-  echo "Driver supports CUDA ${cuda:0:2}.${cuda:2}; MinerU (vLLM) needs CUDA >= 13.0. Use a pod whose driver supports CUDA 13 (RunPod: CUDA version filter)."; exit 1; fi
-echo "driver CUDA ${cuda:0:2}.${cuda:2} -> using $BACKEND pins"
+# MinerU: vLLM's PyPI wheel is a CUDA 13 build -> cu130 pins on CUDA 13 drivers;
+# on CUDA 12.x drivers use vLLM's +cu129 GitHub build with cu129 torch (runs on any
+# 12.x driver via CUDA minor-version compatibility).
+if [ "$cuda" -ge 130 ]; then MINERU_BACKEND=cu130; else MINERU_BACKEND=cu129; fi
+echo "driver CUDA ${cuda:0:2}.${cuda:2} -> docling: $BACKEND pins (or existing env), mineru: $MINERU_BACKEND pins"
 
 mkdir -p "$VENVS" "$MODELS/hf" "$MODELS/mineru"
 export UV_CACHE_DIR=$WS/.uv-cache UV_LINK_MODE=copy
@@ -56,7 +58,7 @@ for env in docling mineru; do
   # CUDA build of an existing env, read from its installed torch (e.g. 2.11.0+cu128).
   have=""; [ -x "$py" ] && have=$("$py" -c "import torch; print(torch.__version__.split('+')[1])" 2>/dev/null || true)
   if [ "$env" = mineru ]; then
-    backend=cu130                               # vLLM wheels are CUDA 13 builds
+    backend=$MINERU_BACKEND                     # cu130, or cu129 vLLM build on CUDA 12.x drivers
   else
     backend=${have:-$BACKEND}                   # keep a working Docling env (cu128 runs fine on a CUDA 13 driver)
   fi
@@ -66,8 +68,17 @@ for env in docling mineru; do
     rm -rf "$VENVS/$env"
   fi
   [ -x "$py" ] || uv venv "$VENVS/$env" -p python3.12
-  uv pip install -p "$py" --torch-backend "$backend" -r "docker/requirements-$env-$backend.txt"
+  req="docker/requirements-$env-$backend.txt"
+  if [ ! -f "$req" ]; then                     # no pinned list yet (cu129): resolve on the pod from the .in file
+    req="docker/$env-$backend.in"
+    echo "   no pinned list for $backend — installing from $req and freezing the result"
+  fi
+  uv pip install -p "$py" --torch-backend "$backend" -r "$req"
   uv pip install -p "$py" --no-deps -e .
+  case "$req" in *.in) uv pip freeze -p "$py" | grep -v "^-e " > "docker/requirements-$env-$backend.txt"
+                       echo "   froze docker/requirements-$env-$backend.txt (commit it on the gpu-run branch)";; esac
+  if uv pip list -p "$py" 2>/dev/null | grep -qiE "cu13|nvidia-cuda-runtime +13" && [ "$backend" != cu130 ]; then
+    echo "   WARNING: CUDA 13 packages in a $backend env:"; uv pip list -p "$py" | grep -iE "cu13|nvidia-cuda-runtime"; fi
 done
 
 cat > tools/gpu/env.sh <<EOF

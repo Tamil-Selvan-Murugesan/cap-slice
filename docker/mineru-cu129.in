@@ -1,0 +1,6 @@
+# MinerU environment for CUDA 12.x drivers (e.g. RunPod driver 570 = CUDA 12.8).
+# vLLM's PyPI wheel is a CUDA 13 build; vLLM publishes a +cu129 build on GitHub
+# releases, which runs on any CUDA 12.x driver (minor-version compatibility).
+mineru[full]==4.0.10
+vllm @ https://github.com/vllm-project/vllm/releases/download/v0.28.0/vllm-0.28.0+cu129-cp38-abi3-manylinux_2_28_x86_64.whl
+pymupdf==1.28.2
