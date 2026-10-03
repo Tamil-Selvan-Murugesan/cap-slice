@@ -100,7 +100,7 @@ Living status for `cap-slice`. Update at the end of every session. Stable rules 
 
 | Branch / worktree | Commit | What it is | Status |
 |---|---|---|---|
-| `main` | `b3a5b16` (2026-10-02) | Downloader, indexing pipeline, parser comparison incl. Docling, explainer doc + video | Pushed |
+| `main` | `4c37cc3` (2026-10-03) | Everything above + golden set v2 + GPU-run tooling (runner, adapters, Docker images, runbook) | Pushed |
 | `tamil/codex-pilot-verification` (on GitHub) | `a6ca47b` (based on `cbe2f7f`) | Another agent's independent pilot verification: `docs/pilot-verification-2026-09-23.md`, corrected `AGENTS.md`/`PROGRESS.md`/report | **Not merged** — see Next steps 3 |
 | `pilot-test-2` (local worktree `../cap-slice-1`) | `cbe2f7f` | Local only; no commits beyond main's history | Unknown purpose — ask before removing |
 
