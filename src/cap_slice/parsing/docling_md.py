@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import json
 import os
+import os
 from functools import cache
 from pathlib import Path
 
@@ -34,6 +35,15 @@ def _converter(device: str, batch: int):
     # was ~2/3 of the time there (19 s with do_ocr=False).
     opts = PdfPipelineOptions()
     opts.accelerator_options = AcceleratorOptions(device=device)
+    if device != "cpu":
+        # OCR on GPU: RapidOCR configures ONNX Runtime with an EXHAUSTIVE cuDNN
+        # algorithm search, re-run for every new image shape — and OCR crops come in
+        # every shape, so it searched more than it read (4 pages: 105 s on the GPU vs
+        # 23.5 s on CPU, RunPod RTX 5090). DEFAULT skips the search.
+        from docling.datamodel.pipeline_options import RapidOcrOptions
+        opts.ocr_options = RapidOcrOptions(rapidocr_params={
+            "EngineConfig.onnxruntime.cuda_ep_cfg.cudnn_conv_algo_search":
+                os.environ.get("CAP_SLICE_OCR_ALGO_SEARCH", "DEFAULT")})
     opts.ocr_batch_size = opts.layout_batch_size = opts.table_batch_size = batch
     return DocumentConverter(format_options={InputFormat.PDF: PdfFormatOption(pipeline_options=opts)})
 
