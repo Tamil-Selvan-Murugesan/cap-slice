@@ -2,6 +2,7 @@
 # One GPU session, step by step. Run from the repo root on the GPU machine.
 #
 #   tools/gpu/session.sh models       # download MinerU models; warm up Docling's models
+#   tools/gpu/session.sh vlm-server   # MinerU VLM server, kept running in its own tmux window (optional, saves restarts)
 #   tools/gpu/session.sh smoke        # all four parsers on one 4-page PDF (~minutes)
 #   tools/gpu/session.sh bench        # 200-page benchmark: MinerU standard/advanced, Docling and PyMuPDF4LLM 1 vs N processes, baseline
 #   tools/gpu/session.sh report       # benchmark table: pages/s and $ per 1,000 pages (set GPU_PRICE)
@@ -95,6 +96,11 @@ case "${1:-}" in
     # Docling downloads its layout/table models on first use into $HF_HOME.
     docling 4 --paths "$SMOKE_PDF" --out /tmp/warmup
     ;;
+  vlm-server)
+    # keep MinerU's VLM server up in its own tmux window; every MinerU step then reuses it
+    # instead of paying the start-up (5-15 min on a network volume) each time. Ctrl+C stops it.
+    in_mineru mineru-kit vlm-server --engine vllm ${MINERU_SERVER_ARGS:-} 2>&1 | tee /tmp/mineru_vlm_server.log
+    ;;
   smoke)
     mineru standard --paths "$SMOKE_PDF" --out parsed_bench/smoke_mineru_standard --retry-failed
     docling 4 --paths "$SMOKE_PDF" --out parsed_bench/smoke_docling --retry-failed
@@ -156,5 +162,5 @@ case "${1:-}" in
     in_docling python tools/gpu/full_report.py --gpu-price "${GPU_PRICE:-0.99}" ${VCPU_PRICE:+--vcpu-price "$VCPU_PRICE"} --tokens
     ;;
   *)
-    sed -n '2,20p' "$0"; exit 1 ;;
+    sed -n '2,21p' "$0"; exit 1 ;;
 esac
