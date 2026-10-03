@@ -11,7 +11,7 @@ Parse all 228 PDFs (12,980 pages) with **MinerU 4 + MinerU2.5-Pro** and **Doclin
 ## 0. Create the pod (RunPod console)
 | Setting | Value |
 |---|---|
-| GPU | **RTX 5090** (A40 fallback if step 3 fails on the 5090). Prices noted 2026-10-02: A40 $0.53/h, RTX 5090 $0.99/h, A100 $1.59/h |
+| GPU | **RTX 5090** — prefer an offer with **≥ 16 vCPUs** (Docling is partly CPU-bound; pod 1 had 12.75) (A40 fallback if step 3 fails on the 5090). Prices noted 2026-10-02: A40 $0.53/h, RTX 5090 $0.99/h, A100 $1.59/h |
 | Container image | `runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404` (Ubuntu 24.04 — the pins target it; its own PyTorch is not used) |
 | Volume disk | **≥ 80 GB**, mounted at `/workspace` (venvs ~15 GB, models ~5 GB, PDFs ~1 GB, caches ~1 GB) |
 | Container disk | ≥ 30 GB (system packages) |
@@ -54,17 +54,17 @@ If `smoke` fails on the RTX 5090 with CUDA/arch errors ("no kernel image", "sm_1
 ```bash
 GPU_PRICE=0.99 tools/gpu/session.sh bench     # builds data/bench/, runs 4 variants, prints the report
 ```
-Variants: MinerU `standard` and `advanced` (4 documents in flight), Docling with batch 4 and 16. The report gives pages/s, **$ per 1,000 pages**, time for this collection, and projected cost for 11–14M pages.
+Variants: MinerU `standard` and `advanced` (4 documents in flight); Docling with 1 process and with N parallel processes (N = CPUs allowed ÷ 3, max 4 — Docling is partly CPU-bound; batch size made no difference on pod 1). The report gives pages/s, **$ per 1,000 pages**, time for this collection, and projected cost for 11–14M pages.
 
 **Pick the full-run settings from it:**
 - MinerU tier: run `standard` for the full collection. Also run `advanced` in full **only if** its projected time for this collection is under ~4 h.
-- Docling batch: whichever variant was faster.
+- Docling: keep batch 4; use the process count of whichever Docling variant was faster (`DOCLING_PROCS=1` or the N shown).
 - MinerU workers: start at 8; if GPU utilisation in the report is < 70 %, use 16.
 
 ## 5. Full run (MinerU first, then Docling — one at a time, so speeds stay clean)
 ```bash
 MINERU_TIER=standard MINERU_WORKERS=8 tools/gpu/session.sh full-mineru
-DOCLING_BATCH=16                       tools/gpu/session.sh full-docling
+DOCLING_PROCS=4                        tools/gpu/session.sh full-docling   # or 1, per the benchmark
 ```
 Progress prints one line per document with the running pages/s. To also run `advanced` in full (its own cache folder):
 ```bash
