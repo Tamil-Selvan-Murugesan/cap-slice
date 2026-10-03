@@ -46,26 +46,33 @@ On the pod: `ls data/*/*/*.pdf | wc -l` must print **228**.
 Run inside `tmux` from here on (`tmux new -s gpu`), so a dropped SSH connection doesn't stop anything.
 ```bash
 tools/gpu/session.sh models      # MinerU small models + MinerU2.5-Pro-2605-1.2B -> /workspace/models; Docling warm-up
-tools/gpu/session.sh smoke       # ~1–2 min: each parser on one 4-page PDF; both lines must start with "ok"
+tools/gpu/session.sh smoke       # ~2–3 min: all four parsers on one 4-page PDF; every line must start with "ok"
+                                 # (the PyMuPDF4LLM line should end in True = OCR on the GPU)
 ```
 If `smoke` fails on the RTX 5090 with CUDA/arch errors ("no kernel image", "sm_120"), stop and move to an A40 pod instead of debugging on the meter.
 
 ## 4. Benchmark (200 fixed pages, same set on any GPU)
 ```bash
-GPU_PRICE=0.99 tools/gpu/session.sh bench     # builds data/bench/, runs 4 variants, prints the report
+GPU_PRICE=0.99 tools/gpu/session.sh bench     # builds data/bench/, runs 7 variants, prints the report
 ```
-Variants: MinerU `standard` and `advanced` (4 documents in flight); Docling with 1 process and with N parallel processes (N = CPUs allowed ÷ 3, max 4 — Docling is partly CPU-bound; batch size made no difference on pod 1). The report gives pages/s, **$ per 1,000 pages**, time for this collection, and projected cost for 11–14M pages.
+Variants: MinerU `standard` and `advanced` (4 documents in flight); Docling with 1 process and with N parallel processes (N = CPUs allowed ÷ 3, max 4 — Docling is partly CPU-bound; batch size made no difference on pod 1); PyMuPDF4LLM on GPU with 1 and N processes (`P4L_PROCS`, default = Docling's N); baseline with 1 process (CPU only). The report gives pages/s, **$ per 1,000 pages**, time for this collection, and projected cost for 11–14M pages.
 
 **Pick the full-run settings from it:**
 - MinerU tier: run `standard` for the full collection. Also run `advanced` in full **only if** its projected time for this collection is under ~4 h.
 - Docling: keep batch 4; use the process count of whichever Docling variant was faster (`DOCLING_PROCS=1` or the N shown).
 - MinerU workers: start at 8; if GPU utilisation in the report is < 70 %, use 16.
+- PyMuPDF4LLM: use the faster of its two variants (`P4L_PROCS=1` or N).
 
-## 5. Full run (MinerU first, then Docling — one at a time, so speeds stay clean)
+## 5. Full run (one parser at a time, never two together, so speeds stay clean)
 ```bash
 MINERU_TIER=standard MINERU_WORKERS=8 tools/gpu/session.sh full-mineru
-DOCLING_PROCS=4                        tools/gpu/session.sh full-docling   # or 1, per the benchmark
+DOCLING_PROCS=4                        tools/gpu/session.sh full-docling      # or 1, per the benchmark
+P4L_PROCS=4                            tools/gpu/session.sh full-pymupdf4llm  # GPU; or 1, per the benchmark
+                                       tools/gpu/session.sh full-baseline     # CPU only, one process per CPU allowed; minutes
+GPU_PRICE=0.99                         tools/gpu/session.sh compare           # scores + review/gpu/COMPARISON.md
 ```
+Rough times for 12,980 pages: MinerU and Docling several hours each (Docling ~6–8 h at pod-1 speed), PyMuPDF4LLM ~1–3 h, baseline a few minutes.
+`compare` scores every parser on golden v2 (150 facts, `review/v2/`) and v1 (28 facts, `review/v1/`), then writes one table (`review/gpu/COMPARISON.md` + `comparison.json`) with coverage, accuracy (L1–L4, by group, hallucination check), throughput, per-document latency p50/p90/p99, per-page time by doc type, GPU utilisation/memory/power and energy per 1,000 pages, CPU-seconds per page, peak RAM, $ per 1,000 pages, cost for this collection and for 11–14M pages, output size, and tokens/chunks per page with Voyage embedding cost. Set `VCPU_PRICE` ($/vCPU-hour) to also price baseline on a CPU-only machine.
 Progress prints one line per document with the running pages/s. To also run `advanced` in full (its own cache folder):
 ```bash
 source tools/gpu/env.sh && CAP_SLICE_MINERU_TIER=advanced PATH=$VENVS/mineru/bin:$PATH \
@@ -76,12 +83,12 @@ Failed documents are listed in `parsed/<parser>/_runs/<run_id>.jsonl`; re-run th
 ## 6. Bring results home, then stop the pod
 ```bash
 # on the pod: commit run logs and summaries (not caches — they're big and gitignored)
-git add -f parsed*/*/_runs parsed_bench/*/*/_runs data/bench/manifest.csv
+git add -f parsed*/*/_runs parsed_bench/*/*/_runs data/bench/manifest.csv review/gpu review/v1 review/v2
 git commit -m "GPU run: benchmark and full-run logs" && git push -u origin gpu-run
 ```
 ```bash
 # on the laptop: pull the caches (check `df -h /mnt/c` first — keep ≥ 500 MB free)
-rsync -av -e "ssh -p PORT" --include='*/' --include='pages.json' --include='meta.json' --exclude='*' \
+rsync -av -e "ssh -p PORT" --include='*/' --include='pages.json' --include='meta.json' --include='_runs/***' --exclude='*' \
       root@IP:/workspace/cap-slice/parsed/ parsed/            # per-page text only: ~60 MB
 rsync -av -e "ssh -p PORT" root@IP:/workspace/cap-slice/parsed/ /some/bigger/disk/parsed/   # + raw JSON (~0.5 GB)
 ```
@@ -91,8 +98,9 @@ Expected sizes (from the laptop tests): Docling `docling.json` ~30 KB/page (~0.4
 
 ## 7. Afterwards (laptop, no GPU)
 ```bash
-uv run cap-slice-score --parser mineru     # golden v2 -> review/v2/mineru.md
-uv run cap-slice-score --parser docling
+git fetch && git checkout origin/gpu-run -- review/   # the comparison tables written on the pod
+# or recompute from the rsynced caches:
+uv run python tools/gpu/full_report.py --gpu-price 0.99 --tokens
 ```
 Then record speeds, cost and scores in `PROGRESS.md` and decide the parser (plan step 3).
 
@@ -100,7 +108,8 @@ Then record speeds, cost and scores in `PROGRESS.md` and decide the parser (plan
 | File | Role |
 |---|---|
 | `tools/gpu/setup_runpod.sh` | Pod setup: system packages, uv, `/workspace/venvs/{docling,mineru}` from pinned files (CUDA 13.0 or 12.8 by driver), writes `tools/gpu/env.sh` |
-| `tools/gpu/session.sh` | models / smoke / bench / report / full-mineru / full-docling (pod mode via env.sh; Docker mode otherwise) |
+| `tools/gpu/session.sh` | models / smoke / bench / report / full-mineru / full-docling / full-pymupdf4llm / full-baseline / compare (pod mode via env.sh; Docker mode otherwise) |
+| `tools/gpu/full_report.py` | Exhaustive comparison of the full runs: coverage, accuracy, speed, latency, resources, cost, output size -> `review/gpu/` |
 | `tools/gpu/mineru_run.sh` | Start the MinerU2.5-Pro vLLM server, wait until ready, run the parser, stop the server |
 | `tools/gpu/make_bench.py` | 200 random pages (seed 20261003) → `data/bench/`, same pages on every machine |
 | `tools/gpu/bench_report.py` | Speed and cost table from the run summaries |

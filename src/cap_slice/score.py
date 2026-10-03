@@ -61,9 +61,15 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--facts", default=str(GOLDEN / "v2_facts.csv"))
     ap.add_argument("--skipped", default=str(GOLDEN / "v2_skipped.csv"))
     ap.add_argument("--out", default="review/v2")
+    ap.add_argument("--name", help="output file stem (default: the parser name)")
     args = ap.parse_args(argv)
     cache = Path(args.cache) if Path(args.cache).is_absolute() else REPO_ROOT / args.cache
     facts = list(csv.DictReader(open(args.facts)))
+    if facts and "path" not in facts[0]:  # v1 facts: document keys, paths in compare_docs.csv
+        paths = {d["key"]: d["path"] for d in csv.DictReader((GOLDEN / "compare_docs.csv").open())}
+        for f in facts:
+            f["path"] = paths[f["doc"]]
+            f["stratum"] = f.get("stratum") or "v1"
 
     results, by_doc, missing = [], {}, set()
     for path in sorted({f["path"] for f in facts}):
@@ -104,7 +110,7 @@ def main(argv: list[str] | None = None) -> int:
 
     out = REPO_ROOT / args.out
     out.mkdir(parents=True, exist_ok=True)
-    (out / f"{args.parser}.json").write_text(json.dumps({"summary": summary, "facts": results}, indent=1))
+    (out / f"{args.name or args.parser}.json").write_text(json.dumps({"summary": summary, "facts": results}, indent=1))
     lines = [f"# Golden v2 — {args.parser}\n",
              f"{summary['scored']}/{summary['facts']} facts scored "
              f"({len(missing)} documents not in the cache).\n",
@@ -120,7 +126,7 @@ def main(argv: list[str] | None = None) -> int:
     lines += ["\n## Facts below L4\n", "| Fact | Level | Chunk |", "|---|---|---|"]
     lines += [f"| {r['id']} | {r['level']} | {r['chunk']} |" for r in results
               if r["level"] is not None and r["level"] < 4]
-    (out / f"{args.parser}.md").write_text("\n".join(lines) + "\n")
+    (out / f"{args.name or args.parser}.md").write_text("\n".join(lines) + "\n")
     print(json.dumps({k: summary[k] for k in ("parser", "scored", "levels")}), file=sys.stderr)
     return 0
 

@@ -228,7 +228,12 @@ def main(argv: list[str] | None = None) -> int:
                           file=sys.stderr)
     log.close()
     wall = time.perf_counter() - t_run
+    import resource
+    ru_self, ru_kids = resource.getrusage(resource.RUSAGE_SELF), resource.getrusage(resource.RUSAGE_CHILDREN)
+    cpu_seconds = ru_self.ru_utime + ru_self.ru_stime + ru_kids.ru_utime + ru_kids.ru_stime
     summary = {**header, "docs_ok": ok, "docs_failed": done - ok, "pages_ok": pages,
+               "cpu_seconds": round(cpu_seconds, 1),  # this process (+children), not the MinerU VLM server
+               "peak_rss_mb": round(max(ru_self.ru_maxrss, ru_kids.ru_maxrss) / 1024),
                "started_unix": round(time.time() - wall, 1), "ended_unix": round(time.time(), 1),
                "wall_seconds": round(wall, 1), "pages_per_second": round(pages / max(wall, 1e-9), 3)}
     (runs / f"{run_id}_summary.json").write_text(json.dumps(summary, indent=1))

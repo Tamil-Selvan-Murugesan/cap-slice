@@ -52,6 +52,9 @@ def get_full_parser(name: str) -> Callable[[Path], ParseOutput]:
     if name == "docling":
         from cap_slice.parsing.docling_md import parse_full
         return parse_full
+    if name == "pymupdf4llm":
+        from cap_slice.parsing.pymupdf4llm_md import parse_full
+        return parse_full
     if name == "mineru":
         from cap_slice.parsing.mineru_vlm import parse_full
         return parse_full
