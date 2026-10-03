@@ -5,6 +5,10 @@
 # e.g. tools/gpu/mineru_run.sh --out parsed --workers 8
 set -euo pipefail
 LOG=${MINERU_SERVER_LOG:-/tmp/mineru_vlm_server.log}
+# FlashInfer's sampler is JIT-compiled with the image's nvcc (CUDA 12.8 on the RunPod image), which
+# can't target the RTX 5090 (sm_120) -> "FlashInfer requires GPUs with sm75 or higher". vLLM's
+# PyTorch sampler needs no compiler (bugs_resolved.md I15).
+export VLLM_USE_FLASHINFER_SAMPLER=${VLLM_USE_FLASHINFER_SAMPLER:-0}
 WAIT_MIN=${MINERU_SERVER_WAIT_MIN:-45}   # first start on a network volume: imports alone took 5 min (pod 2)
 up() { curl -sf -m 2 "${CAP_SLICE_MINERU_SERVER}/v1/models" >/dev/null; }
 # A server already running (e.g. tools/gpu/session.sh vlm-server in its own tmux window) is

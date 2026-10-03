@@ -99,7 +99,8 @@ case "${1:-}" in
   vlm-server)
     # keep MinerU's VLM server up in its own tmux window; every MinerU step then reuses it
     # instead of paying the start-up (5-15 min on a network volume) each time. Ctrl+C stops it.
-    in_mineru mineru-kit vlm-server --engine vllm ${MINERU_SERVER_ARGS:-} 2>&1 | tee /tmp/mineru_vlm_server.log
+    VLLM_USE_FLASHINFER_SAMPLER=${VLLM_USE_FLASHINFER_SAMPLER:-0} \
+      in_mineru mineru-kit vlm-server --engine vllm ${MINERU_SERVER_ARGS:-} 2>&1 | tee /tmp/mineru_vlm_server.log   # sampler: see mineru_run.sh
     ;;
   smoke)
     mineru standard --paths "$SMOKE_PDF" --out parsed_bench/smoke_mineru_standard --retry-failed
