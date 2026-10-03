@@ -4,21 +4,45 @@ Parse all 228 PDFs (12,980 pages) with **MinerU 4 + MinerU2.5-Pro** and **Doclin
 
 > Agents working on the GPU box: read `AGENTS.md`, `PROGRESS.md`, this file and `bugs_resolved.md` first. Don't change parser code mid-run — measured speeds must stay comparable.
 
-## 0. Rent the machine
-- **GPU:** RTX 5090 (planned; A40 fallback if its software fails the smoke test). Prices noted 2026-10-02: A40 $0.53/h, RTX 5090 $0.99/h, A100 $1.59/h.
-- **Driver R580+** (CUDA 13), **Docker + nvidia-container-toolkit**, **≥ 8 CPU cores**, **≥ 100 GB disk** (images ~15–20 GB, models ~5 GB).
-- Note the hourly price; you'll pass it to the report.
+## 0. Rent the machine — a bare Ubuntu VM
+Docker must run on the machine, so it has to be a **real VM** (not a container-based pod such as a RunPod pod, where Docker can't run).
+- **OS:** Ubuntu **24.04** (the pinned packages were resolved for its glibc 2.39).
+- **GPU:** RTX 5090 (planned; A40 fallback if the 5090 fails at step 4). Prices noted 2026-10-02: A40 $0.53/h, RTX 5090 $0.99/h, A100 $1.59/h. Note the price — the report needs it.
+- **≥ 8 CPU cores, ≥ 32 GB RAM, ≥ 100 GB disk** (images ~15–20 GB, models ~5 GB), **public SSH** (for rsync).
 
-## 1. Host setup (once)
+## 1. Machine setup (once, as a sudo user)
+Skip any line the provider has already done (check with `nvidia-smi`, `docker --version`).
 ```bash
-git clone git@github.com:Tamil-Selvan-Murugesan/cap-slice.git   # or your SSH alias && cd cap-slice
-git checkout -b gpu-run                      # all cloud commits go here, not main
+# NVIDIA driver: R580+ (the images use CUDA 13.0). The RTX 5090 needs the *open* kernel modules.
+sudo apt update && sudo apt install -y nvidia-driver-580-open && sudo reboot
+nvidia-smi                                   # after reboot: shows the GPU and "CUDA Version: 13.x"
 
-# Agents on the box (not inside the parser images)
-npm install -g @anthropic-ai/claude-code @openai/codex
+# Docker
+curl -fsSL https://get.docker.com | sudo sh
+sudo usermod -aG docker $USER && newgrp docker
+
+# NVIDIA Container Toolkit (lets Docker use the GPU) — NVIDIA's apt repo, then configure Docker
+curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+curl -fsSL https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list \
+  | sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' \
+  | sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+sudo apt update && sudo apt install -y nvidia-container-toolkit
+sudo nvidia-ctk runtime configure --runtime=docker && sudo systemctl restart docker
+
+# Tools
+sudo apt install -y git rsync tmux python3
+curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash - && sudo apt install -y nodejs
+sudo npm install -g @anthropic-ai/claude-code @openai/codex     # agents on the host, not in the images
+```
+Package names and repo URLs can change — if a line fails, follow the provider's / NVIDIA's current install guide for that step.
+
+**Repo:**
+```bash
+git clone git@github.com:Tamil-Selvan-Murugesan/cap-slice.git && cd cap-slice   # or your SSH alias
+git checkout -b gpu-run                      # all cloud commits go here, not main
 ```
 - **GitHub access from the box:** add a *repo-scoped* deploy key with write access (or a fine-grained token for this repo only) — not your personal login.
-- **Claude Code memory:** copy `~/.claude/projects/-home-tamil-work-cap-slice/memory/` from the laptop to the same path on the box, with the folder name matching the repo path there (for `/root/cap-slice` it is `-root-cap-slice`). It carries preferences such as "no AI attribution in commits".
+- **Claude Code memory:** copy `~/.claude/projects/-home-tamil-work-cap-slice/memory/` from the laptop to the box, renamed to match the repo path there (for `/home/ubuntu/cap-slice` it is `-home-ubuntu-cap-slice`). It carries preferences such as "no AI attribution in commits".
 
 ## 2. Data (from the laptop)
 Code comes from git; only the PDFs are copied — never rsync the whole repo over the clone.
@@ -33,11 +57,12 @@ rsync -av --prune-empty-dirs --include='*/' --include='*.pdf' --exclude='*' \
 tools/gpu/check_host.sh          # driver, docker --gpus, CPUs, disk, 228 PDFs, golden set
 ```
 
-## 4. Build, models, smoke test (~30–45 min, mostly downloads)
+## 4. Build, models, smoke (~30–45 min, mostly downloads)
+The pipeline code was tested on the laptop (CPU); what's new here is only the images, so `build` + `smoke` are where a setup problem would show up.
 ```bash
-tools/gpu/session.sh build       # both images
+tools/gpu/session.sh build       # both images — run this first: a build problem shows up within ~15 min
 tools/gpu/session.sh models      # MinerU small models + MinerU2.5-Pro-2605-1.2B into ~/models; Docling warm-up
-tools/gpu/session.sh smoke       # each parser on one 4-page PDF; both must print "ok"
+tools/gpu/session.sh smoke       # ~1-2 min: each parser on one 4-page PDF; both must print "ok"
 ```
 If `smoke` fails on an RTX 5090 with CUDA/arch errors ("no kernel image", "sm_120"), stop and switch to the A40 instead of debugging on the meter.
 
