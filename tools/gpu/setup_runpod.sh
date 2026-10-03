@@ -49,12 +49,22 @@ if [ "$cuda" -ge 130 ]; then BACKEND=cu130; elif [ "$cuda" -ge 128 ]; then BACKE
 # on CUDA 12.x drivers use vLLM's +cu129 GitHub build with cu129 torch (runs on any
 # 12.x driver via CUDA minor-version compatibility).
 if [ "$cuda" -ge 130 ]; then MINERU_BACKEND=cu130; else MINERU_BACKEND=cu129; fi
+# vLLM refuses Blackwell GPUs (RTX 50xx, compute capability 12.x) unless the driver
+# supports CUDA >= 12.9 ("SM 12.x requires CUDA >= 12.9" — seen on a driver-570 pod).
+sm=$(nvidia-smi --query-gpu=compute_cap --format=csv,noheader | head -1 | cut -d. -f1)
+if [ "${sm:-0}" -ge 12 ] && [ "$cuda" -lt 129 ]; then
+  echo "WARNING: $(nvidia-smi --query-gpu=name --format=csv,noheader | head -1) needs a CUDA >= 12.9 driver for vLLM (MinerU);"
+  echo "         this driver supports CUDA ${cuda:0:2}.${cuda:2}. Docling will work here; MinerU will not."
+  echo "         For MinerU, deploy a pod with RunPod's CUDA version filter = 13.0."
+  SKIP_MINERU=1
+fi
 echo "driver CUDA ${cuda:0:2}.${cuda:2} -> docling: $BACKEND pins (or existing env), mineru: $MINERU_BACKEND pins"
 
 mkdir -p "$VENVS" "$MODELS/hf" "$MODELS/mineru"
 export UV_CACHE_DIR=$WS/.uv-cache UV_LINK_MODE=copy
 for env in docling mineru; do
   py="$VENVS/$env/bin/python"
+  [ "$env" = mineru ] && [ "${SKIP_MINERU:-0}" = 1 ] && { echo "== venv: mineru — skipped (driver too old for vLLM on this GPU)"; continue; }
   # CUDA build of an existing env, read from its installed torch (e.g. 2.11.0+cu128).
   have=""; [ -x "$py" ] && have=$("$py" -c "import torch; print(torch.__version__.split('+')[1])" 2>/dev/null || true)
   if [ "$env" = mineru ]; then
@@ -91,6 +101,6 @@ EOF
 
 echo "== checks"
 "$VENVS/docling/bin/python" -c "import torch, docling; print('docling env: torch', torch.__version__, 'cuda', torch.cuda.is_available(), torch.cuda.get_device_name(0))"
-"$VENVS/mineru/bin/python" -c "import torch, vllm, mineru; print('mineru env: torch', torch.__version__, 'vllm', vllm.__version__, 'cuda', torch.cuda.is_available())"
+[ "${SKIP_MINERU:-0}" = 1 ] || "$VENVS/mineru/bin/python" -c "import torch, vllm, mineru; print('mineru env: torch', torch.__version__, 'vllm', vllm.__version__, 'cuda', torch.cuda.is_available())"
 df -h "$WS" | tail -1
 echo "Setup done. Next: tools/gpu/session.sh models"

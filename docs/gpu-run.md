@@ -4,6 +4,8 @@ Parse all 228 PDFs (12,980 pages) with **MinerU 4 + MinerU2.5-Pro** and **Doclin
 
 > Agents working on the pod: read `AGENTS.md`, `PROGRESS.md`, this file and `bugs_resolved.md` first. Don't change parser code mid-run — measured speeds must stay comparable.
 
+**Lessons from the first pod (2026-10-03):** the image ships uv 0.9.0 (setup now installs 0.12.5); a CUDA 12.8 driver can't run vLLM on an RTX 5090 — deploy with the CUDA 13.0 filter; the home upload of PDFs was slow — for later pods use a RunPod network volume or `runpodctl send/receive` between pods.
+
 **How it runs on RunPod.** A pod is itself a container, so Docker can't run inside it. Instead `tools/gpu/setup_runpod.sh` builds the **same two isolated environments** the Dockerfiles define — `/workspace/venvs/docling` and `/workspace/venvs/mineru` — from the same pinned files in `docker/`. The pipeline code is the code tested on the laptop; only the setup differs. (The Dockerfiles stay for later: a pre-built image as a RunPod template would make every future pod start ready.)
 
 ## 0. Create the pod (RunPod console)
@@ -13,7 +15,7 @@ Parse all 228 PDFs (12,980 pages) with **MinerU 4 + MinerU2.5-Pro** and **Doclin
 | Container image | `runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404` (Ubuntu 24.04 — the pins target it; its own PyTorch is not used) |
 | Volume disk | **≥ 80 GB**, mounted at `/workspace` (venvs ~15 GB, models ~5 GB, PDFs ~1 GB, caches ~1 GB) |
 | Container disk | ≥ 30 GB (system packages) |
-| CUDA version filter | **≥ 13.0 required** (MinerU's vLLM is a CUDA 13 build). Docling would also run on 12.8 |
+| CUDA version filter | **13.0** — required for MinerU on an RTX 5090: vLLM refuses Blackwell GPUs unless the driver supports CUDA ≥ 12.9 (a driver-570 / CUDA 12.8 pod failed with "SM 12.x requires CUDA >= 12.9"). Docling also runs on CUDA 12.8 |
 | Ports | **Expose TCP port 22** and add your SSH public key in RunPod settings. rsync needs this direct SSH; the `ssh.runpod.io` proxy doesn't support rsync/scp |
 
 Note the hourly price — the report needs it. **Stop** the pod when idle (the volume keeps everything; only the volume is billed while stopped).
