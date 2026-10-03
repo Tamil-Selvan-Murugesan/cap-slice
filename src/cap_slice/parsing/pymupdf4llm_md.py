@@ -16,6 +16,7 @@ Which RapidOCR package runs depends on what's installed: PyMuPDF4LLM prefers
 from __future__ import annotations
 
 import os
+import sys
 from functools import cache
 from pathlib import Path
 
@@ -29,6 +30,16 @@ def _configure(device: str) -> dict:
     """Point PyMuPDF4LLM's ONNX models at the GPU once per process."""
     info = {"device": device, "layout_gpu": False, "ocr_gpu": False}
     if device == "cpu":
+        return info
+    # onnxruntime-gpu (CUDA 13 build) can't find libcublasLt.so.13 & co on its own; they ship
+    # with torch's nvidia-* wheels, and importing torch loads them into the process first
+    # (Docling imports torch anyway, PyMuPDF4LLM doesn't). bugs_resolved.md I14.
+    try:
+        import torch  # noqa: F401
+    except ImportError:
+        pass
+    if not _ort_cuda_works():
+        print("WARNING: onnxruntime can't use CUDA here; PyMuPDF4LLM stays on CPU", file=sys.stderr)
         return info
     import pymupdf
     from pymupdf.layout import DocumentLayoutAnalyzer
@@ -49,6 +60,20 @@ def _configure(device: str) -> dict:
     except ImportError:  # only rapidocr_onnxruntime installed: OCR stays on CPU
         pass
     return info
+
+
+def _ort_cuda_works() -> bool:
+    """Open a real ONNX session on CUDA: the provider list alone says nothing (I12)."""
+    import onnxruntime as ort
+    try:
+        import rapidocr
+        model = Path(rapidocr.__file__).parent / "models" / "PP-OCRv6_det_small.onnx"
+    except ImportError:
+        return False
+    if not model.exists():
+        return False
+    s = ort.InferenceSession(str(model), providers=["CUDAExecutionProvider", "CPUExecutionProvider"])
+    return s.get_providers()[0] == "CUDAExecutionProvider"
 
 
 def parse_full(path: Path) -> ParseOutput:
