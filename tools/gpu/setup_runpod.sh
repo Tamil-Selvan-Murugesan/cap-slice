@@ -25,9 +25,16 @@ apt-get install -y -qq --no-install-recommends python3.12 python3.12-venv python
     build-essential git curl rsync tmux ca-certificates libgl1 libglib2.0-0 libgomp1 >/dev/null
 
 echo "== uv"
-command -v uv >/dev/null || curl -LsSf https://astral.sh/uv/install.sh | sh
+# Always use the uv version the pins were resolved with: images can ship an older
+# uv (runpod/pytorch has 0.9.0, which doesn't know --torch-backend cu130).
+UV_VERSION=0.12.5
+if [ "$("$HOME/.local/bin/uv" --version 2>/dev/null | awk '{print $2}')" != "$UV_VERSION" ]; then
+  curl -LsSf "https://astral.sh/uv/$UV_VERSION/install.sh" | env UV_NO_MODIFY_PATH=1 sh
+fi
 export PATH=$HOME/.local/bin:$PATH
+hash -r
 uv --version
+[ "$(uv --version | awk '{print $2}')" = "$UV_VERSION" ] || { echo "wrong uv on PATH: $(command -v uv)"; exit 1; }
 
 echo "== CUDA version supported by the driver"
 cuda=$(nvidia-smi | sed -n 's/.*CUDA Version: *\([0-9]*\)\.\([0-9]*\).*/\1\2/p' | head -1)
