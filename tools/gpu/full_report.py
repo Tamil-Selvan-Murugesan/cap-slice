@@ -175,8 +175,8 @@ def parser_metrics(parser: str, root: Path, inv: dict, args) -> dict | None:
                                 if k in ("ocr", "layout", "table_structure", "page_parse") and tot}
 
     # accuracy
-    for tag, sub in (("v2", "review/v2"), ("v1", "review/v1")):
-        f = REPO / sub / f"{parser}.json"
+    for tag in ("v2", "v1"):
+        f = REPO / args.review / tag / f"{parser}.json"
         if f.exists():
             s = json.loads(f.read_text())["summary"]
             m[f"golden_{tag}"] = {**s["levels"], "scored": s["scored"], "of": s["facts"],
@@ -219,11 +219,13 @@ def main() -> None:
     ap.add_argument("--root", default="parsed")
     ap.add_argument("--tokens", action="store_true", help="also count chunks/tokens (slower)")
     ap.add_argument("--parsers", nargs="*", default=list(PARSERS))
+    ap.add_argument("--review", default="review", help="folder holding v2/ and v1/ score files")
+    ap.add_argument("--out", default="review/gpu")
     args = ap.parse_args()
     inv = load_inventory()
     root = Path(args.root) if Path(args.root).is_absolute() else REPO / args.root
     rows = [r for p in args.parsers if (r := parser_metrics(p, root, inv, args))]
-    out = REPO / "review/gpu"
+    out = REPO / args.out
     out.mkdir(parents=True, exist_ok=True)
     for r in rows:
         r.pop("_dir", None)

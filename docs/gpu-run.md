@@ -63,6 +63,12 @@ Variants: MinerU `standard` and `advanced` (4 documents in flight); Docling with
 - MinerU workers: start at 8; if GPU utilisation in the report is < 70 %, use 16.
 - PyMuPDF4LLM: use the faster of its two variants (`P4L_PROCS=1` or N).
 
+## 4b. Rehearsal (~20 min) — catches bugs before the multi-hour runs
+```bash
+GPU_PRICE=0.99 tools/gpu/session.sh rehearse   # all four parsers on 5 golden docs -> parsed_rehearsal/review/gpu/COMPARISON.md
+```
+Check: every parser 5 ok / 0 failed; MinerU and Docling score above baseline on the scanned E2E FY2022-23 facts; GPU columns filled for the GPU parsers.
+
 ## 5. Full run (one parser at a time, never two together, so speeds stay clean)
 ```bash
 MINERU_TIER=standard MINERU_WORKERS=8 tools/gpu/session.sh full-mineru
