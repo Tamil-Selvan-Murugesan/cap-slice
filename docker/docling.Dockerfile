@@ -29,6 +29,11 @@ COPY --from=ghcr.io/astral-sh/uv:0.12.5 /uv /usr/local/bin/uv
 RUN uv venv /opt/venv -p python3.12
 COPY docker/requirements-docling-${TORCH_BACKEND}.txt /tmp/requirements.txt
 RUN uv pip install --no-cache --torch-backend ${TORCH_BACKEND} -r /tmp/requirements.txt
+# OCR on GPU: replace the CPU onnxruntime with onnxruntime-gpu for this CUDA major
+# version (1.22.0 = CUDA 12 build; current releases are CUDA 13). See setup_runpod.sh.
+RUN uv pip uninstall onnxruntime && \
+    if [ "${TORCH_BACKEND#cu12}" != "${TORCH_BACKEND}" ]; then uv pip install --no-cache onnxruntime-gpu==1.22.0; \
+    else uv pip install --no-cache onnxruntime-gpu; fi
 
 # The project itself (deps already installed above; editable so a mounted repo
 # at /app is what actually runs).

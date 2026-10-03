@@ -85,6 +85,22 @@ for env in docling mineru; do
   fi
   uv pip install -p "$py" --torch-backend "$backend" -r "$req"
   uv pip install -p "$py" --no-deps -e .
+  if [ "$env" = docling ]; then
+    # Docling's OCR (RapidOCR) runs on onnxruntime; the pinned CPU build silently ignores
+    # the GPU. Swap in onnxruntime-gpu built for this CUDA major version (uninstall the CPU
+    # build first — both packages share files). 1.22.0 = CUDA 12 build (verified on a
+    # driver-570 pod); current PyPI releases are CUDA 13 builds (need libcublasLt.so.13).
+    case "$backend" in cu12*) ORT_GPU="onnxruntime-gpu==1.22.0";; *) ORT_GPU="onnxruntime-gpu";; esac
+    if ! "$py" -c "import onnxruntime as o; o.get_device()=='GPU' or exit(1)" 2>/dev/null; then
+      uv pip uninstall -p "$py" onnxruntime >/dev/null 2>&1 || true
+      uv pip install -p "$py" "$ORT_GPU"
+    fi
+    m=$("$py" -c "import rapidocr, os; print(os.path.join(os.path.dirname(rapidocr.__file__), 'models', 'PP-OCRv6_det_small.onnx'))")
+    if [ -f "$m" ]; then
+      "$py" -c "import torch, onnxruntime as o; s=o.InferenceSession('$m', providers=['CUDAExecutionProvider','CPUExecutionProvider']); p=s.get_providers(); print('   docling OCR providers:', p); exit(0 if p[0]=='CUDAExecutionProvider' else 1)" \
+        || echo "   WARNING: Docling OCR will run on CPU (onnxruntime-gpu could not use CUDA here)"
+    fi
+  fi
   case "$req" in *.in) uv pip freeze -p "$py" | grep -v "^-e " > "docker/requirements-$env-$backend.txt"
                        echo "   froze docker/requirements-$env-$backend.txt (commit it on the gpu-run branch)";; esac
   if uv pip list -p "$py" 2>/dev/null | grep -qiE "cu13|nvidia-cuda-runtime +13" && [ "$backend" != cu130 ]; then
