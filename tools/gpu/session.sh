@@ -139,7 +139,8 @@ case "${1:-}" in
   rehearse)
     # dress rehearsal of the full run on 5 golden documents (240 pages, incl. a 164-page AR with
     # scanned statements): every parser, both golden sets, the full report -> parsed_rehearsal/
-    R=parsed_rehearsal; rm -rf "$R"
+    # resumable like every parse step; rm -rf parsed_rehearsal first to start over
+    R=parsed_rehearsal
     mineru standard --paths "${REHEARSE[@]}" --out "$R" --workers 4 --largest-first
     docling_parallel "$DOCLING_PROCS" 4 "$R" "${REHEARSE[@]}"
     parse_parallel pymupdf4llm "$P4L_PROCS" "$R" "${REHEARSE[@]}"
