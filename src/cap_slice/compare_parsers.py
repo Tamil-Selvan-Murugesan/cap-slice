@@ -148,6 +148,13 @@ def _flat(s: str) -> str:
 def _value_re(value: str) -> re.Pattern:
     if re.search(r"[A-Za-z]", value):
         return re.compile(re.escape(value).replace(r"\ ", r"\s+"), re.I)
+    # Numbers match with or without thousands separators (fix S11): a chart's data label "3,915" is
+    # the same number when a parser writes "3915", and Indian (1,58,074) vs plain grouping too.
+    m = re.search(r"\d[\d,]*", value)
+    if m:
+        head, digits, tail = value[:m.start()], m.group().replace(",", ""), value[m.end():]
+        core = ",?".join(re.escape(d) for d in digits)
+        return re.compile(r"(?<![\d.,])" + re.escape(head) + core + re.escape(tail) + r"(?![\d.,]*\d)")
     return re.compile(r"(?<![\d.,])" + re.escape(value) + r"(?![\d.,]*\d)")
 
 

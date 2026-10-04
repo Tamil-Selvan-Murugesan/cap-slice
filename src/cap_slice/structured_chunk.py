@@ -8,7 +8,8 @@ Compared with chunk.py (the baseline):
 - Tables are atomic: never mixed with prose, never split mid-row. A table too
   big for one chunk is split by rows with its header rows repeated. The short
   text just before a table (title, units line) is copied in as its caption,
-  and the section's latest units statement ("amounts in INR lakhs") is always
+  and the latest units statement ("amounts in INR lakhs") — of the section, or
+  of the page across sub-headings — is always
   included, even when other text sits between it and the table.
 - A table that continues at the top of the next page with the same number of
   columns is merged, so rows on page 2 keep the header from page 1.
@@ -175,7 +176,8 @@ def chunk_structured(pages: list[ParsedPage]) -> list[StructuredChunk]:
     section = ""
     buf: list[Block] = []  # pending prose
     carry = ""             # overlap text for the next prose chunk
-    units = ""             # latest units statement in the current section
+    units = ""             # latest units statement (kept across headings on the same page)
+    units_page = 0
 
     def emit(kind: str, text: str, first: int, last: int, notes: list[str] | None = None) -> None:
         body = (f"## {section}\n" if section else "") + text.strip()
@@ -200,11 +202,16 @@ def chunk_structured(pages: list[ParsedPage]) -> list[StructuredChunk]:
                 # Chunk too small to close: keep the heading as text so it isn't lost.
                 buf.append(Block("text", [f"## {b.lines[0]}"], b.page))
             section = b.lines[0]
-            units = ""
+            # A units statement ("Amount in crores of INR") covers the rest of its page even when a
+            # parser marks a sub-table title ("B. Other Equity") as a heading (fix S10).
+            if b.page != units_page:
+                units = ""
             continue
         if b.kind == "text":
-            units = next((l for l in reversed(b.lines)
-                          if UNIT_HINT.search(l) and len(l.split()) <= 25), units)
+            found = next((l for l in reversed(b.lines)
+                          if UNIT_HINT.search(l) and len(l.split()) <= 25), None)
+            if found:
+                units, units_page = found, b.end_page or b.page
             if buf and sum(x.words() for x in buf) + b.words() > TEXT_WORDS:
                 flush_text()
             buf.append(b)

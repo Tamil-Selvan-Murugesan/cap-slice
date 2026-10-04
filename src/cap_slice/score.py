@@ -62,6 +62,9 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--skipped", default=str(GOLDEN / "v2_skipped.csv"))
     ap.add_argument("--out", default="review/v2")
     ap.add_argument("--name", help="output file stem (default: the parser name)")
+    ap.add_argument("--clean", action="store_true",
+                    help="apply page_clean.py first (drop invented picture text, unwrap layout HTML, "
+                         "restore a missed units line from the PDF text layer) — same for every parser")
     args = ap.parse_args(argv)
     cache = Path(args.cache) if Path(args.cache).is_absolute() else REPO_ROOT / args.cache
     facts = list(csv.DictReader(open(args.facts)))
@@ -72,12 +75,19 @@ def main(argv: list[str] | None = None) -> int:
             f["stratum"] = f.get("stratum") or "v1"
 
     results, by_doc, missing = [], {}, set()
+    clean_stats = {"docs": 0, "units_restored_pages": 0}
     for path in sorted({f["path"] for f in facts}):
         data = load_pages(cache, args.parser, path)
         if data is None:
             missing.add(path)
             continue
-        by_doc[path] = chunks_for(args.parser, data["pages"])
+        pages = data["pages"]
+        if args.clean:
+            from cap_slice.page_clean import clean_pages
+            pages, st = clean_pages(pages, REPO_ROOT / path)
+            clean_stats["docs"] += 1
+            clean_stats["units_restored_pages"] += len(st["units_restored_pages"])
+        by_doc[path] = chunks_for(args.parser, pages)
     for f in facts:
         if f["path"] in missing:
             results.append({"id": f["id"], "level": None, "chunk": None, "groups": groups(f)})
@@ -102,11 +112,16 @@ def main(argv: list[str] | None = None) -> int:
             if "hallucination" not in row["reason"]:
                 continue
             data = load_pages(cache, args.parser, row["path"])
+            if data and args.clean:
+                from cap_slice.page_clean import clean_pages
+                data = {"pages": clean_pages(data["pages"])[0]}
             text = dict((n, t) for n, t in data["pages"]).get(int(row["page"]), "") if data else None
             halluc.append({"path": row["path"], "page": int(row["page"]),
                            "chars": None if text is None else len(text.strip()),
                            "sample": None if not text else " / ".join(text.split("\n")).strip()[:120]})
     summary["hallucination_check"] = halluc
+    if args.clean:
+        summary["clean"] = clean_stats
 
     out = REPO_ROOT / args.out
     out.mkdir(parents=True, exist_ok=True)
