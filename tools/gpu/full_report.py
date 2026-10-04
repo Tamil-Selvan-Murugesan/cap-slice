@@ -29,7 +29,7 @@ from collections import defaultdict
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
-PARSERS = ("baseline", "pymupdf4llm", "docling", "mineru")
+PARSERS = ("baseline", "pymupdf4llm", "docling", "mineru", "paddleocr_vl")
 SCALE = (11_000_000, 14_000_000)
 MIN_TEXT = 50
 

@@ -12,6 +12,9 @@
 #   tools/gpu/session.sh full-mineru  # all PDFs with MinerU (MINERU_TIER, MINERU_PROCS x MINERU_WORKERS)
 #   tools/gpu/session.sh full-docling # all PDFs with Docling (DOCLING_PROCS parallel processes, DOCLING_BATCH)
 #   tools/gpu/session.sh full-pymupdf4llm  # all PDFs with PyMuPDF4LLM on GPU (P4L_PROCS)
+#   tools/gpu/session.sh paddle-server     # PaddleOCR-VL VLM on vLLM 0.30, own tmux window (after setup_paddleocr_vl.sh)
+#   tools/gpu/session.sh smoke-paddle      # PaddleOCR-VL on the 4-page smoke PDF
+#   tools/gpu/session.sh full-paddle       # all PDFs with PaddleOCR-VL (PADDLE_PROCS client processes, default 2)
 #   tools/gpu/session.sh full-baseline     # all PDFs with the current pipeline's extraction, CPU only (BASELINE_PROCS)
 #   tools/gpu/session.sh compare      # golden v1+v2 scores for every parser + review/gpu/COMPARISON.md (GPU_PRICE, VCPU_PRICE)
 #   tools/gpu/session.sh build        # Docker mode only: build both images
@@ -53,6 +56,7 @@ if [ -f tools/gpu/env.sh ]; then
   source tools/gpu/env.sh
   in_mineru()  { PATH="$VENVS/mineru/bin:$PATH" "$@"; }
   in_docling() { PATH="$VENVS/docling/bin:$PATH" "$@"; }
+  in_paddle()  { PATH="$VENVS/paddle/bin:$PATH" "$@"; }
 else
   MODE=docker
   MODELS=${MODELS:-$HOME/models}
@@ -90,6 +94,9 @@ parse_parallel() {
       OMP_NUM_THREADS=$threads in_mineru cap-slice-parse --parser mineru --paths-file "$dir/shard_$i.txt" --out "$out" \
         --workers "${MINERU_WORKERS:-8}" ${RETRY_FAILED:+--retry-failed} \
         2> >(grep --line-buffered -E "^\[|^done:|Error|Traceback" >&2) &
+    elif [ "$parser" = paddleocr_vl ]; then  # Paddle env; all processes share the vLLM server on :8118
+      OMP_NUM_THREADS=$threads in_paddle cap-slice-parse --parser paddleocr_vl --paths-file "$dir/shard_$i.txt" --out "$out" \
+        ${RETRY_FAILED:+--retry-failed} 2> >(grep --line-buffered -E "^\[|^done:|Error|Traceback" >&2) &
     else
       EXTRA_ENV="CAP_SLICE_DOCLING_BATCH=${DOCLING_BATCH:-4}" CAP_SLICE_DOCLING_BATCH=${DOCLING_BATCH:-4} \
       OMP_NUM_THREADS=$threads in_docling cap-slice-parse --parser "$parser" --paths-file "$dir/shard_$i.txt" --out "$out" ${RETRY_FAILED:+--retry-failed} \
@@ -119,7 +126,8 @@ docling_parallel() { local procs=$1 batch=$2; shift 2; DOCLING_BATCH=$batch pars
 DOCLING_PROCS=${DOCLING_PROCS:-auto}
 if [ "$DOCLING_PROCS" = auto ]; then DOCLING_PROCS=$(( $(cpus_allowed) / 3 )); [ "$DOCLING_PROCS" -gt 4 ] && DOCLING_PROCS=4; [ "$DOCLING_PROCS" -lt 1 ] && DOCLING_PROCS=1; fi
 P4L_PROCS=${P4L_PROCS:-$DOCLING_PROCS}       # PyMuPDF4LLM: GPU OCR/layout + CPU work, like Docling
-BASELINE_PROCS=${BASELINE_PROCS:-$(cpus_allowed)}   # baseline is single-threaded CPU work
+BASELINE_PROCS=${BASELINE_PROCS:-$(cpus_allowed)}
+PADDLE_PROCS=${PADDLE_PROCS:-2}   # PaddleOCR-VL client processes (layout model each); 2 = main-sirisha's choice, 3 hit 31.9/32 GB   # baseline is single-threaded CPU work
 docling() { EXTRA_ENV="CAP_SLICE_DOCLING_BATCH=$1" CAP_SLICE_DOCLING_BATCH="$1" in_docling cap-slice-parse --parser docling "${@:2}"; }
 export -f in_mineru in_docling 2>/dev/null || true
 
@@ -140,6 +148,28 @@ case "${1:-}" in
     # instead of paying the start-up (5-15 min on a network volume) each time. Ctrl+C stops it.
     VLLM_USE_FLASHINFER_SAMPLER=${VLLM_USE_FLASHINFER_SAMPLER:-0} \
       in_mineru mineru-kit vlm-server --engine vllm ${MINERU_SERVER_ARGS:-} 2>&1 | tee /tmp/mineru_vlm_server.log   # sampler: see mineru_run.sh
+    ;;
+  paddle-server)
+    # PaddleOCR-VL-1.6's VLM on vLLM 0.30, as tested on main-sirisha (vlm_bench/serve.sh paddle030):
+    # same weights, chat template and served name as PaddleOCR's own server, ~2x faster. Leave it
+    # running in its own tmux window (needs tools/gpu/setup_paddleocr_vl.sh). Ctrl+C stops it.
+    # FlashInfer's sampler would be JIT-compiled with the image's CUDA 12.8 nvcc (fails on sm_120,
+    # bugs_resolved.md I15): use vLLM's PyTorch sampler, and the venv's CUDA 13 nvcc for anything else.
+    cu=$VENVS/vllm030/lib/python3.12/site-packages/nvidia/cu13
+    tmpl=$(ls "$VENVS"/paddle/lib/python3.12/site-packages/paddlex/inference/genai/chat_templates/PaddleOCR-VL-1.6-0.9B.jinja)
+    CUDA_HOME=$cu PATH="$cu/bin:$VENVS/vllm030/bin:$PATH" VLLM_USE_FLASHINFER_SAMPLER=0 \
+      vllm serve "$PADDLE_PDX_CACHE_HOME/official_models/PaddleOCR-VL-1.6" \
+      --served-model-name PaddleOCR-VL-1.6-0.9B --port 8118 --trust-remote-code --chat-template "$tmpl" \
+      --api-server-count "${PADDLE_API_SERVERS:-4}" --max-model-len 16384 --max-num-batched-tokens 131072 \
+      --gpu-memory-utilization "${PADDLE_GPU_UTIL:-0.6}" --max-num-seqs 256 \
+      --no-enable-prefix-caching --mm-processor-cache-gb 0 2>&1 | tee /tmp/paddle_vlm_server.log
+    ;;
+  smoke-paddle)
+    curl -sf -m 2 "${CAP_SLICE_PADDLE_SERVER%/v1}/v1/models" >/dev/null || { echo "start tools/gpu/session.sh paddle-server first"; exit 1; }
+    parse_parallel paddleocr_vl 1 parsed_bench/smoke_paddleocr_vl "$SMOKE_PDF"
+    for f in parsed_bench/smoke_paddleocr_vl/*/C2C/periodic_results/*/meta.json; do
+      python3 -c "import json; m=json.load(open('$f')); print(m['status'], m['seconds'], 's', m.get('pages_returned'), 'pages', m.get('error', ''))"
+    done
     ;;
   smoke)
     mineru standard --paths "$SMOKE_PDF" --out parsed_bench/smoke_mineru_standard --retry-failed
@@ -173,6 +203,10 @@ case "${1:-}" in
   full-pymupdf4llm)
     parse_parallel pymupdf4llm "$P4L_PROCS" parsed
     ;;
+  full-paddle)
+    curl -sf -m 2 "${CAP_SLICE_PADDLE_SERVER%/v1}/v1/models" >/dev/null || { echo "start tools/gpu/session.sh paddle-server first"; exit 1; }
+    parse_parallel paddleocr_vl "$PADDLE_PROCS" parsed
+    ;;
   full-baseline)
     parse_parallel baseline "$BASELINE_PROCS" parsed
     ;;
@@ -192,10 +226,10 @@ case "${1:-}" in
         docling)     docling_parallel "$DOCLING_PROCS" "${DOCLING_BATCH:-4}" "$R" "${REHEARSE[@]}" ;;
         pymupdf4llm) parse_parallel pymupdf4llm "$P4L_PROCS" "$R" "${REHEARSE[@]}" ;;
         baseline)    parse_parallel baseline "$BASELINE_PROCS" "$R" "${REHEARSE[@]}" ;;
-        *) echo "unknown parser $p (mineru docling pymupdf4llm baseline)"; exit 1 ;;
+        *) echo "unknown parser $p (mineru docling pymupdf4llm paddleocr_vl baseline)"; exit 1 ;;
       esac
     done
-    for p in baseline pymupdf4llm docling mineru; do
+    for p in baseline pymupdf4llm docling mineru paddleocr_vl; do
       [ -d "$R/$p" ] || continue
       in_docling cap-slice-score --parser "$p" --cache "$R" --out "$R/review/v2" | tail -1
       in_docling cap-slice-score --parser "$p" --cache "$R" --facts data/golden/parse_facts.csv --out "$R/review/v1" | tail -1
@@ -217,9 +251,11 @@ case "${1:-}" in
                    docling_parallel "$DOCLING_PROCS" "${DOCLING_BATCH:-4}" "$o" "${TUNE[@]}" ;;
       pymupdf4llm) o=parsed_tune/pymupdf4llm_p$P4L_PROCS
                    parse_parallel pymupdf4llm "$P4L_PROCS" "$o" "${TUNE[@]}" ;;
+      paddleocr_vl) o=parsed_tune/paddleocr_vl_p$PADDLE_PROCS
+                   parse_parallel paddleocr_vl "$PADDLE_PROCS" "$o" "${TUNE[@]}" ;;
       baseline)    o=parsed_tune/baseline_p$BASELINE_PROCS
                    parse_parallel baseline "$BASELINE_PROCS" "$o" "${TUNE[@]}" ;;
-      *) echo "unknown parser $p (mineru docling pymupdf4llm baseline)"; exit 1 ;;
+      *) echo "unknown parser $p (mineru docling pymupdf4llm paddleocr_vl baseline)"; exit 1 ;;
     esac
     python3 tools/gpu/bench_report.py --price "${GPU_PRICE:-0.99}" --root parsed_tune
     ;;
@@ -229,7 +265,7 @@ case "${1:-}" in
     # (TUNE_REF="mineru=mineru_w8 docling=docling_p6_b8"; default: first by name)
     for v in parsed_tune/*/; do
       v=${v%/}; [ "$(basename "$v")" = review ] && continue
-      for p in baseline pymupdf4llm docling mineru; do
+      for p in baseline pymupdf4llm docling mineru paddleocr_vl; do
         [ -d "$v/$p" ] || continue
         in_docling cap-slice-score --parser "$p" --cache "$v" --out "$v/review/v2" | tail -1
         in_docling cap-slice-score --parser "$p" --cache "$v" --facts data/golden/parse_facts.csv --out "$v/review/v1" | tail -1
@@ -241,7 +277,7 @@ case "${1:-}" in
   compare)
     # golden-set scores (v2: 150 facts, v1: 28 facts) for every parser that has a cache,
     # then the full comparison table -> review/gpu/COMPARISON.md
-    for p in baseline pymupdf4llm docling mineru; do
+    for p in baseline pymupdf4llm docling mineru paddleocr_vl; do
       [ -d "parsed/$p" ] || continue
       in_docling cap-slice-score --parser "$p" --cache parsed --out review/v2
       in_docling cap-slice-score --parser "$p" --cache parsed --facts data/golden/parse_facts.csv --out review/v1
@@ -249,5 +285,5 @@ case "${1:-}" in
     in_docling python tools/gpu/full_report.py --gpu-price "${GPU_PRICE:-0.99}" ${VCPU_PRICE:+--vcpu-price "$VCPU_PRICE"} --tokens
     ;;
   *)
-    sed -n '2,26p' "$0"; exit 1 ;;
+    sed -n '2,29p' "$0"; exit 1 ;;
 esac

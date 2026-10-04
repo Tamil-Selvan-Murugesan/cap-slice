@@ -6,6 +6,7 @@
 - ``pymupdf4llm``: PyMuPDF4LLM layout mode, Markdown tables, RapidOCR (Option 2).
 - ``docling``: Docling layout model + TableFormer + OCR (Option 3).
 - ``mineru``: MinerU2.5-Pro vision-language model via a MinerU VLM server (Option 4).
+- ``paddleocr_vl``: PaddleOCR-VL-1.6, layout model + 0.9B VLM on a vLLM server (Option 5).
 
 ``get_parser`` returns per-page text only (used by compare_parsers.py).
 ``get_full_parser`` also returns the parser's raw, lossless output files, which
@@ -18,7 +19,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Callable
 
-PARSERS = ("baseline", "pymupdf_text", "pymupdf4llm", "docling", "mineru")
+PARSERS = ("baseline", "pymupdf_text", "pymupdf4llm", "docling", "mineru", "paddleocr_vl")
 
 
 @dataclass
@@ -57,6 +58,9 @@ def get_full_parser(name: str) -> Callable[[Path], ParseOutput]:
         return parse_full
     if name == "mineru":
         from cap_slice.parsing.mineru_vlm import parse_full
+        return parse_full
+    if name == "paddleocr_vl":
+        from cap_slice.parsing.paddleocr_vl import parse_full
         return parse_full
     if name == "baseline":
         from cap_slice.extract import extract_pdf
