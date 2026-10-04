@@ -22,3 +22,4 @@ data/qdrant/
 /parsed*/
 /data/bench/
 tools/gpu/env.sh
+tools/gpu/r2.env
