@@ -6,7 +6,7 @@
 #   tools/gpu/session.sh smoke        # all four parsers on one 4-page PDF (~minutes)
 #   tools/gpu/session.sh bench        # 200-page benchmark: MinerU standard/advanced, Docling and PyMuPDF4LLM 1 vs N processes, baseline
 #   tools/gpu/session.sh report       # benchmark table: pages/s and $ per 1,000 pages (set GPU_PRICE)
-#   tools/gpu/session.sh rehearse     # all four parsers on 5 golden docs + scores + report -> parsed_rehearsal/ (~20 min)
+#   tools/gpu/session.sh rehearse [parser...]  # 5 golden docs (240 p) + scores + report -> parsed_rehearsal/ (all four ~20 min)
 #   tools/gpu/session.sh full-mineru  # all PDFs with MinerU (MINERU_TIER, MINERU_WORKERS)
 #   tools/gpu/session.sh full-docling # all PDFs with Docling (DOCLING_PROCS parallel processes, DOCLING_BATCH)
 #   tools/gpu/session.sh full-pymupdf4llm  # all PDFs with PyMuPDF4LLM on GPU (P4L_PROCS)
@@ -141,11 +141,21 @@ case "${1:-}" in
     # dress rehearsal of the full run on 5 golden documents (240 pages, incl. a 164-page AR with
     # scanned statements): every parser, both golden sets, the full report -> parsed_rehearsal/
     # resumable like every parse step; rm -rf parsed_rehearsal first to start over
+    #   rehearse                 all four, in this order
+    #   rehearse docling         one parser (or several: rehearse docling mineru); scores + report cover
+    #                            every parser done so far
     R=parsed_rehearsal
-    mineru standard --paths "${REHEARSE[@]}" --out "$R" --workers 4 --largest-first
-    docling_parallel "$DOCLING_PROCS" 4 "$R" "${REHEARSE[@]}"
-    parse_parallel pymupdf4llm "$P4L_PROCS" "$R" "${REHEARSE[@]}"
-    parse_parallel baseline "$BASELINE_PROCS" "$R" "${REHEARSE[@]}"
+    todo=("${@:2}"); [ ${#todo[@]} -gt 0 ] || todo=(mineru docling pymupdf4llm baseline)
+    for p in "${todo[@]}"; do
+      echo "== rehearse: $p"
+      case "$p" in
+        mineru)      mineru standard --paths "${REHEARSE[@]}" --out "$R" --workers 4 --largest-first ;;
+        docling)     docling_parallel "$DOCLING_PROCS" "${DOCLING_BATCH:-4}" "$R" "${REHEARSE[@]}" ;;
+        pymupdf4llm) parse_parallel pymupdf4llm "$P4L_PROCS" "$R" "${REHEARSE[@]}" ;;
+        baseline)    parse_parallel baseline "$BASELINE_PROCS" "$R" "${REHEARSE[@]}" ;;
+        *) echo "unknown parser $p (mineru docling pymupdf4llm baseline)"; exit 1 ;;
+      esac
+    done
     for p in baseline pymupdf4llm docling mineru; do
       [ -d "$R/$p" ] || continue
       in_docling cap-slice-score --parser "$p" --cache "$R" --out "$R/review/v2" | tail -1
