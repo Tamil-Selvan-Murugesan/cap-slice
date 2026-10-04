@@ -1,0 +1,324 @@
+{
+ "summary": {
+  "parser": "docling",
+  "facts": 28,
+  "scored": 28,
+  "docs_missing": [],
+  "levels": {
+   "L1+": 27,
+   "L2+": 27,
+   "L3+": 27,
+   "L4+": 27
+  },
+  "l4_by_group": {
+   "kind:prose": "2/2",
+   "kind:qa": "4/4",
+   "kind:table": "21/22",
+   "stratum:v1": "27/28"
+  },
+  "hallucination_check": [
+   {
+    "path": "data/HEROMOTOCO/annual_reports/FY2021-22.pdf",
+    "page": 26,
+    "chars": 5,
+    "sample": ":Hero"
+   },
+   {
+    "path": "data/E2E/investor_presentations/Nov-2022.pdf",
+    "page": 14,
+    "chars": 35,
+    "sample": "E2E Networks Limited /  / 13 /  / THANK YOU"
+   },
+   {
+    "path": "data/E2E/investor_presentations/Jun-2023.pdf",
+    "page": 14,
+    "chars": 24,
+    "sample": "11 /  / ## Business Overview"
+   },
+   {
+    "path": "data/E2E/investor_presentations/Mar-2023.pdf",
+    "page": 35,
+    "chars": 9,
+    "sample": "THANK YOU"
+   },
+   {
+    "path": "data/APARINDS/investor_presentations/Nov-2022.pdf",
+    "page": 16,
+    "chars": 28,
+    "sample": "## ANNEXURES /  / <!-- image -->"
+   },
+   {
+    "path": "data/APARINDS/investor_presentations/Jul-2024-b.pdf",
+    "page": 64,
+    "chars": 28,
+    "sample": "<!-- image --> /  / ## ANNEXURES"
+   },
+   {
+    "path": "data/APARINDS/investor_presentations/Aug-2023-a.pdf",
+    "page": 103,
+    "chars": 28,
+    "sample": "<!-- image --> /  / ## Thank You"
+   },
+   {
+    "path": "data/APARINDS/investor_presentations/Nov-2023.pdf",
+    "page": 34,
+    "chars": 28,
+    "sample": "<!-- image --> /  / ## ANNEXURES"
+   }
+  ]
+ },
+ "facts": [
+  {
+   "id": "F01",
+   "level": 4,
+   "chunk": 270,
+   "groups": [
+    "stratum:v1",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "F02",
+   "level": 4,
+   "chunk": 270,
+   "groups": [
+    "stratum:v1",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "F03",
+   "level": 4,
+   "chunk": 270,
+   "groups": [
+    "stratum:v1",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "F04",
+   "level": 4,
+   "chunk": 270,
+   "groups": [
+    "stratum:v1",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "F05",
+   "level": 4,
+   "chunk": 274,
+   "groups": [
+    "stratum:v1",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "F06",
+   "level": 4,
+   "chunk": 274,
+   "groups": [
+    "stratum:v1",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "F07",
+   "level": 4,
+   "chunk": 274,
+   "groups": [
+    "stratum:v1",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "F08",
+   "level": 4,
+   "chunk": 274,
+   "groups": [
+    "stratum:v1",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "F09",
+   "level": 4,
+   "chunk": 222,
+   "groups": [
+    "stratum:v1",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "F10",
+   "level": 4,
+   "chunk": 222,
+   "groups": [
+    "stratum:v1",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "F11",
+   "level": 4,
+   "chunk": 225,
+   "groups": [
+    "stratum:v1",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "F12",
+   "level": 4,
+   "chunk": 225,
+   "groups": [
+    "stratum:v1",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "F13",
+   "level": 0,
+   "chunk": null,
+   "groups": [
+    "stratum:v1",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "F14",
+   "level": 4,
+   "chunk": 225,
+   "groups": [
+    "stratum:v1",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "F15",
+   "level": 4,
+   "chunk": 35,
+   "groups": [
+    "stratum:v1",
+    "kind:qa"
+   ]
+  },
+  {
+   "id": "F16",
+   "level": 4,
+   "chunk": 35,
+   "groups": [
+    "stratum:v1",
+    "kind:qa"
+   ]
+  },
+  {
+   "id": "F17",
+   "level": 4,
+   "chunk": 38,
+   "groups": [
+    "stratum:v1",
+    "kind:qa"
+   ]
+  },
+  {
+   "id": "F18",
+   "level": 4,
+   "chunk": 38,
+   "groups": [
+    "stratum:v1",
+    "kind:qa"
+   ]
+  },
+  {
+   "id": "F19",
+   "level": 4,
+   "chunk": 13,
+   "groups": [
+    "stratum:v1",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "F20",
+   "level": 4,
+   "chunk": 13,
+   "groups": [
+    "stratum:v1",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "F21",
+   "level": 4,
+   "chunk": 13,
+   "groups": [
+    "stratum:v1",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "F22",
+   "level": 4,
+   "chunk": 13,
+   "groups": [
+    "stratum:v1",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "F23",
+   "level": 4,
+   "chunk": 3,
+   "groups": [
+    "stratum:v1",
+    "kind:prose"
+   ]
+  },
+  {
+   "id": "F24",
+   "level": 4,
+   "chunk": 3,
+   "groups": [
+    "stratum:v1",
+    "kind:prose"
+   ]
+  },
+  {
+   "id": "F25",
+   "level": 4,
+   "chunk": 1,
+   "groups": [
+    "stratum:v1",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "F26",
+   "level": 4,
+   "chunk": 1,
+   "groups": [
+    "stratum:v1",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "F27",
+   "level": 4,
+   "chunk": 1,
+   "groups": [
+    "stratum:v1",
+    "kind:table"
+   ]
+  },
+  {
+   "id": "F28",
+   "level": 4,
+   "chunk": 3,
+   "groups": [
+    "stratum:v1",
+    "kind:table"
+   ]
+  }
+ ]
+}
