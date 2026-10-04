@@ -86,16 +86,10 @@ parse_parallel() {
   for i in $(seq 0 $(( procs - 1 ))); do
     [ -s "$dir/shard_$i.txt" ] || continue
     if [ "$parser" = mineru ]; then  # MinerU env; all processes share the one running VLM server
-      # A MinerU runner's RAM keeps growing from document to document (full run, pod 3: 62 GB limit,
-      # oom_kill), so each runner is restarted every MINERU_RECYCLE documents (resume skips finished
-      # ones; every restart costs one model load) and glibc is told to keep fewer arenas.
-      local n iters; n=$(wc -l < "$dir/shard_$i.txt"); iters=$(( (n + ${MINERU_RECYCLE:-5} - 1) / ${MINERU_RECYCLE:-5} ))
-      ( for _ in $(seq 1 "$iters"); do
-          EXTRA_ENV="CAP_SLICE_MINERU_TIER=${MINERU_TIER:-standard}" CAP_SLICE_MINERU_TIER=${MINERU_TIER:-standard} \
-          MALLOC_ARENA_MAX=2 OMP_NUM_THREADS=$threads in_mineru cap-slice-parse --parser mineru \
-            --paths-file "$dir/shard_$i.txt" --out "$out" --workers "${MINERU_WORKERS:-8}" \
-            --limit "${MINERU_RECYCLE:-5}" ${RETRY_FAILED:+--retry-failed}
-        done ) 2> >(grep --line-buffered -E "^\[|^done:|Error|Traceback" >&2) &
+      EXTRA_ENV="CAP_SLICE_MINERU_TIER=${MINERU_TIER:-standard}" CAP_SLICE_MINERU_TIER=${MINERU_TIER:-standard} \
+      OMP_NUM_THREADS=$threads in_mineru cap-slice-parse --parser mineru --paths-file "$dir/shard_$i.txt" --out "$out" \
+        --workers "${MINERU_WORKERS:-8}" ${RETRY_FAILED:+--retry-failed} \
+        2> >(grep --line-buffered -E "^\[|^done:|Error|Traceback" >&2) &
     else
       EXTRA_ENV="CAP_SLICE_DOCLING_BATCH=${DOCLING_BATCH:-4}" CAP_SLICE_DOCLING_BATCH=${DOCLING_BATCH:-4} \
       OMP_NUM_THREADS=$threads in_docling cap-slice-parse --parser "$parser" --paths-file "$dir/shard_$i.txt" --out "$out" ${RETRY_FAILED:+--retry-failed} \
