@@ -107,6 +107,7 @@ Living status for `cap-slice`. Update at the end of every session. Stable rules 
 | 2026-09-28 | Run Docling with its default settings (4 threads) | Fairest "as shipped" comparison; 8 threads measured slower |
 | 2026-09-28 | Keep Option 2's 2026-09-26 cached timings instead of re-parsing | Re-parse would take 21 min and use a different OCR engine version (P6), so results wouldn't be comparable |
 | 2026-09-28 | Log every parser/chunker/scorer fix in `bugs_resolved.md` | User request: learning material for other agents |
+| 2026-10-04 | Docling full run: skip `E2E/annual_reports/2022-07-29_FY2021-22.pdf` and `C2C/investor_presentations/2025-11-20_Nov-2025-b.pdf`; no code fix for now | Docling's default reader (`docling-parse`) breaks on one page of each (the E2E one exhausts the pod's 62 GB and gets the runner killed, silently blocking the documents queued behind it); pypdfium reads both fine. User chose to finish the other documents first. Details: `docs/gpu-run.md` §5 |
 
 ## Branches and parallel work
 

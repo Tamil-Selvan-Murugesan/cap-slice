@@ -92,6 +92,21 @@ Failed documents are listed in `parsed/<parser>/_runs/<run_id>.jsonl`; re-run th
 
 Measured on the RunPod pod (2026-10-04; one runner, the 4 largest PDFs, 945 pages): default RAM 4 → 10 → 12.4 GB and stays there; with both variables it goes up and down between ~4 and ~11.5 GB and ends at 4.8 GB, at the same speed (2.36 vs 2.37 pages/s). The **peak** barely changes (12.1 vs 12.6 GB): that is the real working set of one window. To lower it, try a smaller `MINERU_PROCESSING_WINDOW_SIZE` (e.g. 32; not measured yet). This matters when several runner processes share one container: the pod's limit was 62 GB, not the host's 515 GB that `free` shows, and runners holding their peaks plus the VLM server (~9.5 GB) reached it (`memory.events`: 9 OOM kills). Check real usage with `cat /sys/fs/cgroup/memory.current` (includes reclaimable file cache) and `cat /sys/fs/cgroup/memory.max`.
 
+**Docling: two PDFs its default PDF reader can't handle; skip them** (found 2026-10-04, docling 2.130.0 / docling-parse 7.22.1). Docling's default reader (`ThreadedDoclingParseDocumentBackend`, the `docling-parse` C++ library) breaks on one page of each:
+- `data/E2E/annual_reports/2022-07-29_FY2021-22.pdf`, **page 2** (table of contents with symbol-font glyphs such as `\uf038`). Its memory runs away within seconds until the container hits its limit (62 GB) and the kernel kills the runner. Under a 40 GB address-space cap (`RLIMIT_AS`) the same page fails cleanly with `Page 2 failed to parse`.
+- `data/C2C/investor_presentations/2025-11-20_Nov-2025-b.pdf`, **page 4**: fails cleanly with `ConversionError … Page 4 failed to parse` (no memory blow-up).
+
+The pypdfium reader (`PyPdfiumDocumentBackend`) parses both pages in ~4 s using 1.2 GB, so this is a `docling-parse` bug, not a broken file.
+
+Why the E2E report looks like "20 documents fail and never re-run": a runner killed by the kernel can't write `meta.json`, so the log shows `N to parse` followed by nothing (no error line, no `done:`), and the cgroup's `memory.events` `oom_kill` counter goes up by one. On the next run the document still has no result, so it is tried again. Because shards are sorted largest first and finished documents are skipped, it sits first in its runner's queue every time, so that runner dies on its first document and never reaches the ones behind it. `--retry-failed` doesn't help, because nothing was ever recorded as failed.
+
+To finish a run without them, list the remaining documents in a file (leaving these two out) and parse just those:
+```bash
+source tools/gpu/env.sh && CAP_SLICE_DOCLING_BATCH=8 \
+  /workspace/venvs/docling/bin/cap-slice-parse --parser docling --paths-file <list.txt> --out parsed --retry-failed
+```
+Not fixed in code (decision 2026-10-04). Possible fixes if it's needed later: fall back to pypdfium for a page range that fails to parse, and have `batch_parse.py` mark a document "started" so one that killed its runner is recorded as an error and skipped next time.
+
 ## 6. Bring results home, then stop the pod
 ```bash
 # on the pod: commit run logs and summaries (not caches — they're big and gitignored)
