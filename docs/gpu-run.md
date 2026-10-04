@@ -86,6 +86,12 @@ source tools/gpu/env.sh && CAP_SLICE_MINERU_TIER=advanced PATH=$VENVS/mineru/bin
 ```
 Failed documents are listed in `parsed/<parser>/_runs/<run_id>.jsonl`; re-run the same command with `--retry-failed` added once.
 
+**MinerU RAM: set `MINERU_MALLOC_TRIM=1 MALLOC_ARENA_MAX=2`** in front of any MinerU command (e.g. `MINERU_MALLOC_TRIM=1 MALLOC_ARENA_MAX=2 MINERU_TIER=standard tools/gpu/session.sh full-mineru`). Without them, a runner's RAM climbs to the peak of its biggest page window (~12 GB on a 300-page annual report) and never comes back down. It looks like a leak, but it isn't one. MinerU frees the memory after each window of `MINERU_PROCESSING_WINDOW_SIZE` pages (default 64), but glibc keeps the freed memory reserved for the process.
+- `MINERU_MALLOC_TRIM=1`: MinerU's own opt-in switch (`mineru/model/runtime/memory.py`). It calls `malloc_trim(0)` after each window, which gives freed heap memory back to the OS.
+- `MALLOC_ARENA_MAX=2`: a glibc setting. By default glibc can create up to 8 memory pools ("arenas") per CPU core for a threaded process, and freed memory scattered across many pools is hard to give back. Two pools are enough here.
+
+Measured on the RunPod pod (2026-10-04; one runner, the 4 largest PDFs, 945 pages): default RAM 4 → 10 → 12.4 GB and stays there; with both variables it goes up and down between ~4 and ~11.5 GB and ends at 4.8 GB, at the same speed (2.36 vs 2.37 pages/s). The **peak** barely changes (12.1 vs 12.6 GB): that is the real working set of one window. To lower it, try a smaller `MINERU_PROCESSING_WINDOW_SIZE` (e.g. 32; not measured yet). This matters when several runner processes share one container: the pod's limit was 62 GB, not the host's 515 GB that `free` shows, and runners holding their peaks plus the VLM server (~9.5 GB) reached it (`memory.events`: 9 OOM kills). Check real usage with `cat /sys/fs/cgroup/memory.current` (includes reclaimable file cache) and `cat /sys/fs/cgroup/memory.max`.
+
 ## 6. Bring results home, then stop the pod
 ```bash
 # on the pod: commit run logs and summaries (not caches — they're big and gitignored)
