@@ -12,7 +12,7 @@
 #   R2_PREFIX             [tamil/cap-slice/gpu-run-<today>] folder inside the bucket
 #
 # Uploads (mirrored file by file with rclone; re-runs send only new/changed files):
-#   parsed/ parsed_advanced/ parsed_tune/ parsed_rehearsal/ parsed_bench/   every parser cache
+#   parsed/ parsed_advanced/ parsed_cmp/ parsed_tune/ parsed_rehearsal/ parsed_bench/   caches + side-by-side reviews
 #   review/                                                                scores and reports
 #   /workspace/*.log, /tmp/mineru_vlm_server.log  -> logs/                 console + server logs
 #   data/download_manifest.csv                    -> data/
@@ -57,7 +57,7 @@ echo "== destination: $R2_BUCKET/$PREFIX"
 
 # what goes where: <local path> <remote subfolder>
 items=()
-for d in parsed parsed_advanced parsed_tune parsed_rehearsal parsed_bench review; do
+for d in parsed parsed_advanced parsed_cmp parsed_tune parsed_rehearsal parsed_bench review; do   # parsed_cmp: symlinked caches are skipped, its reviews uploaded
   [ -d "$d" ] && items+=("$d" "$d")
 done
 logdir=$(mktemp -d)
