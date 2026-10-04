@@ -30,10 +30,12 @@ filings/                 Runtime package
 config/                  Optional active review overrides
 tests/                  Offline regression tests
 docs/pipeline.md        Detailed flow and file guide
+parsing_eval/            PDF parser evaluation: page profiling, CPU baselines, eval-set builders
+vlm_bench/               GPU benchmark of OCR vision models (RunPod) + full-corpus PaddleOCR-VL run
 requirements.txt         Pinned direct dependencies
 AGENTS.md                Project instructions
 progress.md              Current state and next steps
-data/                    Local documents/database (ignored by Git)
+data/                    Local documents/database and data/parsing_eval/ outputs (ignored by Git)
 ```
 
 The normal flow is **exchange adapter → shared queue/downloader → SQLite checkpoints → curation → ingestion view**. See [the pipeline walkthrough](docs/pipeline.md) for what each file and main function does.
@@ -153,7 +155,7 @@ Use `ingestion_documents`, or `SELECT * FROM documents WHERE selected_to_ingest=
 
 Curation keeps the six required categories, chooses the latest annual/shareholding revisions, chooses the latest integrated financial filing per period/accounting basis, prefers rendered iXBRL over alternate representations, and removes exact-content duplicates within a company. Excluded records remain in `documents` with their reason. Selection and chunk replacement occur in one transaction.
 
-`document_chunks` currently contains only HTML/iXBRL chunks. The parser skips styles/scripts/hidden headers and splits between table rows (default target 550 words). PDFs still need extraction and page/section-aware chunking. Structured shareholding/financial JSON is better queried through a structured-data path than embedded as raw JSON. A PDF parser, embedding model, vector database and analysis agent are still to be implemented.
+`document_chunks` currently contains only HTML/iXBRL chunks. The parser skips styles/scripts/hidden headers and splits between table rows (default target 550 words). PDFs are parsed with PaddleOCR-VL-1.6 (see `parsing_eval/README.md`, `vlm_bench/README.md` and `vlm_bench/notes.md`); page/section-aware chunking is still to be built. Structured shareholding/financial JSON is better queried through a structured-data path than embedded as raw JSON. An embedding model, vector database and analysis agent are still to be implemented.
 
 `config/nse_verified_announcements.json` provides optional existing content-review overrides, applied only when the hash matches. New NSE filings are classified automatically from metadata and need no manual review entry. This is not automatic PDF content verification.
 

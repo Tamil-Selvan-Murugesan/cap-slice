@@ -69,10 +69,20 @@ venv/bin/python -m unittest discover -s tests -v
 
 See `README.md` for schema fields and command options; `docs/pipeline.md` explains each runtime module.
 
+## PDF parsing evaluation (2026-10-02 – 2026-10-04)
+
+Code: `parsing_eval/` (page profiling, CPU baselines, evaluation-set builders, 25 hand-verified questions) and `vlm_bench/` (RunPod GPU benchmark: setup, servers, runners, scoring). Generated data: `data/parsing_eval/` (git-ignored, ~4.3 GB). Full numbers and observations: `vlm_bench/notes.md`.
+
+- Profiled all 15,683 pages of the 369 selected PDFs: 69% born-digital text, 13% dense tables, 8% charts, 8% scans with an old (often wrong) OCR text layer, 2% scans without text. ~9% of born-digital control pages have unusable text layers (shifted-glyph fonts, symbol soup, Kannada newspaper notices).
+- CPU baselines (10-document sample): pymupdf4llm and Docling are exact on born-digital pages but fail on scans, wrong OCR layers, broken fonts and charts.
+- GPU comparison (780-page stratified set, one RTX 5090): **PaddleOCR-VL-1.6** 25/25 questions, number precision 0.990, charts → labelled tables; GLM-OCR 25/25, 0.972, chart periods can misalign, slowest; Unlimited-OCR 22/25 (cannot read charts), 0.968, fastest but hallucination loops incl. invented numbers.
+- **Decision: PaddleOCR-VL-1.6 on every page (full vision)**, served by vLLM 0.30 (2× faster than PaddleOCR's pinned vLLM 0.10.2, same output; 0.10.2 was CPU-bound), 2 client processes → ~2.85 pages/s on a representative 600-page sample (≈1.5 h for the corpus). Precision vs the text layer on typical pages is 0.96 because 88% of the "extra" numbers are printed inside pictures/charts and the text layer lacks them; sampled body-text mismatches were text-layer gaps, not misreads.
+- Full-corpus run (15,683 pages) started 2026-10-04 on RunPod; outputs per page: markdown + Paddle JSON (all blocks with labels and boxes; headers/footnotes kept, footers/page numbers hidden from markdown only).
+
 ## Next stage and limitations
 
-Use SQLite `ingestion_documents` as the parsing/ingestion allowlist. Never scan all downloaded files for ingestion. Existing HTML chunks are in `document_chunks`; PDFs still require parsing and chunking. Structured results/shareholding JSON needs an explicit structured-data path.
+Use SQLite `ingestion_documents` as the parsing/ingestion allowlist. Never scan all downloaded files for ingestion. Existing HTML chunks are in `document_chunks`; PDFs are being parsed with PaddleOCR-VL (above); chunking still to be designed on its block JSON. Structured results/shareholding JSON needs an explicit structured-data path.
 
-No PDF parser, embedding model, vector database or analysis-agent implementation has been selected. Preserve filing dates, reporting periods, accounting basis, units, source URLs, hashes and page/table references through parsing. Metadata classification is not PDF content verification and does not guarantee complete exchange coverage.
+Before chunking: run `vlm_bench/detect_loops.py` and re-run flagged pages (~1%); set aside non-English (regional-language newspaper) pages, where every model produced garbage; normalise the currency symbol from the unit line (models misread ₹ as £/है); cross-check numbers on born-digital pages against reliable text layers. No embedding model, vector database or analysis-agent implementation has been selected. Preserve filing dates, reporting periods, accounting basis, units, source URLs, hashes and page/table references through parsing. Metadata classification is not PDF content verification and does not guarantee complete exchange coverage.
 
 Before large-scale collection, a small live smoke run can verify current exchange responses. Partial attachments restart from byte zero; successful files are reused. The next useful work is designing PDF extraction and chunking using the selected documents.

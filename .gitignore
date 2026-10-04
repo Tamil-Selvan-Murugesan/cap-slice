@@ -20,3 +20,13 @@ data/*/*/*.part
 # Local Qdrant vector store (re-create with cap-slice-index)
 data/qdrant/
 
+# Parsing evaluation / GPU benchmark data: all generated under data/parsing_eval/ (covered by data/).
+# Belt and braces in case outputs are written elsewhere by hand:
+*.zip
+*.tmp
+results*/
+vlm_results*/
+venvs/
+*.png
+*.jpg
+
