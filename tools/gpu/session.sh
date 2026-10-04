@@ -165,7 +165,7 @@ case "${1:-}" in
     python3 tools/gpu/bench_report.py --price "${GPU_PRICE:-0.99}"
     ;;
   full-mineru)
-    mineru_any parsed
+    mineru_any "${MINERU_OUT:-parsed}"   # MINERU_OUT=parsed_advanced keeps a second tier apart
     ;;
   full-docling)
     docling_parallel "$DOCLING_PROCS" "${DOCLING_BATCH:-4}" parsed
