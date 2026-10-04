@@ -7,6 +7,7 @@
 #   tools/gpu/session.sh bench        # 200-page benchmark: MinerU standard/advanced, Docling and PyMuPDF4LLM 1 vs N processes, baseline
 #   tools/gpu/session.sh report       # benchmark table: pages/s and $ per 1,000 pages (set GPU_PRICE)
 #   tools/gpu/session.sh rehearse [parser...]  # 5 golden docs (240 p) + scores + report -> parsed_rehearsal/ (all four ~20 min)
+#   tools/gpu/session.sh tune <parser>  # speed of the current settings on 20 docs (560 p) -> parsed_tune/ + table
 #   tools/gpu/session.sh full-mineru  # all PDFs with MinerU (MINERU_TIER, MINERU_WORKERS)
 #   tools/gpu/session.sh full-docling # all PDFs with Docling (DOCLING_PROCS parallel processes, DOCLING_BATCH)
 #   tools/gpu/session.sh full-pymupdf4llm  # all PDFs with PyMuPDF4LLM on GPU (P4L_PROCS)
@@ -29,6 +30,20 @@ SMOKE_PDF=data/C2C/periodic_results/2025-10-22_H1-FY2025-26-half-yearly-SME.pdf
 REHEARSE=(data/E2E/annual_reports/2023-09-21_FY2022-23.pdf data/APARINDS/investor_presentations/Nov-2017-a.pdf
           data/E2E/concall_transcripts/May-2024.pdf data/APARINDS/investor_presentations/May-2025.pdf
           data/E2E/periodic_results/2026-04-20_Q4-FY2025-26-quarterly.pdf)
+# tuning set: 20 whole documents, 560 pages, every doc type (4 results, 6 concalls, 8 presentations,
+# 2 smallest annual reports; 28 low-text pages) -- enough documents to keep 16 workers / 8 processes busy
+TUNE=(data/C2C/periodic_results/2025-10-22_H1-FY2025-26-half-yearly-SME.pdf
+      data/E2E/periodic_results/2026-04-20_Q4-FY2025-26-quarterly.pdf
+      data/ESCONET/periodic_results/2025-11-14_H1-FY26-half-yearly-SME.pdf
+      data/ESCONET/periodic_results/2026-05-28_FY2025-26-audited-half-yearly-SME.pdf
+      data/APARINDS/concall_transcripts/Jul-2020.pdf data/APARINDS/concall_transcripts/Aug-2022-b.pdf
+      data/APARINDS/concall_transcripts/Nov-2021.pdf data/E2E/concall_transcripts/Jan-2026-a.pdf
+      data/APARINDS/concall_transcripts/Nov-2018-b.pdf data/HEROMOTOCO/concall_transcripts/Aug-2026.pdf
+      data/APARINDS/investor_presentations/Nov-2017-a.pdf data/APARINDS/investor_presentations/Jun-2020.pdf
+      data/E2E/investor_presentations/Nov-2021.pdf data/APARINDS/investor_presentations/Jun-2022.pdf
+      data/E2E/investor_presentations/Jun-2023.pdf data/E2E/investor_presentations/Jul-2024-a.pdf
+      data/APARINDS/investor_presentations/Nov-2019.pdf data/APARINDS/investor_presentations/Nov-2020.pdf
+      data/E2E/annual_reports/2018-10-04_FY2017-18.pdf data/E2E/annual_reports/2019-07-24_FY2018-19.pdf)
 BENCH=(data/bench/bench_01.pdf data/bench/bench_02.pdf data/bench/bench_03.pdf data/bench/bench_04.pdf)
 
 if [ -f tools/gpu/env.sh ]; then
@@ -163,6 +178,26 @@ case "${1:-}" in
     done
     in_docling python tools/gpu/full_report.py --gpu-price "${GPU_PRICE:-0.99}" --root "$R" --review "$R/review" --out "$R/review/gpu" --tokens
     ;;
+  tune)
+    # one parser, current settings, on the tuning set -> parsed_tune/<parser>_<settings>/, then a
+    # speed table of every setting tried so far. Change settings with the usual knobs, e.g.
+    #   MINERU_WORKERS=16 tools/gpu/session.sh tune mineru
+    #   DOCLING_PROCS=6 DOCLING_BATCH=16 tools/gpu/session.sh tune docling
+    #   P4L_PROCS=8 tools/gpu/session.sh tune pymupdf4llm
+    p=${2:?usage: tune <mineru|docling|pymupdf4llm|baseline>}
+    case "$p" in
+      mineru)      o=parsed_tune/mineru_w${MINERU_WORKERS:-8}
+                   mineru standard --paths "${TUNE[@]}" --out "$o" --workers "${MINERU_WORKERS:-8}" --largest-first ;;
+      docling)     o=parsed_tune/docling_p${DOCLING_PROCS}_b${DOCLING_BATCH:-4}
+                   docling_parallel "$DOCLING_PROCS" "${DOCLING_BATCH:-4}" "$o" "${TUNE[@]}" ;;
+      pymupdf4llm) o=parsed_tune/pymupdf4llm_p$P4L_PROCS
+                   parse_parallel pymupdf4llm "$P4L_PROCS" "$o" "${TUNE[@]}" ;;
+      baseline)    o=parsed_tune/baseline_p$BASELINE_PROCS
+                   parse_parallel baseline "$BASELINE_PROCS" "$o" "${TUNE[@]}" ;;
+      *) echo "unknown parser $p (mineru docling pymupdf4llm baseline)"; exit 1 ;;
+    esac
+    python3 tools/gpu/bench_report.py --price "${GPU_PRICE:-0.99}" --root parsed_tune
+    ;;
   compare)
     # golden-set scores (v2: 150 facts, v1: 28 facts) for every parser that has a cache,
     # then the full comparison table -> review/gpu/COMPARISON.md
@@ -174,5 +209,5 @@ case "${1:-}" in
     in_docling python tools/gpu/full_report.py --gpu-price "${GPU_PRICE:-0.99}" ${VCPU_PRICE:+--vcpu-price "$VCPU_PRICE"} --tokens
     ;;
   *)
-    sed -n '2,21p' "$0"; exit 1 ;;
+    sed -n '2,25p' "$0"; exit 1 ;;
 esac
