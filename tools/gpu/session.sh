@@ -85,7 +85,7 @@ parse_parallel() {
   for i in $(seq 0 $(( procs - 1 ))); do
     [ -s "$dir/shard_$i.txt" ] || continue
     EXTRA_ENV="CAP_SLICE_DOCLING_BATCH=${DOCLING_BATCH:-4}" CAP_SLICE_DOCLING_BATCH=${DOCLING_BATCH:-4} \
-    OMP_NUM_THREADS=$threads in_docling cap-slice-parse --parser "$parser" --paths-file "$dir/shard_$i.txt" --out "$out" \
+    OMP_NUM_THREADS=$threads in_docling cap-slice-parse --parser "$parser" --paths-file "$dir/shard_$i.txt" --out "$out" ${RETRY_FAILED:+--retry-failed} \
       2> >(grep --line-buffered -E "^\[|^done:|Error|Traceback" >&2) &
     pids+=($!)
   done
