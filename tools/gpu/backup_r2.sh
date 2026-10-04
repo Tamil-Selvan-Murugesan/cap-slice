@@ -44,10 +44,12 @@ fi
 rclone version | head -1
 
 # remote "r2" defined from the environment only: no rclone.conf, keys never written to disk
-export RCLONE_CONFIG_R2_TYPE=s3 RCLONE_CONFIG_R2_PROVIDER=Cloudflare \
+# provider "Other" (generic S3): the RunPod image ships rclone 1.58, which predates "Cloudflare" (1.59+)
+export RCLONE_CONFIG_R2_TYPE=s3 RCLONE_CONFIG_R2_PROVIDER=Other RCLONE_CONFIG_R2_FORCE_PATH_STYLE=true \
        RCLONE_CONFIG_R2_ACCESS_KEY_ID=$R2_ACCESS_KEY_ID RCLONE_CONFIG_R2_SECRET_ACCESS_KEY=$R2_SECRET_ACCESS_KEY \
        RCLONE_CONFIG_R2_ENDPOINT=https://$R2_ACCOUNT_ID.r2.cloudflarestorage.com \
        RCLONE_CONFIG_R2_REGION=auto RCLONE_CONFIG_R2_NO_CHECK_BUCKET=true
+export RCLONE_CONFIG=/dev/null   # no config file needed (silences "rclone.conf not found")
 DEST="r2:$R2_BUCKET/$PREFIX"
 OPTS=(--transfers 16 --checkers 32 --retries 5 --stats 30s --stats-one-line)
 [ "${BACKUP_DRY_RUN:-0}" = 1 ] && OPTS+=(--dry-run)
