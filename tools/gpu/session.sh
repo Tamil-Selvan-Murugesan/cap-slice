@@ -8,6 +8,7 @@
 #   tools/gpu/session.sh report       # benchmark table: pages/s and $ per 1,000 pages (set GPU_PRICE)
 #   tools/gpu/session.sh rehearse [parser...]  # 5 golden docs (240 p) + scores + report -> parsed_rehearsal/ (all four ~20 min)
 #   tools/gpu/session.sh tune <parser>  # speed of the current settings on 20 docs (560 p) -> parsed_tune/ + table
+#   tools/gpu/session.sh tune-report    # every tuned setting side by side: accuracy, same-text check, speed, cost
 #   tools/gpu/session.sh full-mineru  # all PDFs with MinerU (MINERU_TIER, MINERU_PROCS x MINERU_WORKERS)
 #   tools/gpu/session.sh full-docling # all PDFs with Docling (DOCLING_PROCS parallel processes, DOCLING_BATCH)
 #   tools/gpu/session.sh full-pymupdf4llm  # all PDFs with PyMuPDF4LLM on GPU (P4L_PROCS)
@@ -222,6 +223,21 @@ case "${1:-}" in
     esac
     python3 tools/gpu/bench_report.py --price "${GPU_PRICE:-0.99}" --root parsed_tune
     ;;
+  tune-report)
+    # every setting tried with `tune`: golden scores (27 v2 + 4 v1 facts sit on 6 of the 20 docs),
+    # coverage, speed, resources, cost, and % of pages identical to a reference setting per parser
+    # (TUNE_REF="mineru=mineru_w8 docling=docling_p6_b8"; default: first by name)
+    for v in parsed_tune/*/; do
+      v=${v%/}; [ "$(basename "$v")" = review ] && continue
+      for p in baseline pymupdf4llm docling mineru; do
+        [ -d "$v/$p" ] || continue
+        in_docling cap-slice-score --parser "$p" --cache "$v" --out "$v/review/v2" | tail -1
+        in_docling cap-slice-score --parser "$p" --cache "$v" --facts data/golden/parse_facts.csv --out "$v/review/v1" | tail -1
+      done
+    done
+    in_docling python tools/gpu/full_report.py --gpu-price "${GPU_PRICE:-0.99}" --root parsed_tune --variants \
+      --out parsed_tune/review ${TUNE_REF:+--ref $TUNE_REF} --tokens
+    ;;
   compare)
     # golden-set scores (v2: 150 facts, v1: 28 facts) for every parser that has a cache,
     # then the full comparison table -> review/gpu/COMPARISON.md
@@ -233,5 +249,5 @@ case "${1:-}" in
     in_docling python tools/gpu/full_report.py --gpu-price "${GPU_PRICE:-0.99}" ${VCPU_PRICE:+--vcpu-price "$VCPU_PRICE"} --tokens
     ;;
   *)
-    sed -n '2,25p' "$0"; exit 1 ;;
+    sed -n '2,26p' "$0"; exit 1 ;;
 esac

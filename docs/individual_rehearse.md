@@ -102,6 +102,8 @@ P4L_PROCS=8 GPU_PRICE=0.99 tools/gpu/session.sh tune pymupdf4llm
 - Rough times: MinerU ~5 min, Docling ~10 min, PyMuPDF4LLM ~8 min per setting.
 - Re-running the same setting resumes (skips finished documents); to measure it again, delete its folder: `rm -rf parsed_tune/docling_p6_b16`.
 - Print the table again any time: `python3 tools/gpu/bench_report.py --price 0.99 --root parsed_tune`.
+- **Evaluate every setting** (accuracy on the 27 v2 + 4 v1 golden facts that sit on 6 of the 20 docs, % of pages identical to a reference setting, coverage, speed, resources, cost) as one table with a column per setting:
+  `TUNE_REF="mineru=mineru_w8 docling=docling_p6_b8" GPU_PRICE=0.99 tools/gpu/session.sh tune-report` → `parsed_tune/review/COMPARISON.md`
 - Use the fastest setting per parser for the full run, e.g. `MINERU_WORKERS=16 tools/gpu/session.sh full-mineru`.
 
 ## Next
