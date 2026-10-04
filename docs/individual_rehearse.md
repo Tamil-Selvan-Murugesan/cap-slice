@@ -82,6 +82,10 @@ cd /workspace/cap-slice && git pull
 # MinerU (server up): documents in flight
 MINERU_WORKERS=8  GPU_PRICE=0.99 tools/gpu/session.sh tune mineru
 MINERU_WORKERS=16 GPU_PRICE=0.99 tools/gpu/session.sh tune mineru
+# several MinerU runner processes sharing the one server (server must be up); P x W = documents in flight
+MINERU_PROCS=2 MINERU_WORKERS=8 GPU_PRICE=0.99 tools/gpu/session.sh tune mineru
+MINERU_PROCS=4 MINERU_WORKERS=4 GPU_PRICE=0.99 tools/gpu/session.sh tune mineru
+MINERU_PROCS=6 MINERU_WORKERS=3 GPU_PRICE=0.99 tools/gpu/session.sh tune mineru
 
 # stop the MinerU server now (Ctrl+C in its window): frees ~6 GB of GPU memory for the rest
 

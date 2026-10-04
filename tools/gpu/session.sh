@@ -8,7 +8,7 @@
 #   tools/gpu/session.sh report       # benchmark table: pages/s and $ per 1,000 pages (set GPU_PRICE)
 #   tools/gpu/session.sh rehearse [parser...]  # 5 golden docs (240 p) + scores + report -> parsed_rehearsal/ (all four ~20 min)
 #   tools/gpu/session.sh tune <parser>  # speed of the current settings on 20 docs (560 p) -> parsed_tune/ + table
-#   tools/gpu/session.sh full-mineru  # all PDFs with MinerU (MINERU_TIER, MINERU_WORKERS)
+#   tools/gpu/session.sh full-mineru  # all PDFs with MinerU (MINERU_TIER, MINERU_PROCS x MINERU_WORKERS)
 #   tools/gpu/session.sh full-docling # all PDFs with Docling (DOCLING_PROCS parallel processes, DOCLING_BATCH)
 #   tools/gpu/session.sh full-pymupdf4llm  # all PDFs with PyMuPDF4LLM on GPU (P4L_PROCS)
 #   tools/gpu/session.sh full-baseline     # all PDFs with the current pipeline's extraction, CPU only (BASELINE_PROCS)
@@ -84,12 +84,35 @@ parse_parallel() {
   local i pids=()
   for i in $(seq 0 $(( procs - 1 ))); do
     [ -s "$dir/shard_$i.txt" ] || continue
-    EXTRA_ENV="CAP_SLICE_DOCLING_BATCH=${DOCLING_BATCH:-4}" CAP_SLICE_DOCLING_BATCH=${DOCLING_BATCH:-4} \
-    OMP_NUM_THREADS=$threads in_docling cap-slice-parse --parser "$parser" --paths-file "$dir/shard_$i.txt" --out "$out" ${RETRY_FAILED:+--retry-failed} \
-      2> >(grep --line-buffered -E "^\[|^done:|Error|Traceback" >&2) &
+    if [ "$parser" = mineru ]; then  # MinerU env; all processes share the one running VLM server
+      EXTRA_ENV="CAP_SLICE_MINERU_TIER=${MINERU_TIER:-standard}" CAP_SLICE_MINERU_TIER=${MINERU_TIER:-standard} \
+      OMP_NUM_THREADS=$threads in_mineru cap-slice-parse --parser mineru --paths-file "$dir/shard_$i.txt" --out "$out" \
+        --workers "${MINERU_WORKERS:-8}" ${RETRY_FAILED:+--retry-failed} \
+        2> >(grep --line-buffered -E "^\[|^done:|Error|Traceback" >&2) &
+    else
+      EXTRA_ENV="CAP_SLICE_DOCLING_BATCH=${DOCLING_BATCH:-4}" CAP_SLICE_DOCLING_BATCH=${DOCLING_BATCH:-4} \
+      OMP_NUM_THREADS=$threads in_docling cap-slice-parse --parser "$parser" --paths-file "$dir/shard_$i.txt" --out "$out" ${RETRY_FAILED:+--retry-failed} \
+        2> >(grep --line-buffered -E "^\[|^done:|Error|Traceback" >&2) &
+    fi
     pids+=($!)
   done
   local rc=0; for p in "${pids[@]}"; do wait "$p" || rc=1; done; return $rc
+}
+# MinerU: MINERU_PROCS runner processes x MINERU_WORKERS documents in flight each, all talking to
+# one VLM server. 1 process = the old path (mineru_run.sh starts/stops a server if none is up);
+# >1 needs the server already running (tools/gpu/session.sh vlm-server), so they don't race to start one.
+#   mineru_any <out> [pdf...]
+mineru_any() {
+  local out=$1; shift
+  if [ "${MINERU_PROCS:-1}" -le 1 ]; then
+    if [ $# -gt 0 ]; then set -- --paths "$@"; fi
+    mineru "${MINERU_TIER:-standard}" "$@" --out "$out" --workers "${MINERU_WORKERS:-8}" --largest-first \
+      ${RETRY_FAILED:+--retry-failed}
+  else
+    curl -sf -m 2 "${CAP_SLICE_MINERU_SERVER:-http://127.0.0.1:30000}/v1/models" >/dev/null || {
+      echo "MINERU_PROCS>1 needs the VLM server running first: tools/gpu/session.sh vlm-server (own window)"; exit 1; }
+    parse_parallel mineru "$MINERU_PROCS" "$out" "$@"
+  fi
 }
 docling_parallel() { local procs=$1 batch=$2; shift 2; DOCLING_BATCH=$batch parse_parallel docling "$procs" "$@"; }
 DOCLING_PROCS=${DOCLING_PROCS:-auto}
@@ -141,7 +164,7 @@ case "${1:-}" in
     python3 tools/gpu/bench_report.py --price "${GPU_PRICE:-0.99}"
     ;;
   full-mineru)
-    mineru "${MINERU_TIER:-standard}" --out parsed --workers "${MINERU_WORKERS:-8}" --largest-first
+    mineru_any parsed
     ;;
   full-docling)
     docling_parallel "$DOCLING_PROCS" "${DOCLING_BATCH:-4}" parsed
@@ -181,13 +204,14 @@ case "${1:-}" in
   tune)
     # one parser, current settings, on the tuning set -> parsed_tune/<parser>_<settings>/, then a
     # speed table of every setting tried so far. Change settings with the usual knobs, e.g.
-    #   MINERU_WORKERS=16 tools/gpu/session.sh tune mineru
+    #   MINERU_PROCS=3 MINERU_WORKERS=6 tools/gpu/session.sh tune mineru
     #   DOCLING_PROCS=6 DOCLING_BATCH=16 tools/gpu/session.sh tune docling
     #   P4L_PROCS=8 tools/gpu/session.sh tune pymupdf4llm
     p=${2:?usage: tune <mineru|docling|pymupdf4llm|baseline>}
     case "$p" in
-      mineru)      o=parsed_tune/mineru_w${MINERU_WORKERS:-8}
-                   mineru standard --paths "${TUNE[@]}" --out "$o" --workers "${MINERU_WORKERS:-8}" --largest-first ;;
+      mineru)      if [ "${MINERU_PROCS:-1}" -le 1 ]; then o=parsed_tune/mineru_w${MINERU_WORKERS:-8}
+                   else o=parsed_tune/mineru_p${MINERU_PROCS}_w${MINERU_WORKERS:-8}; fi
+                   mineru_any "$o" "${TUNE[@]}" ;;
       docling)     o=parsed_tune/docling_p${DOCLING_PROCS}_b${DOCLING_BATCH:-4}
                    docling_parallel "$DOCLING_PROCS" "${DOCLING_BATCH:-4}" "$o" "${TUNE[@]}" ;;
       pymupdf4llm) o=parsed_tune/pymupdf4llm_p$P4L_PROCS
