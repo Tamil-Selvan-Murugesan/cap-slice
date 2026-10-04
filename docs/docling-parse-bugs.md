@@ -165,7 +165,7 @@ Two separate PRs, one per bug, each with its own test, signed off by Tamil Selva
 | `fix/cmap-reversed-bfrange` | `fix: ignore malformed ToUnicode bfranges instead of reserving ~4G map entries` | `cmap.h`, `tests/test_unit_cmap_encoding.py` |
 | `fix/pattern-fill-dangling-name` | `fix: take the pattern name by value in do_pattern_fill` | `stream.h`, `tests/test_unit_patterns.py` |
 
-Status (2026-10-04): opened as [#381](https://github.com/docling-project/docling-parse/pull/381) (backwards range) and [#382](https://github.com/docling-project/docling-parse/pull/382) (pattern name), from the fork `Tamil-Selvan-Murugesan/docling-parse`. DCO checks pass; waiting for maintainer review.
+Status (2026-10-04): opened as [#381](https://github.com/docling-project/docling-parse/pull/381) (backwards range) and [#382](https://github.com/docling-project/docling-parse/pull/382) (pattern name), from the fork `Tamil-Selvan-Murugesan/docling-parse`. DCO checks pass; waiting for maintainer review. Status and follow-up steps are tracked in [`upstream-contributions.md`](upstream-contributions.md).
 
 ## In our project, until the fix is released
 
