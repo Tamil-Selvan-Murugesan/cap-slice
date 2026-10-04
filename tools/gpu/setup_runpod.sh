@@ -38,8 +38,6 @@ uv --version
 [ "$(uv --version | awk '{print $2}')" = "$UV_VERSION" ] || { echo "wrong uv on PATH: $(command -v uv)"; exit 1; }
 
 echo "== CUDA version supported by the driver"
-cuda=$(nvidia-smi | sed -n 's/.*CUDA Version: *\([0-9]*\)\.\([0-9]*\).*/\1\2/p' | head -1)
-if [ -z "$cuda" ]; then echo "nvidia-smi shows no CUDA version — is this a GPU pod?"; exit 1; fi
 # nvidia-smi can work while CUDA itself can't start (seen on a RunPod 5090, driver 590: every
 # torch said "CUDA unknown error"). cuInit is the driver's own start-up call: 0 = fine.
 rc=$(python3 -c "import ctypes; print(ctypes.CDLL('libcuda.so.1').cuInit(0))" 2>&1 || true)
@@ -47,6 +45,13 @@ if [ "$rc" != 0 ]; then
   echo "CUDA can't start on this pod (cuInit -> $rc; 999 = unknown error). Host/container problem:"
   echo "terminate this pod and deploy another one. Device files present:"; ls /dev/nvidia* 2>&1; exit 1
 fi
+# CUDA version the driver supports, from the driver itself (e.g. 13030 -> 133). nvidia-smi's
+# wording changes between drivers ("CUDA Version" up to 590, "CUDA UMD Version" in 610).
+cuda=$(python3 -c "
+import ctypes; l = ctypes.CDLL('libcuda.so.1'); v = ctypes.c_int(); l.cuInit(0); l.cuDriverGetVersion(ctypes.byref(v))
+print(v.value // 1000 * 10 + v.value % 1000 // 10)" 2>/dev/null || true)
+[ -n "$cuda" ] && [ "$cuda" -gt 0 ] || cuda=$(nvidia-smi | sed -n 's/.*CUDA \(UMD \)\{0,1\}Version: *\([0-9]*\)\.\([0-9]*\).*/\2\3/p' | head -1)
+if [ -z "$cuda" ]; then echo "can't tell the driver's CUDA version — is this a GPU pod?"; exit 1; fi
 if [ "$cuda" -ge 130 ]; then BACKEND=cu130; elif [ "$cuda" -ge 128 ]; then BACKEND=cu128; else
   echo "Driver supports CUDA ${cuda:0:2}.${cuda:2} — need >= 12.8. Pick a pod with a newer driver (RunPod: filter by CUDA version)."; exit 1; fi
 # MinerU's vLLM wheels (>= 0.19, required by MinerU 4) are built for CUDA 13, so the
