@@ -1,0 +1,124 @@
+id,stratum,path,page,kind,label,value,context,unit,note
+W001,slide_numbers,data/E2E/investor_presentations/May-2021.pdf,23,chart_point,Oct'20,3.17,Monthly Revenue,Rs cr,"Bar chart, value only as data label above bar"
+W002,slide_numbers,data/E2E/investor_presentations/May-2021.pdf,23,chart_point,Jan'21,3.38,Monthly Revenue,Rs cr,Data label; neighbouring bars 3.33 / 3.27
+W003,slide_numbers,data/E2E/investor_presentations/May-2021.pdf,23,chart_point,Apr'21,3.50,Monthly Revenue,Rs cr,"Last bar, label carries * (provisional) and touches the 3.45 label; the PDF text layer glues the neighbouring labels into 3.453.50*"
+W004,slide_numbers,data/E2E/investor_presentations/May-2021.pdf,23,chart_point,Dec'20,21%,Revenue from Top 10 customers,,Second chart; 21% also appears for Apr'21
+W005,slide_numbers,data/E2E/investor_presentations/May-2021.pdf,23,chart_point,Feb'21,23%,Revenue from Top 10 customers,,23% also appears for July'20
+W006,slide_numbers,data/APARINDS/investor_presentations/Jul-2026.pdf,4,table,EBITDA* per KL,"7,004",Q1 FY26,,Two different % Change columns in the header; per-KL row is in rupees despite the crores note
+W007,slide_numbers,data/APARINDS/investor_presentations/Jul-2026.pdf,4,table,Volume (KL),"1,49,234",Q4 FY26,,Indian digit grouping
+W008,slide_numbers,data/APARINDS/investor_presentations/Jul-2026.pdf,4,table,EBITDA*,214.2%,% Change,,First of two identically named % Change columns (vs Q1 FY26)
+W009,slide_numbers,data/APARINDS/investor_presentations/Jul-2026.pdf,4,table,Revenue from Operations,"1,262",Q1 FY26,crores,Row label wraps over two lines
+W010,slide_numbers,data/APARINDS/investor_presentations/Jul-2026.pdf,4,prose,provision of Rs,93 crores,,,Last bullet
+W011,slide_numbers,data/APARINDS/investor_presentations/Feb-2018.pdf,21,chart_point,FY16,"2,578",Conductors,Rs Crore,Six charts on one slide; unit only in the bottom-right footer
+W012,slide_numbers,data/APARINDS/investor_presentations/Feb-2018.pdf,21,chart_point,FY14,"2,395",Specialty Oils,Rs Crore,Bar chart data label
+W013,slide_numbers,data/APARINDS/investor_presentations/Feb-2018.pdf,21,chart_point,9MFY18,780,Cables,Rs Crore,Bar chart data label
+W014,slide_numbers,data/APARINDS/investor_presentations/Feb-2018.pdf,21,chart_point,Export,32%,Revenue Geographic Break-up,,Pie slice label inside the slice
+W015,slide_numbers,data/APARINDS/investor_presentations/Feb-2018.pdf,21,chart_point,FY15,"1,825",Exports,Rs Crore,Two-series line chart; series named only in the legend
+W016,slide_numbers,data/APARINDS/investor_presentations/Feb-2018.pdf,21,chart_point,FY16,"3,336",Domestic,Rs Crore,Upper series of the same line chart
+W017,slide_numbers,data/APARINDS/investor_presentations/May-2018.pdf,23,chart_point,FY17,425,EBITDA,Rs crore,White-on-dark-blue; combined bar (EBITDA) + line (margin) chart
+W018,slide_numbers,data/APARINDS/investor_presentations/May-2018.pdf,23,chart_point,FY15,5.0%,EBITDA margin,,Margin label sits inside the bar of the combined chart
+W019,slide_numbers,data/APARINDS/investor_presentations/May-2018.pdf,23,chart_point,FY18,"2,087",Exports,Rs crore,"Two-series line chart, white text on dark blue"
+W020,slide_numbers,data/APARINDS/investor_presentations/May-2018.pdf,23,chart_point,FY18,"1,116",Cables,Rs crore,"Bar chart data label, white on dark blue"
+W021,slide_numbers,data/ESCONET/investor_presentations/2025-09-22_Sep-2025-b.pdf,20,kv,Market Capitalization,280.95,,Cr,Two-column key/value table; unit inside the label (₹ Cr)
+W022,slide_numbers,data/ESCONET/investor_presentations/2025-09-22_Sep-2025-b.pdf,20,kv,52 Week High-Low,150.15,,,Value cell holds a range 539.95 – 150.15
+W023,slide_numbers,data/ESCONET/investor_presentations/2025-09-22_Sep-2025-b.pdf,20,kv,No. of Shares,"1,31,96,238",,,Indian digit grouping
+W024,slide_numbers,data/ESCONET/investor_presentations/2025-09-22_Sep-2025-b.pdf,20,chart_point,Public,39.18%,Share Holding Pattern,,Donut chart: slice matched to legend only by colour (dark blue)
+W025,slide_numbers,data/ESCONET/investor_presentations/2025-09-22_Sep-2025-b.pdf,20,chart_point,Promoter & Promoter Group,60.82%,Share Holding Pattern,,Donut chart: slice matched to legend only by colour (light blue)
+W026,slide_numbers,data/APARINDS/investor_presentations/Aug-2020.pdf,22,table,Conductors,40.3,Q4 FY20,crore,Row label Conductors repeats in four sections; this is Segment Results before Interest and Tax
+W027,slide_numbers,data/APARINDS/investor_presentations/Aug-2020.pdf,22,table,Transformer & Specialty Oils,3.9%,Q4 FY20,,% to Segment Revenue block: the two % Chg columns are blank in this block
+W028,slide_numbers,data/APARINDS/investor_presentations/Aug-2020.pdf,22,table,Profit before Tax,-30.6,Q1 FY21,crore,Negative with minus sign
+W029,slide_numbers,data/APARINDS/investor_presentations/Aug-2020.pdf,22,table,Power and Telecom Cables,24.3%,Q4 FY20,,Second table on the slide with its own header row (no % Chg columns)
+W030,slide_numbers,data/APARINDS/investor_presentations/Aug-2020.pdf,22,table,Unallocable expenditure net of income,14.9,Q4 FY20,crore,Row label wraps over two lines
+W031,slide_numbers,data/APARINDS/investor_presentations/Feb-2020-b.pdf,5,table,HVDC (In MVA),"19,500",End of 12th plan,,Row label HVDC appears twice (C Kms and MVA); header cells wrap over 2-3 lines
+W032,slide_numbers,data/APARINDS/investor_presentations/Feb-2020-b.pdf,5,table,Total (In C Kms),"420,490",As on Sep'19,,This column uses Western grouping while the others use Indian grouping
+W033,slide_numbers,data/APARINDS/investor_presentations/Feb-2020-b.pdf,5,table,Inter-regional transmission Capacity (In MW),"1,18,050",End of 13th plan (Target),,Row label and header both wrap
+W034,slide_numbers,data/APARINDS/investor_presentations/Feb-2020-b.pdf,5,kv,KEC International,"5,477",,Cr,"Second, side-by-side table on the slide"
+W035,slide_numbers,data/APARINDS/investor_presentations/Feb-2020-b.pdf,5,prose,Power Grid capex,"7,850 crore",,,Dense bullet text; page prints a double space before crore
+W036,scan_slide,data/E2E/investor_presentations/Jan-2025.pdf,29,chart_point,Q1FY25,"749,690",Quarterly ~ARPU For Top 500 customers,INR,"Image-only slide: a low-resolution raster chart, no text layer; digits read at zoom"
+W037,scan_slide,data/E2E/investor_presentations/Jan-2025.pdf,29,chart_point,Q3FY24,"406,307",Quarterly ~ARPU For Top 500 customers,INR,Image-only low-res chart
+W038,scan_slide,data/E2E/investor_presentations/Jan-2025.pdf,29,chart_point,Q3FY23,"285,521",Quarterly ~ARPU For Top 500 customers,INR,Image-only low-res chart; 15 bars with dense labels
+W039,scan_doc,data/E2E/annual_reports/2019-07-24_FY2018-19.pdf,3,prose,Statutory Auditors,B. B. & Associates,,,Image-only page (no text layer); two-column layout with blue heading bars
+W040,scan_doc,data/E2E/annual_reports/2019-07-24_FY2018-19.pdf,3,prose,Company Secretary,Neha Baid,,,Image-only page
+W041,scan_doc,data/E2E/annual_reports/2019-07-24_FY2018-19.pdf,3,prose,CIN,L72900DL2009PLC341980,,,"White text on blue band, image-only"
+W042,scan_doc,data/E2E/annual_reports/2019-07-24_FY2018-19.pdf,3,prose,Internal Auditors,Jaipur-302001,,,Address in the right column under Internal Auditors
+W043,scan_doc,data/E2E/annual_reports/2019-07-24_FY2018-19.pdf,3,prose,Chief Financial Officer,Varun Taneja,,,Image-only page; heading in a blue bar
+W044,scan_doc,data/C2C/annual_reports/2025-09-08_FY2024-25.pdf,19,prose,DSAFDS,Laser Rangefinder,,,"Text only inside the picture; white on blue, very tight letter spacing (words nearly run together)"
+W045,scan_doc,data/C2C/annual_reports/2025-09-08_FY2024-25.pdf,19,prose,The CDU is a,rugged Laptop,,,"Same block, second paragraph"
+W046,scan_doc,data/C2C/annual_reports/2025-09-08_FY2024-25.pdf,19,prose,DRONE BASED SURVEILLANCE,ARTILLERY FIRE DIRECTION SYSTEM,,,Title split over two lines inside the picture
+W047,scan_doc,data/APARINDS/concall_transcripts/Nov-2017-a.pdf,1,prose,Scrip Code,532259,,,"Scanned, slightly skewed letter; two-column address box"
+W048,scan_doc,data/APARINDS/concall_transcripts/Nov-2017-a.pdf,1,prose,Earnings Conference Call made on,"November 2, 2017",,,Scanned body text
+W049,scan_doc,data/APARINDS/concall_transcripts/Nov-2017-a.pdf,1,prose,Asst. Company Secretary,Dhruv Shah,,,Signature crosses the name
+W050,scan_doc,data/APARINDS/concall_transcripts/Nov-2017-a.pdf,1,prose,SEC/,2511/2017,,,Reference number top left of a scanned letter
+W051,scan_doc,data/E2E/annual_reports/2022-07-29_FY2021-22.pdf,6,prose,Listed on Main Board of NSE,"April 12, 2022",,,Image-only page; timeline graphic with labels above and below a zig-zag
+W052,scan_doc,data/E2E/annual_reports/2022-07-29_FY2021-22.pdf,6,prose,subscribed up-,to 70 times,,,Timeline label hyphenated across lines (up- / to)
+W053,scan_doc,data/E2E/annual_reports/2022-07-29_FY2021-22.pdf,6,prose,no customer contributes more than,5%,,,"Infographic text around a picture, small print"
+W054,scan_doc,data/E2E/annual_reports/2022-07-29_FY2021-22.pdf,6,prose,roughly,20 features,,,"Small-print infographic text, right column"
+W055,scan_doc,data/HEROMOTOCO/annual_reports/FY2012-13.pdf,165,prose,Membership No.,094468,,,Scanned Form A; a signature crosses the partner name just above
+W056,scan_doc,data/HEROMOTOCO/annual_reports/FY2012-13.pdf,165,prose,Firm Registration No.,015125N,,,Scanned; right column is cut off at the page edge
+W057,scan_doc,data/HEROMOTOCO/annual_reports/FY2012-13.pdf,165,prose,Refer our Audit Report dated,"April 26, 2013",,,Bold date in scanned text
+W058,scan_doc,data/HEROMOTOCO/annual_reports/FY2012-13.pdf,165,prose,CFO,RAVI SUD,,,Name struck through by the signature stroke
+W059,scan_doc,data/HEROMOTOCO/annual_reports/FY2012-13.pdf,165,prose,Audit Committee Chairman,PRADEEP DINODIA,,,Signature stroke crosses the name
+W060,scan_doc,data/APARINDS/concall_transcripts/Feb-2020-a.pdf,1,prose,Earnings Conference Call made on,"January 24, 2020",,,Scanned letter body
+W061,scan_doc,data/APARINDS/concall_transcripts/Feb-2020-a.pdf,1,prose,Assistant Manager,Harishkumar Malsatter,,,Name in brackets under a signature
+W062,scan_doc,data/APARINDS/concall_transcripts/Feb-2020-a.pdf,1,prose,CIN,L91110GJ1989PLC012802,,,Tiny scanned footer text
+W063,dense_table,data/APARINDS/annual_reports/FY2019-20.pdf,170,table,Derivatives,28.04,Recognised in OCI,crore,TWO-LEVEL HEADER (2019-2020 > Recognised in OCI); same row labels in the 2018-2019 table below
+W064,dense_table,data/APARINDS/annual_reports/FY2019-20.pdf,170,table,Derivatives,(1.53),Recognised in OCI,crore,TWO-LEVEL HEADER (2018-2019 > Recognised in OCI); second of two look-alike tables
+W065,dense_table,data/APARINDS/annual_reports/FY2019-20.pdf,170,table,Provisions,(1.82),Recognised in profit or loss,crore,TWO-LEVEL HEADER; negative in parentheses
+W066,dense_table,data/APARINDS/annual_reports/FY2019-20.pdf,170,table,Provision for leave benefits,4.36,"March 31, 2019",crore,Small note table; same date headers recur in other notes on the page
+W067,dense_table,data/APARINDS/annual_reports/FY2019-20.pdf,170,table,Other items,0.04,Recognised in OCI,crore,2018-2019 table; most OCI cells are blank or dashes
+W068,dense_table,data/HEROMOTOCO/annual_reports/FY2013-14.pdf,32,table,EVA,"1,723",2009-10,crores,"8 year columns; section bands (COST OF EQUITY, ECONOMIC VALUE ADDED) break the table"
+W069,dense_table,data/HEROMOTOCO/annual_reports/FY2013-14.pdf,32,table,Cost of Equity (%),14.39,2010-11,,14.39 also appears in the Add: Interest row (2011-12)
+W070,dense_table,data/HEROMOTOCO/annual_reports/FY2013-14.pdf,32,table,Add: Debt,1491,2010-11,crores,Printed without a comma among comma-grouped neighbours
+W071,dense_table,data/HEROMOTOCO/annual_reports/FY2013-14.pdf,32,table,EV/YR. END CAPITAL EMPLOYED,9.4,2009-10,,White text on grey band; label in two lines; value top-aligned in a tall cell
+W072,dense_table,data/HEROMOTOCO/annual_reports/FY2013-14.pdf,32,table,Market Capitalisation,"45,425",2013-14,crores,"Last column highlighted, header white on black"
+W073,dense_table,data/APARINDS/annual_reports/FY2024-25.pdf,161,table,Increase/(decrease) in trade and other payables,"1,139.37","March 31, 2025",crore,"Left page of a two-page spread; header For the year ended March 31, 2025 wraps"
+W074,dense_table,data/APARINDS/annual_reports/FY2024-25.pdf,161,table,Net Proceeds from issue of equity shares through Qualified Institutional Placement,982.58,"March 31, 2024",crore,Long row label; current-year cell is a dash
+W075,dense_table,data/APARINDS/annual_reports/FY2024-25.pdf,161,table,Interest paid,(256.58),"March 31, 2025",crore,Negative in parentheses
+W076,dense_table,data/APARINDS/annual_reports/FY2024-25.pdf,161,table,"Balance at March 31, 2025","2,676.45",Retained earnings - surplus,crore,ROTATED 90 degrees (right page); TWO-LEVEL HEADER (Reserves and Surplus > Retained earnings - surplus)
+W077,dense_table,data/APARINDS/annual_reports/FY2024-25.pdf,161,table,"Balance at March 31, 2025",1.26,Hedging reserve,crore,ROTATED; TWO-LEVEL HEADER (Items of Other Comprehensive Income > Hedging reserve)
+W078,dense_table,data/APARINDS/annual_reports/FY2024-25.pdf,161,table,Premium on issue of equity shares,998.10,Securities premium,crore,ROTATED; row in the prior-year block
+W079,dense_table,data/APARINDS/annual_reports/FY2024-25.pdf,161,table,"Balance at March 31, 2024","3,655.56",Total,crore,"ROTATED; printed total differs from the next opening balance (3,655.62) - value as printed"
+W080,dense_table,data/APARINDS/annual_reports/FY2020-21.pdf,92,table,Plant and Equipments,61.75,For the year,crore,ROTATED 90 degrees; TWO-LEVEL HEADER (Depreciation > For the year); row label wraps
+W081,dense_table,data/APARINDS/annual_reports/FY2020-21.pdf,92,table,Building,24.85,Additions,crore,ROTATED; TWO-LEVEL HEADER (Gross block > Additions)
+W082,dense_table,data/APARINDS/annual_reports/FY2020-21.pdf,92,table,Sub total (i),78.65,For the year,crore,ROTATED; FY2020-21 table
+W083,dense_table,data/APARINDS/annual_reports/FY2020-21.pdf,92,table,Plant and Equipments,141.47,Additions,crore,"ROTATED; second, look-alike FY2019-20 table below the first"
+W084,dense_table,data/APARINDS/annual_reports/FY2020-21.pdf,92,table,Motor vehicles,1.22,For the year,crore,ROTATED; second table
+W085,dense_table,data/APARINDS/annual_reports/FY2020-21.pdf,92,table,Grand Total,748.92,Net Block,crore,ROTATED; only the Net Block cells of the Grand Total row are filled; As at dates repeat under three header groups
+W086,dense_table,data/APARINDS/annual_reports/FY2020-21.pdf,50,table,Dec-20,"47,751.33",SENSEX,,TWO-LEVEL HEADER (BSE (SENSEX) > SENSEX); row labels are months
+W087,dense_table,data/APARINDS/annual_reports/FY2020-21.pdf,50,table,Jun-20,"10,302.10",NIFTY,,TWO-LEVEL HEADER (NSE (Nifty) > NIFTY); last column
+W088,dense_table,data/APARINDS/annual_reports/FY2020-21.pdf,50,table,Jan-21,417.75,High Price,,TWO-LEVEL HEADER (BSE > High Price); the same column names repeat under NSE
+W089,dense_table,data/APARINDS/annual_reports/FY2020-21.pdf,50,table,10001,"3,42,47,246",No. of Shares,,Row label is a range 10001 & above split over three cells; Indian grouping
+W090,dense_table,data/APARINDS/annual_reports/FY2020-21.pdf,50,table,CDSL,"49,51,173",No. of Shares,,"Row label - CDSL with leading dash; TWO-LEVEL HEADER (31st March, 2021 > No. of Shares)"
+W091,dense_table,data/APARINDS/annual_reports/FY2020-21.pdf,50,table,2001,0.40,% to Total Shareholders,,Row label is a numeric range 2001 - 3000
+W092,dense_table,data/HEROMOTOCO/annual_reports/FY2012-13.pdf,30,table,PROFIT BEFORE TAX,"2,832",2009-10,CRORES,Chart+table hybrid: metric name only in the block title; the value row is labelled (₹ CRORES) in every block
+W093,dense_table,data/HEROMOTOCO/annual_reports/FY2012-13.pdf,30,table,SALES,"60,75,583",2012-13,,Last column highlighted (white on red); row labelled (NOS.)
+W094,dense_table,data/HEROMOTOCO/annual_reports/FY2012-13.pdf,30,table,EARNINGS PER SHARE,111.8,2009-10,,Block title in white on grey; value row labelled (₹)
+W095,dense_table,data/HEROMOTOCO/annual_reports/FY2012-13.pdf,30,table,NET SALES,"23,368",2011-12,CRORES,"TOTAL INCOME block just above has 23,944 in the same column"
+W096,dense_table,data/HEROMOTOCO/annual_reports/FY2012-13.pdf,30,table,DIVIDEND,"5,500",2009-10,,Row labelled (%) - dividend as a percentage
+W097,dense_table,data/HEROMOTOCO/annual_reports/FY2011-12.pdf,34,table,SALES,"6,235,205",2011-12,,"Western digit grouping here; the next year report prints the same figure as 62,35,205; last column highlighted"
+W098,dense_table,data/HEROMOTOCO/annual_reports/FY2011-12.pdf,34,table,PROFIT AFTER TAX,"1,928",2010-11,crores,Chart+table hybrid; metric name only in the block title
+W099,dense_table,data/HEROMOTOCO/annual_reports/FY2011-12.pdf,34,table,OPBDIT MARGIN,17.4,2009-10,,Row labelled only (%)
+W100,dense_table,data/HEROMOTOCO/annual_reports/FY2011-12.pdf,34,table,DIVIDEND PER SHARE,110,2009-10,,Row labelled only (₹)
+W101,continued_segment,data/APARINDS/annual_reports/FY2016-17.pdf,179,table,Finance costs,(5.94),Effects of transition to Ind AS,crore,"A Notes column of letter references (c,f & l) sits between label and values; light thin font"
+W102,continued_segment,data/APARINDS/annual_reports/FY2016-17.pdf,179,table,Changes in inventories of finished goods,53.71,Amount as per Ind As,crore,Row label wraps over two lines
+W103,continued_segment,data/APARINDS/annual_reports/FY2016-17.pdf,179,table,Total Comprehensive Income for the period,124.88,Amount as per Ind As,crore,Three-line row label; value top-aligned
+W104,continued_segment,data/APARINDS/annual_reports/FY2016-17.pdf,179,table,Treasury Shares,27.88,"1 April, 2015",crore,Second table; Less marker in the S.No. column and a letter-reference column
+W105,continued_segment,data/APARINDS/annual_reports/FY2016-17.pdf,179,table,Loan processing fees/ transaction costs,4.87,"31 March, 2016",crore,"Second table, unhighlighted column"
+W106,continued_segment,data/APARINDS/investor_presentations/Feb-2018.pdf,35,table,Transformer & Specialty Oils,132.5,9MFY17,crore,9 value columns; row label repeats in four sections (this one: Segment Results)
+W107,continued_segment,data/APARINDS/investor_presentations/Feb-2018.pdf,35,table,Less : Finance costs (net),86.4,9MFY18,crore,Bold row label
+W108,continued_segment,data/APARINDS/investor_presentations/Feb-2018.pdf,35,table,Others/Unallocated,-23.2%,% QoQ,,Indented row label; negative percentage
+W109,continued_segment,data/HEROMOTOCO/annual_reports/FY2012-13.pdf,90,table,Units,"58,073,580",Gurgaon Plant,,TWO-LEVEL HEADER (Gurgaon Plant > Current Year); Units row label appears twice; continued table (CONTD.)
+W110,continued_segment,data/HEROMOTOCO/annual_reports/FY2012-13.pdf,90,table,Total Cost,"175,489,85",Dharuhera Plant,,TWO-LEVEL HEADER (Dharuhera Plant > Current Year); printed with irregular digit grouping - value as printed
+W111,continued_segment,data/HEROMOTOCO/annual_reports/FY2012-13.pdf,90,table,Electricity (Kwh. / Veh.),15.71,Haridwar Plant,,TWO-LEVEL HEADER (Haridwar Plant > Current Year); header cells white on red/black
+W112,continued_segment,data/HEROMOTOCO/annual_reports/FY2012-13.pdf,90,table,Quantity – SCM,"1,575,249",Dharuhera Plant,,TWO-LEVEL HEADER; Western grouping; en dash in the row label
+W113,continued_segment,data/HEROMOTOCO/annual_reports/FY2012-13.pdf,90,table,Products (with details),"2,271,636",Haridwar Plant,,TWO-LEVEL HEADER; row label wraps (unit- / Production Qty)
+W114,continued_segment,data/E2E/annual_reports/2021-08-25_FY2020-21.pdf,52,table,Provision for leave benefits,"159,894",Short-term,,"TWO-LEVEL HEADER (Short-term > As on March 31, 2021); three rows are stacked inside one table cell"
+W115,continued_segment,data/E2E/annual_reports/2021-08-25_FY2020-21.pdf,52,table,Bank overdraft,"15,337,544",Short-term,,TWO-LEVEL HEADER; rows stacked inside one cell
+W116,continued_segment,data/E2E/annual_reports/2021-08-25_FY2020-21.pdf,52,table,Profit for the year,"(93,533,720)","March 31, 2020",,Amounts in absolute rupees; negative in parentheses
+W117,continued_segment,data/E2E/annual_reports/2021-08-25_FY2020-21.pdf,52,prose,payable at the rate of,16%,,,Terms of borrowings prose
+W118,continued_segment,data/E2E/annual_reports/2021-08-25_FY2020-21.pdf,52,prose,overdraft facility amounting to INR,"40,500,000",,,Terms of borrowings prose
+W119,continued_segment,data/E2E/annual_reports/2022-07-29_FY2021-22.pdf,91,table,Lapsed / Forfeited during the year,"9,386","March 31, 2021",,"TWO-LEVEL HEADER (March 31, 2021 > Number); small serif print; two look-alike scheme tables"
+W120,continued_segment,data/E2E/annual_reports/2022-07-29_FY2021-22.pdf,91,table,Exercisable at the end of the year,"37,996","March 31, 2022",,"TWO-LEVEL HEADER (March 31, 2022 > Number); same row label in the 2021 Scheme table below"
+W121,continued_segment,data/E2E/annual_reports/2022-07-29_FY2021-22.pdf,91,table,Risk–free interest rate (%),5.14% to 6.43%,"March 31, 2022",,Value is a range; en dash in the label
+W122,continued_segment,data/E2E/annual_reports/2022-07-29_FY2021-22.pdf,91,prose,fair value of options granted during the year was,INR 30.66,,,Prose with the comparative in brackets (INR 9.13)
+W123,continued_segment,data/E2E/annual_reports/2022-07-29_FY2021-22.pdf,91,prose,range of exercise prices for options outstanding at the end of the year was,INR 12 to 116,,,Prose; the comparative range follows in brackets

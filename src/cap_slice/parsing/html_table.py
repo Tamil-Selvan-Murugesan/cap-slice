@@ -43,7 +43,8 @@ class _Collector(HTMLParser):
         if tag == "thead":
             self._in_thead = False
         elif tag in ("td", "th") and self._cell is not None:
-            text = re.sub(r"\s+", " ", "".join(self._cell)).strip().replace("|", "/")
+            # a literal backslash-n inside a cell (PaddleOCR-VL writes "Recognised in\\nOCI") is a line break
+            text = re.sub(r"\s+", " ", "".join(self._cell).replace("\\n", " ")).strip().replace("|", "/")
             self.rows[-1].append((text, *self._attrs))
             self._cell = None
 

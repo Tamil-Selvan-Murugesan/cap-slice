@@ -159,7 +159,9 @@ def _value_re(value: str) -> re.Pattern:
 
 
 def _cells(line: str) -> list[str]:
-    return [c.strip() for c in line.strip().strip("|").split("|") if c.strip()]
+    # Blank cells are kept: they hold a column's place (a row like "| Cables | 19.0% | | 24.3% |"
+    # would otherwise shift every value after the blank one column left) (fix S12).
+    return [c.strip() for c in line.strip().strip("|").split("|")]
 
 
 def score_fact(fact: dict, chunks: list[OutChunk], any_page: bool = False) -> tuple[int, int | None]:
@@ -182,7 +184,10 @@ def score_fact(fact: dict, chunks: list[OutChunk], any_page: bool = False) -> tu
         if not vre.search(c.text):
             continue
         level = 1
-        if fact["kind"] != "table":
+        # chart_point (chart category -> value) and kv (two-column key/value table): scored like a
+        # table row, but there is no column to check, so L3 (row + chart title/context + unit) is full credit
+        tablelike = fact["kind"] in ("table", "chart_point", "kv")
+        if not tablelike:
             if label in _flat(c.text):
                 level = 4
         else:
@@ -198,14 +203,23 @@ def score_fact(fact: dict, chunks: list[OutChunk], any_page: bool = False) -> tu
                     level = max(level, 3)
                     row = _cells(line)
                     vcell = next((k for k, cell in enumerate(row) if vre.search(cell)), None)
+                    # Header rows naming the context: use the most specific one, i.e. where the context
+                    # matches the fewest cells. A group row "BSE (SENSEX)" spread over 4 columns, or a page
+                    # title merged across every column, would otherwise excuse any column (fix S12).
+                    heads = []
                     for hl in c.text.splitlines():
                         if "|" in hl and ctx in _flat(hl) and hl != line:
                             head = _cells(hl)
-                            hcell = next((k for k, cell in enumerate(head) if ctx in _flat(cell)), None)
-                            if (vcell is not None and hcell is not None
-                                    and len(row) - vcell == len(head) - hcell):
-                                level = 4
-                            break
+                            hits = [k for k, cell in enumerate(head) if ctx in _flat(cell)]
+                            if hits:
+                                heads.append((len(hits), head, hits))
+                    if vcell is not None and heads:
+                        fewest = min(n for n, _, _ in heads)
+                        if any(len(row) - vcell == len(head) - k
+                               for n, head, hits in heads if n == fewest for k in hits):
+                            level = 4
+        if fact["kind"] in ("chart_point", "kv") and level == 3:
+            level = 4
         if level > best:
             best, where = level, c.index
     return best, where

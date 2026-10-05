@@ -26,7 +26,8 @@ from cap_slice.compare_parsers import OutChunk, score_fact
 from cap_slice.downloader import REPO_ROOT
 
 GOLDEN = REPO_ROOT / "data" / "golden"
-TAGS = {"two_level_header": "TWO-LEVEL HEADER", "bad_text_layer": "OCR text layer WITH ERRORS"}
+TAGS = {"two_level_header": "TWO-LEVEL HEADER", "bad_text_layer": "OCR text layer WITH ERRORS",
+        "rotated": "ROTATED"}
 
 
 def chunks_for(parser: str, pages: list[list]) -> list[OutChunk]:
@@ -49,7 +50,7 @@ def load_pages(cache: Path, parser: str, path: str) -> dict | None:
 def groups(fact: dict) -> list[str]:
     g = [f"stratum:{fact['stratum']}", f"kind:{fact['kind']}"]
     g += [f"tag:{t}" for t, marker in TAGS.items() if marker in fact.get("note", "")]
-    if fact["stratum"] == "low_text_numeric":
+    if fact["stratum"] in ("low_text_numeric", "scan_doc", "scan_slide"):  # v2, v3 image-only pools
         g.append("tag:image_only_page")
     return g
 

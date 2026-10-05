@@ -1,0 +1,4 @@
+path,page,reason
+data/APARINDS/investor_presentations/May-2024.pdf,23,hallucination check: section divider photo collage; only text is the title SHAREHOLDING PATTERN
+data/E2E/investor_presentations/Sep-2022.pdf,21,hallucination check: stock photo with the title Industry Overview only
+data/ESCONET/investor_presentations/2024-12-03_Dec-2024.pdf,26,hallucination check: building photo with the tagline IT'S TIME TO REIMAGINE THE POSSIBILITIES
