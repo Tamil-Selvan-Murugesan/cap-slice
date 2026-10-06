@@ -1,0 +1,31 @@
+id,parser,doc,page,doc_type,parser_wrote,printed,found_on_page,verdict,note
+1,parsed_advanced/mineru,data/HEROMOTOCO/annual_reports/FY2014-15.pdf,97,annual_report,8320,8300,yes,chart_estimate,only an axis tick (8300) is printed; MinerU wrote a chart data value
+2,parsed_advanced/mineru,data/APARINDS/investor_presentations/Aug-2024.pdf,49,investor_presentation,2800,"2,000",yes,chart_estimate,"axis tick 2,000; value estimated from line chart"
+3,parsed_advanced/mineru,data/HEROMOTOCO/annual_reports/FY2019-20.pdf,104,annual_report,2250,"1,250",yes,misread,"page prints 1,250%"
+4,parsed_advanced/mineru,data/E2E/investor_presentations/Sep-2023.pdf,25,investor_presentation,2027,2022,yes,text_layer_gap,chart year label not in the text layer
+5,parsed_advanced/mineru,data/E2E/investor_presentations/Sep-2023.pdf,25,investor_presentation,2028,2022,yes,text_layer_gap,chart year label not in the text layer
+6,parsed_advanced/mineru,data/HEROMOTOCO/annual_reports/FY2014-15.pdf,98,annual_report,26300.00,26000.00,yes,chart_estimate,axis tick 26000.00
+7,parsed_advanced/mineru,data/E2E/investor_presentations/Dec-2023.pdf,38,investor_presentation,330,300,yes,chart_estimate,axis tick 300
+8,parsed_advanced/mineru,data/HEROMOTOCO/annual_reports/FY2022-23.pdf,81,annual_report,2450.00,"2,150.00",yes,misread,"share-price table prints 2,150.00"
+9,parsed_advanced/mineru,data/HEROMOTOCO/annual_reports/FY2016-17.pdf,85,annual_report,28300.00,28000.00,yes,chart_estimate,axis tick 28000.00
+10,parsed_advanced/mineru,data/E2E/investor_presentations/May-2021.pdf,23,investor_presentation,3.50,3.00,yes,text_layer_gap,3.50* is printed; text layer glues it to 3.45 (3.453.50*)
+11,parsed_advanced/mineru,data/HEROMOTOCO/annual_reports/FY2014-15.pdf,98,annual_report,29600.00,29000.00,yes,chart_estimate,axis tick 29000.00
+12,parsed_advanced/mineru,data/HEROMOTOCO/annual_reports/FY2017-18.pdf,106,annual_report,3550,3500,yes,chart_estimate,axis tick 3500
+13,parsed_advanced/mineru,data/HEROMOTOCO/annual_reports/FY2020-21.pdf,42,annual_report,500,600,yes,unclear,500 may be printed inside a picture on this CSR page
+14,parsed_advanced/mineru,data/HEROMOTOCO/annual_reports/FY2015-16.pdf,94,annual_report,2750,2705,yes,misread,table prints 2705 (two digits swapped)
+15,parsed_advanced/mineru,data/HEROMOTOCO/annual_reports/FY2024-25.pdf,84,annual_report,24800.00,"24,000.00",yes,chart_estimate,"axis tick 24,000.00"
+16,parsed/paddleocr_vl,data/HEROMOTOCO/annual_reports/FY2020-21.pdf,292,annual_report,100,150,yes,unclear,100 may be printed elsewhere on the page
+17,parsed/paddleocr_vl,data/HEROMOTOCO/annual_reports/FY2021-22.pdf,120,annual_report,2850.00,"2,852.00",yes,misread,"table prints 2,852.00"
+18,parsed/paddleocr_vl,data/APARINDS/annual_reports/FY2017-18.pdf,23,annual_report,2017,2007,yes,misread,"text prints August 9, 2007"
+19,parsed/paddleocr_vl,data/APARINDS/concall_transcripts/Sep-2022-a.pdf,1,concall_transcript,25785,25795,yes,misread,digital-signature microtext prints ...25795...
+20,parsed/paddleocr_vl,data/APARINDS/annual_reports/FY2015-16.pdf,13,annual_report,2023,2020,yes,misread,text prints by 2020
+21,parsed/paddleocr_vl,data/APARINDS/investor_presentations/May-2023.pdf,24,investor_presentation,200,100,yes,unclear,chart rebased to 100; 200 may be an axis tick drawn without text
+22,parsed/paddleocr_vl,data/APARINDS/investor_presentations/Aug-2020.pdf,11,investor_presentation,374,394,yes,misread,KPI band prints 394
+23,parsed/paddleocr_vl,data/APARINDS/annual_reports/FY2024-25.pdf,82,annual_report,000,100,yes,unclear,stylised large number near 100
+24,parsed/paddleocr_vl,data/HEROMOTOCO/annual_reports/FY2020-21.pdf,105,annual_report,2900,2000,yes,chart_estimate,axis tick 2000
+25,parsed/paddleocr_vl,data/APARINDS/investor_presentations/Nov-2019.pdf,20,investor_presentation,2023,2020,yes,misread,slide prints Vision 2020
+26,parsed/paddleocr_vl,data/HEROMOTOCO/annual_reports/FY2011-12.pdf,80,annual_report,19600,19000,yes,chart_estimate,axis tick 19000
+27,parsed/paddleocr_vl,data/HEROMOTOCO/annual_reports/FY2016-17.pdf,43,annual_report,107,100,yes,misread,text prints 100-125cc
+28,parsed/paddleocr_vl,data/ESCONET/investor_presentations/2025-09-22_Sep-2025-a.pdf,21,investor_presentation,480,400,yes,chart_estimate,axis tick 400
+29,parsed/paddleocr_vl,data/E2E/investor_presentations/Dec-2023.pdf,40,investor_presentation,10.00,20.00,yes,text_layer_gap,axis label 10.00% is printed but missing from the text layer
+30,parsed/paddleocr_vl,data/HEROMOTOCO/annual_reports/FY2025-26.pdf,64,annual_report,104,100,yes,unclear,SDG icon area; 104 not visible in the crop

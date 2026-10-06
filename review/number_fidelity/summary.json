@@ -1,0 +1,126 @@
+{
+ "pages": 7318,
+ "documents": 224,
+ "parsers": {
+  "parsed_advanced/mineru": {
+   "out": 208151,
+   "ok": 206549,
+   "changed": 458,
+   "other": 1144,
+   "truth": 219783,
+   "missed": 13234,
+   "by_type": {
+    "annual_report": {
+     "out": 179032,
+     "ok": 177892,
+     "changed": 309
+    },
+    "concall_transcript": {
+     "out": 4502,
+     "ok": 4500,
+     "changed": 0
+    },
+    "investor_presentation": {
+     "out": 24436,
+     "ok": 23977,
+     "changed": 148
+    },
+    "periodic_result": {
+     "out": 181,
+     "ok": 180,
+     "changed": 1
+    }
+   }
+  },
+  "parsed/paddleocr_vl": {
+   "out": 212610,
+   "ok": 208954,
+   "changed": 974,
+   "other": 2682,
+   "truth": 219783,
+   "missed": 10829,
+   "by_type": {
+    "annual_report": {
+     "out": 181000,
+     "ok": 178279,
+     "changed": 659
+    },
+    "concall_transcript": {
+     "out": 6022,
+     "ok": 5906,
+     "changed": 20
+    },
+    "investor_presentation": {
+     "out": 25358,
+     "ok": 24539,
+     "changed": 295
+    },
+    "periodic_result": {
+     "out": 230,
+     "ok": 230,
+     "changed": 0
+    }
+   }
+  },
+  "parsed/mineru": {
+   "out": 200049,
+   "ok": 197063,
+   "changed": 96,
+   "other": 2890,
+   "truth": 219783,
+   "missed": 22720,
+   "by_type": {
+    "annual_report": {
+     "out": 174153,
+     "ok": 171307,
+     "changed": 42
+    },
+    "concall_transcript": {
+     "out": 4809,
+     "ok": 4808,
+     "changed": 0
+    },
+    "investor_presentation": {
+     "out": 20900,
+     "ok": 20762,
+     "changed": 53
+    },
+    "periodic_result": {
+     "out": 187,
+     "ok": 186,
+     "changed": 1
+    }
+   }
+  },
+  "parsed/docling": {
+   "out": 203137,
+   "ok": 202528,
+   "changed": 109,
+   "other": 500,
+   "truth": 219783,
+   "missed": 17255,
+   "by_type": {
+    "annual_report": {
+     "out": 176729,
+     "ok": 176517,
+     "changed": 46
+    },
+    "concall_transcript": {
+     "out": 4841,
+     "ok": 4459,
+     "changed": 58
+    },
+    "investor_presentation": {
+     "out": 21360,
+     "ok": 21345,
+     "changed": 5
+    },
+    "periodic_result": {
+     "out": 207,
+     "ok": 207,
+     "changed": 0
+    }
+   }
+  }
+ }
+}

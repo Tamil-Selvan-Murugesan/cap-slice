@@ -1,6 +1,10 @@
 """Number fidelity of parser output on digital pages, measured against the PDF's own text layer.
 
-    uv run python tools/golden/number_check.py parsed_advanced/mineru parsed/paddleocr_vl ...
+    uv run python tools/golden/number_check.py parsed_advanced/mineru parsed/paddleocr_vl ... [--out DIR]
+
+Writes (with --out): summary.json (all numbers below, per parser and per document type) and
+flagged.csv (every "changed" number: parser, document, page, the parser's number as written, the
+nearest number printed on the page) — the input for the manual audit (number_audit.py).
 
 No golden facts needed: on a page with a real text layer and (almost) no pictures, every number a
 parser outputs should also be printed in the text layer. For each parser cache (pages after
@@ -34,31 +38,50 @@ from cap_slice.page_clean import clean_pages
 NUM = re.compile(r"\d[\d,]*(?:\.\d+)?")
 
 
-def numbers(text: str) -> set[str]:
-    out = set()
+def numbers_raw(text: str) -> dict[str, str]:
+    """normalised number -> one way it was written ("157280.58" -> "1,57,280.58")"""
+    out = {}
     for m in NUM.finditer(text):
-        s = m.group().rstrip(",").replace(",", "")
+        raw = m.group().rstrip(",")
+        s = raw.replace(",", "")
         if s.endswith("."):
-            s = s[:-1]
+            s, raw = s[:-1], raw[:-1]
         if sum(ch.isdigit() for ch in s) >= 3:
-            out.add(s)
+            out.setdefault(s, raw)
     return out
 
 
-def one_digit_off(a: str, pool: set[str]) -> bool:
-    for b in pool:
+def numbers(text: str) -> set[str]:
+    return set(numbers_raw(text))
+
+
+def nearest(a: str, pool) -> str | None:
+    """A printed number that `a` differs from by one character (digit or decimal point) at the same
+    length, or by two swapped neighbours; None if there is none."""
+    for b in sorted(pool):
         if len(a) != len(b):
             continue
         diff = [i for i, (x, y) in enumerate(zip(a, b)) if x != y]
         if len(diff) == 1:
-            return True
+            return b
         if len(diff) == 2 and diff[1] == diff[0] + 1 and a[diff[0]] == b[diff[1]] and a[diff[1]] == b[diff[0]]:
-            return True
-    return False
+            return b
+    return None
+
+
+def one_digit_off(a: str, pool) -> bool:
+    return nearest(a, pool) is not None
 
 
 def main() -> None:
-    roots = [Path(a) for a in sys.argv[1:]]
+    args = sys.argv[1:]
+    out_dir = None
+    if "--out" in args:
+        i = args.index("--out")
+        out_dir = Path(args[i + 1])
+        del args[i:i + 2]
+    roots = [Path(a) for a in args]
+    flagged = []
     inv = defaultdict(dict)
     for r in csv.DictReader(open("data/golden/page_inventory.csv")):
         if r["low_text"] == "0" and int(r["chars"]) >= 300 and float(r["image_cover"] or 0) < 0.1:
@@ -81,15 +104,20 @@ def main() -> None:
             for n, dtype in inv[doc].items():
                 if not all(n in parsed[root][doc] for root in roots):
                     continue
-                truth = numbers(pdf[n - 1].get_text())
+                truth_raw = numbers_raw(pdf[n - 1].get_text())
+                truth = set(truth_raw)
                 if len(truth) < 5:
                     continue
                 npages += 1
                 for root in roots:
-                    got = numbers(parsed[root][doc][n])
+                    got_raw = numbers_raw(parsed[root][doc][n])
+                    got = set(got_raw)
                     ok = got & truth
                     bad = got - truth
                     changed = {x for x in bad if one_digit_off(x, truth)}
+                    for x in sorted(changed):
+                        flagged.append({"parser": str(root), "doc": doc, "page": n, "doc_type": dtype,
+                                        "parser_wrote": got_raw[x], "printed": truth_raw[nearest(x, truth)]})
                     s = stats[root]
                     s["out"] += len(got); s["ok"] += len(ok); s["changed"] += len(changed)
                     s["other"] += len(bad) - len(changed); s["truth"] += len(truth); s["missed"] += len(truth - got)
@@ -112,6 +140,17 @@ def main() -> None:
             f"{1e4 * by_type[root][t]['changed'] / max(by_type[root][t]['out'], 1):>16.1f}" for t in types))
     for root in roots:
         print(f"\nexamples, {root}:", *examples[root], sep="\n  ")
+    if out_dir:
+        out_dir.mkdir(parents=True, exist_ok=True)
+        summary = {"pages": npages, "documents": len(docs),
+                   "parsers": {str(r): {**stats[r], "by_type": {t: dict(c) for t, c in by_type[r].items()}}
+                               for r in roots}}
+        (out_dir / "summary.json").write_text(json.dumps(summary, indent=1))
+        with (out_dir / "flagged.csv").open("w", newline="") as fh:
+            w = csv.DictWriter(fh, fieldnames=list(flagged[0]))
+            w.writeheader()
+            w.writerows(flagged)
+        print(f"\nwrote {out_dir}/summary.json and flagged.csv ({len(flagged)} flagged numbers)")
 
 
 if __name__ == "__main__":
