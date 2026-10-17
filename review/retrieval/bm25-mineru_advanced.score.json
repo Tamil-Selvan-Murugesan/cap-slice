@@ -1,0 +1,3776 @@
+{
+ "questions": 200,
+ "missing_from_run": [],
+ "groups": {
+  "all": {
+   "n": 200,
+   "strict_R@1": 0.14,
+   "strict_R@5": 0.33,
+   "strict_R@10": 0.425,
+   "strict_R@20": 0.54,
+   "strict_R@50": 0.675,
+   "strict_MRR@10": 0.222265873015873,
+   "lenient_R@1": 0.17,
+   "lenient_R@5": 0.36,
+   "lenient_R@10": 0.475,
+   "lenient_R@20": 0.595,
+   "lenient_R@50": 0.71,
+   "lenient_MRR@10": 0.25839087301587305,
+   "doc@10": 0.76
+  },
+  "company:APARINDS": {
+   "n": 64,
+   "strict_R@1": 0.140625,
+   "strict_R@5": 0.359375,
+   "strict_R@10": 0.421875,
+   "strict_R@20": 0.5625,
+   "strict_R@50": 0.75,
+   "strict_MRR@10": 0.23428819444444443,
+   "lenient_R@1": 0.1875,
+   "lenient_R@5": 0.375,
+   "lenient_R@10": 0.4375,
+   "lenient_R@20": 0.578125,
+   "lenient_R@50": 0.75,
+   "lenient_MRR@10": 0.2720486111111111,
+   "doc@10": 0.703125
+  },
+  "company:C2C": {
+   "n": 18,
+   "strict_R@1": 0.4444444444444444,
+   "strict_R@5": 0.5,
+   "strict_R@10": 0.6111111111111112,
+   "strict_R@20": 0.7222222222222222,
+   "strict_R@50": 0.7777777777777778,
+   "strict_MRR@10": 0.4791666666666667,
+   "lenient_R@1": 0.4444444444444444,
+   "lenient_R@5": 0.5555555555555556,
+   "lenient_R@10": 0.6666666666666666,
+   "lenient_R@20": 0.7777777777777778,
+   "lenient_R@50": 0.7777777777777778,
+   "lenient_MRR@10": 0.5069444444444444,
+   "doc@10": 0.7777777777777778
+  },
+  "company:E2E": {
+   "n": 43,
+   "strict_R@1": 0.06976744186046512,
+   "strict_R@5": 0.2558139534883721,
+   "strict_R@10": 0.37209302325581395,
+   "strict_R@20": 0.4186046511627907,
+   "strict_R@50": 0.5116279069767442,
+   "strict_MRR@10": 0.14615171650055372,
+   "lenient_R@1": 0.11627906976744186,
+   "lenient_R@5": 0.27906976744186046,
+   "lenient_R@10": 0.4186046511627907,
+   "lenient_R@20": 0.46511627906976744,
+   "lenient_R@50": 0.5581395348837209,
+   "lenient_MRR@10": 0.19127906976744186,
+   "doc@10": 0.7441860465116279
+  },
+  "company:ESCONET": {
+   "n": 21,
+   "strict_R@1": 0.047619047619047616,
+   "strict_R@5": 0.14285714285714285,
+   "strict_R@10": 0.19047619047619047,
+   "strict_R@20": 0.3333333333333333,
+   "strict_R@50": 0.6190476190476191,
+   "strict_MRR@10": 0.0782312925170068,
+   "lenient_R@1": 0.09523809523809523,
+   "lenient_R@5": 0.23809523809523808,
+   "lenient_R@10": 0.42857142857142855,
+   "lenient_R@20": 0.5238095238095238,
+   "lenient_R@50": 0.7619047619047619,
+   "lenient_MRR@10": 0.16717687074829932,
+   "doc@10": 0.6666666666666666
+  },
+  "company:HEROMOTOCO": {
+   "n": 54,
+   "strict_R@1": 0.12962962962962962,
+   "strict_R@5": 0.37037037037037035,
+   "strict_R@10": 0.5,
+   "strict_R@20": 0.6296296296296297,
+   "strict_R@50": 0.7037037037037037,
+   "strict_MRR@10": 0.23900646678424456,
+   "lenient_R@1": 0.12962962962962962,
+   "lenient_R@5": 0.3888888888888889,
+   "lenient_R@10": 0.5185185185185185,
+   "lenient_R@20": 0.6851851851851852,
+   "lenient_R@50": 0.7407407407407407,
+   "lenient_MRR@10": 0.24826572604350383,
+   "doc@10": 0.8703703703703703
+  },
+  "doctype:annual_reports": {
+   "n": 111,
+   "strict_R@1": 0.13513513513513514,
+   "strict_R@5": 0.35135135135135137,
+   "strict_R@10": 0.43243243243243246,
+   "strict_R@20": 0.5315315315315315,
+   "strict_R@50": 0.6936936936936937,
+   "strict_MRR@10": 0.2248855998855999,
+   "lenient_R@1": 0.17117117117117117,
+   "lenient_R@5": 0.3963963963963964,
+   "lenient_R@10": 0.4954954954954955,
+   "lenient_R@20": 0.6216216216216216,
+   "lenient_R@50": 0.7567567567567568,
+   "lenient_MRR@10": 0.2712069212069212,
+   "doc@10": 0.8198198198198198
+  },
+  "doctype:concall_transcripts": {
+   "n": 38,
+   "strict_R@1": 0.07894736842105263,
+   "strict_R@5": 0.2631578947368421,
+   "strict_R@10": 0.3684210526315789,
+   "strict_R@20": 0.5526315789473685,
+   "strict_R@50": 0.6052631578947368,
+   "strict_MRR@10": 0.15536758563074354,
+   "lenient_R@1": 0.07894736842105263,
+   "lenient_R@5": 0.2631578947368421,
+   "lenient_R@10": 0.3684210526315789,
+   "lenient_R@20": 0.5526315789473685,
+   "lenient_R@50": 0.6052631578947368,
+   "lenient_MRR@10": 0.15536758563074354,
+   "doc@10": 0.7631578947368421
+  },
+  "doctype:investor_presentations": {
+   "n": 47,
+   "strict_R@1": 0.19148936170212766,
+   "strict_R@5": 0.3404255319148936,
+   "strict_R@10": 0.44680851063829785,
+   "strict_R@20": 0.5319148936170213,
+   "strict_R@50": 0.6595744680851063,
+   "strict_MRR@10": 0.2651469098277609,
+   "lenient_R@1": 0.23404255319148937,
+   "lenient_R@5": 0.3617021276595745,
+   "lenient_R@10": 0.48936170212765956,
+   "lenient_R@20": 0.5531914893617021,
+   "lenient_R@50": 0.6595744680851063,
+   "lenient_MRR@10": 0.3059270516717325,
+   "doc@10": 0.6382978723404256
+  },
+  "doctype:periodic_results": {
+   "n": 4,
+   "strict_R@1": 0.25,
+   "strict_R@5": 0.25,
+   "strict_R@10": 0.5,
+   "strict_R@20": 0.75,
+   "strict_R@50": 1.0,
+   "strict_MRR@10": 0.28125,
+   "lenient_R@1": 0.25,
+   "lenient_R@5": 0.25,
+   "lenient_R@10": 0.75,
+   "lenient_R@20": 0.75,
+   "lenient_R@50": 1.0,
+   "lenient_MRR@10": 0.3229166666666667,
+   "doc@10": 0.5
+  },
+  "evidence:chart": {
+   "n": 15,
+   "strict_R@1": 0.26666666666666666,
+   "strict_R@5": 0.5333333333333333,
+   "strict_R@10": 0.6,
+   "strict_R@20": 0.6666666666666666,
+   "strict_R@50": 0.6666666666666666,
+   "strict_MRR@10": 0.3972222222222222,
+   "lenient_R@1": 0.26666666666666666,
+   "lenient_R@5": 0.6,
+   "lenient_R@10": 0.6666666666666666,
+   "lenient_R@20": 0.7333333333333333,
+   "lenient_R@50": 0.7333333333333333,
+   "lenient_MRR@10": 0.4305555555555555,
+   "doc@10": 0.9333333333333333
+  },
+  "evidence:concall": {
+   "n": 33,
+   "strict_R@1": 0.09090909090909091,
+   "strict_R@5": 0.30303030303030304,
+   "strict_R@10": 0.42424242424242425,
+   "strict_R@20": 0.6060606060606061,
+   "strict_R@50": 0.6666666666666666,
+   "strict_MRR@10": 0.1789081289081289,
+   "lenient_R@1": 0.09090909090909091,
+   "lenient_R@5": 0.30303030303030304,
+   "lenient_R@10": 0.42424242424242425,
+   "lenient_R@20": 0.6060606060606061,
+   "lenient_R@50": 0.6666666666666666,
+   "lenient_MRR@10": 0.1789081289081289,
+   "doc@10": 0.7878787878787878
+  },
+  "evidence:kpi": {
+   "n": 6,
+   "strict_R@1": 0.3333333333333333,
+   "strict_R@5": 0.5,
+   "strict_R@10": 0.6666666666666666,
+   "strict_R@20": 0.8333333333333334,
+   "strict_R@50": 0.8333333333333334,
+   "strict_MRR@10": 0.44047619047619047,
+   "lenient_R@1": 0.3333333333333333,
+   "lenient_R@5": 0.5,
+   "lenient_R@10": 0.6666666666666666,
+   "lenient_R@20": 0.8333333333333334,
+   "lenient_R@50": 0.8333333333333334,
+   "lenient_MRR@10": 0.44047619047619047,
+   "doc@10": 0.6666666666666666
+  },
+  "evidence:multi": {
+   "n": 15,
+   "strict_R@1": 0.0,
+   "strict_R@5": 0.0,
+   "strict_R@10": 0.06666666666666667,
+   "strict_R@20": 0.13333333333333333,
+   "strict_R@50": 0.2,
+   "strict_MRR@10": 0.009523809523809523,
+   "lenient_R@1": 0.0,
+   "lenient_R@5": 0.0,
+   "lenient_R@10": 0.06666666666666667,
+   "lenient_R@20": 0.13333333333333333,
+   "lenient_R@50": 0.2,
+   "lenient_MRR@10": 0.009523809523809523,
+   "doc@10": 0.6666666666666666
+  },
+  "evidence:prose": {
+   "n": 33,
+   "strict_R@1": 0.15151515151515152,
+   "strict_R@5": 0.30303030303030304,
+   "strict_R@10": 0.36363636363636365,
+   "strict_R@20": 0.5454545454545454,
+   "strict_R@50": 0.696969696969697,
+   "strict_MRR@10": 0.21843434343434343,
+   "lenient_R@1": 0.18181818181818182,
+   "lenient_R@5": 0.30303030303030304,
+   "lenient_R@10": 0.36363636363636365,
+   "lenient_R@20": 0.5454545454545454,
+   "lenient_R@50": 0.7272727272727273,
+   "lenient_MRR@10": 0.24116161616161616,
+   "doc@10": 0.6666666666666666
+  },
+  "evidence:scan": {
+   "n": 10,
+   "strict_R@1": 0.2,
+   "strict_R@5": 0.5,
+   "strict_R@10": 0.7,
+   "strict_R@20": 0.7,
+   "strict_R@50": 0.7,
+   "strict_MRR@10": 0.325,
+   "lenient_R@1": 0.2,
+   "lenient_R@5": 0.5,
+   "lenient_R@10": 0.7,
+   "lenient_R@20": 0.7,
+   "lenient_R@50": 0.7,
+   "lenient_MRR@10": 0.325,
+   "doc@10": 0.9
+  },
+  "evidence:statement": {
+   "n": 25,
+   "strict_R@1": 0.08,
+   "strict_R@5": 0.24,
+   "strict_R@10": 0.28,
+   "strict_R@20": 0.36,
+   "strict_R@50": 0.64,
+   "strict_MRR@10": 0.16,
+   "lenient_R@1": 0.08,
+   "lenient_R@5": 0.24,
+   "lenient_R@10": 0.36,
+   "lenient_R@20": 0.44,
+   "lenient_R@50": 0.72,
+   "lenient_MRR@10": 0.17066666666666666,
+   "doc@10": 0.6
+  },
+  "evidence:table": {
+   "n": 63,
+   "strict_R@1": 0.15873015873015872,
+   "strict_R@5": 0.38095238095238093,
+   "strict_R@10": 0.49206349206349204,
+   "strict_R@20": 0.5873015873015873,
+   "strict_R@50": 0.7777777777777778,
+   "strict_MRR@10": 0.24360040312421263,
+   "lenient_R@1": 0.23809523809523808,
+   "lenient_R@5": 0.4603174603174603,
+   "lenient_R@10": 0.6031746031746031,
+   "lenient_R@20": 0.7142857142857143,
+   "lenient_R@50": 0.8253968253968254,
+   "lenient_MRR@10": 0.33420886873267824,
+   "doc@10": 0.8253968253968254
+  },
+  "hard:chart_labels": {
+   "n": 14,
+   "strict_R@1": 0.2857142857142857,
+   "strict_R@5": 0.5,
+   "strict_R@10": 0.5714285714285714,
+   "strict_R@20": 0.6428571428571429,
+   "strict_R@50": 0.6428571428571429,
+   "strict_MRR@10": 0.3898809523809524,
+   "lenient_R@1": 0.2857142857142857,
+   "lenient_R@5": 0.5714285714285714,
+   "lenient_R@10": 0.6428571428571429,
+   "lenient_R@20": 0.7142857142857143,
+   "lenient_R@50": 0.7142857142857143,
+   "lenient_MRR@10": 0.4255952380952381,
+   "doc@10": 0.9285714285714286
+  },
+  "hard:cross_doc": {
+   "n": 17,
+   "strict_R@1": 0.0,
+   "strict_R@5": 0.0,
+   "strict_R@10": 0.0,
+   "strict_R@20": 0.11764705882352941,
+   "strict_R@50": 0.23529411764705882,
+   "strict_MRR@10": 0.0,
+   "lenient_R@1": 0.0,
+   "lenient_R@5": 0.0,
+   "lenient_R@10": 0.0,
+   "lenient_R@20": 0.11764705882352941,
+   "lenient_R@50": 0.23529411764705882,
+   "lenient_MRR@10": 0.0,
+   "doc@10": 0.5294117647058824
+  },
+  "hard:decoy_years": {
+   "n": 63,
+   "strict_R@1": 0.09523809523809523,
+   "strict_R@5": 0.30158730158730157,
+   "strict_R@10": 0.3968253968253968,
+   "strict_R@20": 0.47619047619047616,
+   "strict_R@50": 0.7142857142857143,
+   "strict_MRR@10": 0.18870622323003275,
+   "lenient_R@1": 0.09523809523809523,
+   "lenient_R@5": 0.36507936507936506,
+   "lenient_R@10": 0.49206349206349204,
+   "lenient_R@20": 0.6031746031746031,
+   "lenient_R@50": 0.7936507936507936,
+   "lenient_MRR@10": 0.2200554295792391,
+   "doc@10": 0.7936507936507936
+  },
+  "hard:footnote": {
+   "n": 10,
+   "strict_R@1": 0.1,
+   "strict_R@5": 0.5,
+   "strict_R@10": 0.5,
+   "strict_R@20": 0.5,
+   "strict_R@50": 0.6,
+   "strict_MRR@10": 0.23333333333333334,
+   "lenient_R@1": 0.2,
+   "lenient_R@5": 0.5,
+   "lenient_R@10": 0.5,
+   "lenient_R@20": 0.5,
+   "lenient_R@50": 0.6,
+   "lenient_MRR@10": 0.30833333333333335,
+   "doc@10": 0.8
+  },
+  "hard:image_only_page": {
+   "n": 10,
+   "strict_R@1": 0.2,
+   "strict_R@5": 0.5,
+   "strict_R@10": 0.7,
+   "strict_R@20": 0.7,
+   "strict_R@50": 0.7,
+   "strict_MRR@10": 0.325,
+   "lenient_R@1": 0.2,
+   "lenient_R@5": 0.5,
+   "lenient_R@10": 0.7,
+   "lenient_R@20": 0.7,
+   "lenient_R@50": 0.7,
+   "lenient_MRR@10": 0.325,
+   "doc@10": 0.9
+  },
+  "hard:indian_grouping": {
+   "n": 14,
+   "strict_R@1": 0.07142857142857142,
+   "strict_R@5": 0.2857142857142857,
+   "strict_R@10": 0.42857142857142855,
+   "strict_R@20": 0.5714285714285714,
+   "strict_R@50": 0.8571428571428571,
+   "strict_MRR@10": 0.16488095238095238,
+   "lenient_R@1": 0.2857142857142857,
+   "lenient_R@5": 0.35714285714285715,
+   "lenient_R@10": 0.7142857142857143,
+   "lenient_R@20": 0.7857142857142857,
+   "lenient_R@50": 0.9285714285714286,
+   "lenient_MRR@10": 0.3685374149659864,
+   "doc@10": 0.8571428571428571
+  },
+  "hard:lakhs_unit": {
+   "n": 11,
+   "strict_R@1": 0.18181818181818182,
+   "strict_R@5": 0.36363636363636365,
+   "strict_R@10": 0.45454545454545453,
+   "strict_R@20": 0.6363636363636364,
+   "strict_R@50": 0.9090909090909091,
+   "strict_MRR@10": 0.26136363636363635,
+   "lenient_R@1": 0.2727272727272727,
+   "lenient_R@5": 0.36363636363636365,
+   "lenient_R@10": 0.5454545454545454,
+   "lenient_R@20": 0.6363636363636364,
+   "lenient_R@50": 0.9090909090909091,
+   "lenient_MRR@10": 0.34469696969696967,
+   "doc@10": 0.6363636363636364
+  },
+  "hard:multi_hop": {
+   "n": 14,
+   "strict_R@1": 0.0,
+   "strict_R@5": 0.0,
+   "strict_R@10": 0.0,
+   "strict_R@20": 0.07142857142857142,
+   "strict_R@50": 0.14285714285714285,
+   "strict_MRR@10": 0.0,
+   "lenient_R@1": 0.0,
+   "lenient_R@5": 0.0,
+   "lenient_R@10": 0.0,
+   "lenient_R@20": 0.07142857142857142,
+   "lenient_R@50": 0.14285714285714285,
+   "lenient_MRR@10": 0.0,
+   "doc@10": 0.6428571428571429
+  },
+  "hard:no_numbers": {
+   "n": 10,
+   "strict_R@1": 0.1,
+   "strict_R@5": 0.4,
+   "strict_R@10": 0.5,
+   "strict_R@20": 0.7,
+   "strict_R@50": 0.8,
+   "strict_MRR@10": 0.22777777777777777,
+   "lenient_R@1": 0.1,
+   "lenient_R@5": 0.4,
+   "lenient_R@10": 0.5,
+   "lenient_R@20": 0.7,
+   "lenient_R@50": 0.8,
+   "lenient_MRR@10": 0.22777777777777777,
+   "doc@10": 0.9
+  },
+  "hard:period_format": {
+   "n": 10,
+   "strict_R@1": 0.2,
+   "strict_R@5": 0.3,
+   "strict_R@10": 0.3,
+   "strict_R@20": 0.4,
+   "strict_R@50": 0.6,
+   "strict_MRR@10": 0.25,
+   "lenient_R@1": 0.2,
+   "lenient_R@5": 0.3,
+   "lenient_R@10": 0.3,
+   "lenient_R@20": 0.4,
+   "lenient_R@50": 0.6,
+   "lenient_MRR@10": 0.25,
+   "doc@10": 0.4
+  },
+  "hard:slide_table": {
+   "n": 13,
+   "strict_R@1": 0.23076923076923078,
+   "strict_R@5": 0.38461538461538464,
+   "strict_R@10": 0.46153846153846156,
+   "strict_R@20": 0.46153846153846156,
+   "strict_R@50": 0.6153846153846154,
+   "strict_MRR@10": 0.29945054945054944,
+   "lenient_R@1": 0.3076923076923077,
+   "lenient_R@5": 0.38461538461538464,
+   "lenient_R@10": 0.5384615384615384,
+   "lenient_R@20": 0.5384615384615384,
+   "lenient_R@50": 0.6153846153846154,
+   "lenient_MRR@10": 0.3699633699633699,
+   "doc@10": 0.5384615384615384
+  },
+  "hard:spoken_numbers": {
+   "n": 16,
+   "strict_R@1": 0.0,
+   "strict_R@5": 0.1875,
+   "strict_R@10": 0.375,
+   "strict_R@20": 0.5,
+   "strict_R@50": 0.5625,
+   "strict_MRR@10": 0.08913690476190476,
+   "lenient_R@1": 0.0,
+   "lenient_R@5": 0.1875,
+   "lenient_R@10": 0.375,
+   "lenient_R@20": 0.5,
+   "lenient_R@50": 0.5625,
+   "lenient_MRR@10": 0.08913690476190476,
+   "doc@10": 0.75
+  },
+  "hard:standalone_vs_consolidated": {
+   "n": 22,
+   "strict_R@1": 0.045454545454545456,
+   "strict_R@5": 0.4090909090909091,
+   "strict_R@10": 0.45454545454545453,
+   "strict_R@20": 0.45454545454545453,
+   "strict_R@50": 0.5909090909090909,
+   "strict_MRR@10": 0.20497835497835498,
+   "lenient_R@1": 0.045454545454545456,
+   "lenient_R@5": 0.45454545454545453,
+   "lenient_R@10": 0.5,
+   "lenient_R@20": 0.5454545454545454,
+   "lenient_R@50": 0.6818181818181818,
+   "lenient_MRR@10": 0.21634199134199134,
+   "doc@10": 0.8636363636363636
+  },
+  "style:analytical": {
+   "n": 15,
+   "strict_R@1": 0.0,
+   "strict_R@5": 0.0,
+   "strict_R@10": 0.06666666666666667,
+   "strict_R@20": 0.13333333333333333,
+   "strict_R@50": 0.2,
+   "strict_MRR@10": 0.009523809523809523,
+   "lenient_R@1": 0.0,
+   "lenient_R@5": 0.0,
+   "lenient_R@10": 0.06666666666666667,
+   "lenient_R@20": 0.13333333333333333,
+   "lenient_R@50": 0.2,
+   "lenient_MRR@10": 0.009523809523809523,
+   "doc@10": 0.6666666666666666
+  },
+  "style:exact": {
+   "n": 25,
+   "strict_R@1": 0.12,
+   "strict_R@5": 0.32,
+   "strict_R@10": 0.36,
+   "strict_R@20": 0.4,
+   "strict_R@50": 0.76,
+   "strict_MRR@10": 0.2037142857142857,
+   "lenient_R@1": 0.12,
+   "lenient_R@5": 0.32,
+   "lenient_R@10": 0.48,
+   "lenient_R@20": 0.56,
+   "lenient_R@50": 0.84,
+   "lenient_MRR@10": 0.21938095238095237,
+   "doc@10": 0.68
+  },
+  "style:paraphrase": {
+   "n": 140,
+   "strict_R@1": 0.15,
+   "strict_R@5": 0.36428571428571427,
+   "strict_R@10": 0.4785714285714286,
+   "strict_R@20": 0.6,
+   "strict_R@50": 0.7214285714285714,
+   "strict_MRR@10": 0.24242630385487526,
+   "lenient_R@1": 0.19285714285714287,
+   "lenient_R@5": 0.40714285714285714,
+   "lenient_R@10": 0.5285714285714286,
+   "lenient_R@20": 0.65,
+   "lenient_R@50": 0.7571428571428571,
+   "lenient_MRR@10": 0.2912358276643991,
+   "doc@10": 0.7785714285714286
+  },
+  "style:vague": {
+   "n": 20,
+   "strict_R@1": 0.2,
+   "strict_R@5": 0.35,
+   "strict_R@10": 0.4,
+   "strict_R@20": 0.6,
+   "strict_R@50": 0.6,
+   "strict_MRR@10": 0.2638888888888889,
+   "lenient_R@1": 0.2,
+   "lenient_R@5": 0.35,
+   "lenient_R@10": 0.4,
+   "lenient_R@20": 0.6,
+   "lenient_R@50": 0.6,
+   "lenient_MRR@10": 0.2638888888888889,
+   "doc@10": 0.8
+  }
+ },
+ "per_question": [
+  {
+   "qid": "R001",
+   "groups": [
+    "all",
+    "evidence:statement",
+    "style:exact",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": 32,
+   "lenient": 32,
+   "doc10": false
+  },
+  {
+   "qid": "R002",
+   "groups": [
+    "all",
+    "evidence:statement",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:decoy_years",
+    "hard:standalone_vs_consolidated"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true
+  },
+  {
+   "qid": "R003",
+   "groups": [
+    "all",
+    "evidence:statement",
+    "style:exact",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": 46,
+   "lenient": 46,
+   "doc10": false
+  },
+  {
+   "qid": "R004",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:decoy_years",
+    "hard:standalone_vs_consolidated"
+   ],
+   "in_run": true,
+   "strict": 26,
+   "lenient": 26,
+   "doc10": false
+  },
+  {
+   "qid": "R005",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:text_table",
+    "hard:consolidated"
+   ],
+   "in_run": true,
+   "strict": 15,
+   "lenient": 15,
+   "doc10": true
+  },
+  {
+   "qid": "R006",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:exact",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:decoy_years",
+    "hard:indian_grouping"
+   ],
+   "in_run": true,
+   "strict": 25,
+   "lenient": 11,
+   "doc10": true
+  },
+  {
+   "qid": "R007",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:vague",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:old_year"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true
+  },
+  {
+   "qid": "R008",
+   "groups": [
+    "all",
+    "evidence:statement",
+    "style:exact",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:decoy_years",
+    "hard:standalone_vs_consolidated"
+   ],
+   "in_run": true,
+   "strict": 2,
+   "lenient": 2,
+   "doc10": true
+  },
+  {
+   "qid": "R009",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:boilerplate_repeats_across_years"
+   ],
+   "in_run": true,
+   "strict": 11,
+   "lenient": 11,
+   "doc10": true
+  },
+  {
+   "qid": "R010",
+   "groups": [
+    "all",
+    "evidence:statement",
+    "style:exact",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:decoy_years",
+    "hard:standalone_vs_consolidated"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true
+  },
+  {
+   "qid": "R011",
+   "groups": [
+    "all",
+    "evidence:statement",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:decoy_years",
+    "hard:standalone_vs_consolidated"
+   ],
+   "in_run": true,
+   "strict": 2,
+   "lenient": 2,
+   "doc10": true
+  },
+  {
+   "qid": "R012",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:standalone_vs_consolidated"
+   ],
+   "in_run": true,
+   "strict": 3,
+   "lenient": 3,
+   "doc10": true
+  },
+  {
+   "qid": "R013",
+   "groups": [
+    "all",
+    "evidence:statement",
+    "style:exact",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:decoy_years",
+    "hard:standalone_vs_consolidated"
+   ],
+   "in_run": true,
+   "strict": 45,
+   "lenient": 28,
+   "doc10": true
+  },
+  {
+   "qid": "R014",
+   "groups": [
+    "all",
+    "evidence:statement",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:investor_presentations",
+    "hard:cross_doc",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": 18,
+   "lenient": 18,
+   "doc10": false
+  },
+  {
+   "qid": "R015",
+   "groups": [
+    "all",
+    "evidence:statement",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:investor_presentations",
+    "hard:period_format",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": false
+  },
+  {
+   "qid": "R016",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:exact",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:multi_currency_columns",
+    "hard:consolidated"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true
+  },
+  {
+   "qid": "R017",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:vague",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:segment_table",
+    "hard:analytical"
+   ],
+   "in_run": true,
+   "strict": 14,
+   "lenient": 14,
+   "doc10": true
+  },
+  {
+   "qid": "R018",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:footnote",
+    "hard:consolidated"
+   ],
+   "in_run": true,
+   "strict": 2,
+   "lenient": 2,
+   "doc10": true
+  },
+  {
+   "qid": "R019",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:exact",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:unit_million_not_crore",
+    "hard:old_year"
+   ],
+   "in_run": true,
+   "strict": 2,
+   "lenient": 2,
+   "doc10": true
+  },
+  {
+   "qid": "R020",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:decoy_years",
+    "hard:standalone_vs_consolidated"
+   ],
+   "in_run": true,
+   "strict": 5,
+   "lenient": 5,
+   "doc10": true
+  },
+  {
+   "qid": "R021",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:investor_presentations",
+    "hard:period_format",
+    "hard:decoy_quarters",
+    "hard:slide_table"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": false
+  },
+  {
+   "qid": "R022",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:investor_presentations",
+    "hard:decoy_periods",
+    "hard:slide_table"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": false
+  },
+  {
+   "qid": "R023",
+   "groups": [
+    "all",
+    "evidence:kpi",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:investor_presentations",
+    "hard:period_format",
+    "hard:decoy_quarters"
+   ],
+   "in_run": true,
+   "strict": 2,
+   "lenient": 2,
+   "doc10": true
+  },
+  {
+   "qid": "R024",
+   "groups": [
+    "all",
+    "evidence:kpi",
+    "style:exact",
+    "company:APARINDS",
+    "doctype:investor_presentations",
+    "hard:decoy_quarters",
+    "hard:table_plus_bullets"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true
+  },
+  {
+   "qid": "R025",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:investor_presentations",
+    "hard:decoy_periods",
+    "hard:slide_table"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true
+  },
+  {
+   "qid": "R026",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:investor_presentations",
+    "hard:indian_grouping",
+    "hard:industry_data"
+   ],
+   "in_run": true,
+   "strict": 12,
+   "lenient": 1,
+   "doc10": false
+  },
+  {
+   "qid": "R027",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:investor_presentations",
+    "hard:decoy_quarters",
+    "hard:slide_table"
+   ],
+   "in_run": true,
+   "strict": 21,
+   "lenient": 21,
+   "doc10": false
+  },
+  {
+   "qid": "R028",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:investor_presentations",
+    "hard:mislabelled_row",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": 38,
+   "lenient": 38,
+   "doc10": true
+  },
+  {
+   "qid": "R029",
+   "groups": [
+    "all",
+    "evidence:chart",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:investor_presentations",
+    "hard:chart_labels",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true
+  },
+  {
+   "qid": "R030",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:investor_presentations",
+    "hard:cross_doc",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": 38,
+   "lenient": 38,
+   "doc10": false
+  },
+  {
+   "qid": "R031",
+   "groups": [
+    "all",
+    "evidence:kpi",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:investor_presentations",
+    "hard:kpi_tiles",
+    "hard:period_format",
+    "hard:near_duplicate_values"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true
+  },
+  {
+   "qid": "R032",
+   "groups": [
+    "all",
+    "evidence:chart",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:investor_presentations",
+    "hard:chart_labels",
+    "hard:line_chart"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true
+  },
+  {
+   "qid": "R033",
+   "groups": [
+    "all",
+    "evidence:chart",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:investor_presentations",
+    "hard:chart_labels",
+    "hard:estimate"
+   ],
+   "in_run": true,
+   "strict": 19,
+   "lenient": 19,
+   "doc10": true
+  },
+  {
+   "qid": "R034",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:exact",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:standalone_vs_consolidated_columns",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": 41,
+   "lenient": 41,
+   "doc10": false
+  },
+  {
+   "qid": "R035",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:decoy_years",
+    "hard:consolidated"
+   ],
+   "in_run": true,
+   "strict": 16,
+   "lenient": 16,
+   "doc10": true
+  },
+  {
+   "qid": "R036",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:continued_table",
+    "hard:indian_grouping"
+   ],
+   "in_run": true,
+   "strict": 3,
+   "lenient": 1,
+   "doc10": true
+  },
+  {
+   "qid": "R037",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:exact",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:unit_million_not_crore",
+    "hard:old_year"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": false
+  },
+  {
+   "qid": "R038",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:footnote",
+    "hard:same_fact_other_units"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": false
+  },
+  {
+   "qid": "R039",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true
+  },
+  {
+   "qid": "R040",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:old_year",
+    "hard:recurring_annexure"
+   ],
+   "in_run": true,
+   "strict": 4,
+   "lenient": 1,
+   "doc10": true
+  },
+  {
+   "qid": "R041",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:indian_grouping",
+    "hard:continued_table"
+   ],
+   "in_run": true,
+   "strict": 10,
+   "lenient": 10,
+   "doc10": true
+  },
+  {
+   "qid": "R042",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:exact",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:boilerplate_repeats_across_years"
+   ],
+   "in_run": true,
+   "strict": 39,
+   "lenient": 39,
+   "doc10": false
+  },
+  {
+   "qid": "R043",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:decoy_years",
+    "hard:standalone_vs_consolidated"
+   ],
+   "in_run": true,
+   "strict": 2,
+   "lenient": 2,
+   "doc10": true
+  },
+  {
+   "qid": "R044",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:decoy_years",
+    "hard:auditor_report"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true
+  },
+  {
+   "qid": "R045",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:vague",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:graphic_layout",
+    "hard:small_text"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true
+  },
+  {
+   "qid": "R046",
+   "groups": [
+    "all",
+    "evidence:chart",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:chart_labels",
+    "hard:brsr"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true
+  },
+  {
+   "qid": "R047",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:concall_transcripts",
+    "hard:spoken_numbers"
+   ],
+   "in_run": true,
+   "strict": 8,
+   "lenient": 8,
+   "doc10": true
+  },
+  {
+   "qid": "R048",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:concall_transcripts",
+    "hard:spoken_numbers"
+   ],
+   "in_run": true,
+   "strict": 43,
+   "lenient": 43,
+   "doc10": false
+  },
+  {
+   "qid": "R049",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:concall_transcripts",
+    "hard:guidance_changes_over_time"
+   ],
+   "in_run": true,
+   "strict": 15,
+   "lenient": 15,
+   "doc10": false
+  },
+  {
+   "qid": "R050",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:concall_transcripts",
+    "hard:spoken_numbers",
+    "hard:abbreviation"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true
+  },
+  {
+   "qid": "R051",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:vague",
+    "company:APARINDS",
+    "doctype:concall_transcripts",
+    "hard:no_numbers"
+   ],
+   "in_run": true,
+   "strict": 3,
+   "lenient": 3,
+   "doc10": true
+  },
+  {
+   "qid": "R052",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:vague",
+    "company:APARINDS",
+    "doctype:concall_transcripts",
+    "hard:no_numbers"
+   ],
+   "in_run": true,
+   "strict": 9,
+   "lenient": 9,
+   "doc10": true
+  },
+  {
+   "qid": "R053",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:concall_transcripts",
+    "hard:guidance_changes_over_time"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": false
+  },
+  {
+   "qid": "R054",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:concall_transcripts",
+    "hard:no_numbers"
+   ],
+   "in_run": true,
+   "strict": 3,
+   "lenient": 3,
+   "doc10": true
+  },
+  {
+   "qid": "R055",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:concall_transcripts",
+    "hard:period_format",
+    "hard:spoken_numbers"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true
+  },
+  {
+   "qid": "R056",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:concall_transcripts",
+    "hard:spoken_numbers"
+   ],
+   "in_run": true,
+   "strict": 2,
+   "lenient": 2,
+   "doc10": true
+  },
+  {
+   "qid": "R057",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:vague",
+    "company:APARINDS",
+    "doctype:concall_transcripts",
+    "hard:no_explicit_keywords"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true
+  },
+  {
+   "qid": "R058",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:vague",
+    "company:APARINDS",
+    "doctype:concall_transcripts",
+    "hard:no_numbers"
+   ],
+   "in_run": true,
+   "strict": 20,
+   "lenient": 20,
+   "doc10": true
+  },
+  {
+   "qid": "R059",
+   "groups": [
+    "all",
+    "evidence:scan",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:investor_presentations",
+    "hard:image_only_page",
+    "hard:chart",
+    "hard:third_party_data"
+   ],
+   "in_run": true,
+   "strict": 8,
+   "lenient": 8,
+   "doc10": true
+  },
+  {
+   "qid": "R060",
+   "groups": [
+    "all",
+    "evidence:scan",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:investor_presentations",
+    "hard:image_only_page",
+    "hard:chart",
+    "hard:third_party_data"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true
+  },
+  {
+   "qid": "R061",
+   "groups": [
+    "all",
+    "evidence:scan",
+    "style:exact",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:image_only_page",
+    "hard:many_duplicates"
+   ],
+   "in_run": true,
+   "strict": 4,
+   "lenient": 4,
+   "doc10": true
+  },
+  {
+   "qid": "R062",
+   "groups": [
+    "all",
+    "evidence:multi",
+    "style:analytical",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:cross_doc",
+    "hard:multi_hop"
+   ],
+   "in_run": true,
+   "strict": 41,
+   "lenient": 41,
+   "doc10": true
+  },
+  {
+   "qid": "R063",
+   "groups": [
+    "all",
+    "evidence:multi",
+    "style:analytical",
+    "company:APARINDS",
+    "doctype:concall_transcripts",
+    "hard:cross_doc",
+    "hard:multi_hop",
+    "hard:guidance_changes_over_time"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": false
+  },
+  {
+   "qid": "R064",
+   "groups": [
+    "all",
+    "evidence:multi",
+    "style:analytical",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:cross_doc",
+    "hard:multi_hop",
+    "hard:standalone_vs_consolidated"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": false
+  },
+  {
+   "qid": "R065",
+   "groups": [
+    "all",
+    "evidence:statement",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:cross_company_decoy",
+    "hard:decoy_years",
+    "hard:standalone_vs_consolidated"
+   ],
+   "in_run": true,
+   "strict": 2,
+   "lenient": 2,
+   "doc10": true
+  },
+  {
+   "qid": "R066",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:auditor_report",
+    "hard:standalone_vs_consolidated"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true
+  },
+  {
+   "qid": "R067",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:boilerplate_repeats_across_years"
+   ],
+   "in_run": true,
+   "strict": 8,
+   "lenient": 8,
+   "doc10": true
+  },
+  {
+   "qid": "R068",
+   "groups": [
+    "all",
+    "evidence:statement",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:comparative_column",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true
+  },
+  {
+   "qid": "R069",
+   "groups": [
+    "all",
+    "evidence:statement",
+    "style:exact",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:cross_company_decoy",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": 30,
+   "lenient": 30,
+   "doc10": true
+  },
+  {
+   "qid": "R070",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:boilerplate_repeats_across_years",
+    "hard:old_year"
+   ],
+   "in_run": true,
+   "strict": 12,
+   "lenient": 12,
+   "doc10": false
+  },
+  {
+   "qid": "R071",
+   "groups": [
+    "all",
+    "evidence:statement",
+    "style:exact",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:standalone_vs_consolidated",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": 11,
+   "doc10": true
+  },
+  {
+   "qid": "R072",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:decoy_years",
+    "hard:near_duplicate_values"
+   ],
+   "in_run": true,
+   "strict": 31,
+   "lenient": 31,
+   "doc10": true
+  },
+  {
+   "qid": "R073",
+   "groups": [
+    "all",
+    "evidence:statement",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:standalone_vs_consolidated",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true
+  },
+  {
+   "qid": "R074",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:old_year",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": 4,
+   "lenient": 4,
+   "doc10": true
+  },
+  {
+   "qid": "R075",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:multi_currency_columns",
+    "hard:wide_table"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true
+  },
+  {
+   "qid": "R076",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:vague",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:footnote",
+    "hard:no_period_in_question"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true
+  },
+  {
+   "qid": "R077",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:exact",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:decoy_years",
+    "hard:standalone_vs_consolidated"
+   ],
+   "in_run": true,
+   "strict": 7,
+   "lenient": 7,
+   "doc10": true
+  },
+  {
+   "qid": "R078",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:decoy_years",
+    "hard:near_duplicate_values"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true
+  },
+  {
+   "qid": "R079",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:vague",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:boilerplate_repeats_across_years",
+    "hard:standalone_vs_consolidated"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true
+  },
+  {
+   "qid": "R080",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:vague",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:footnote",
+    "hard:no_period_in_question"
+   ],
+   "in_run": true,
+   "strict": 3,
+   "lenient": 3,
+   "doc10": true
+  },
+  {
+   "qid": "R081",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:exact",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:decoy_years",
+    "hard:standalone_vs_consolidated"
+   ],
+   "in_run": true,
+   "strict": 2,
+   "lenient": 2,
+   "doc10": true
+  },
+  {
+   "qid": "R082",
+   "groups": [
+    "all",
+    "evidence:chart",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:pie_chart_with_table",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": 2,
+   "lenient": 2,
+   "doc10": true
+  },
+  {
+   "qid": "R083",
+   "groups": [
+    "all",
+    "evidence:chart",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:chart_labels",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": 2,
+   "doc10": true
+  },
+  {
+   "qid": "R084",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:footnote",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": 4,
+   "lenient": 4,
+   "doc10": true
+  },
+  {
+   "qid": "R085",
+   "groups": [
+    "all",
+    "evidence:statement",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:decoy_years",
+    "hard:standalone_vs_consolidated"
+   ],
+   "in_run": true,
+   "strict": 3,
+   "lenient": 3,
+   "doc10": true
+  },
+  {
+   "qid": "R086",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:exact",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:decoy_years",
+    "hard:standalone_vs_consolidated"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true
+  },
+  {
+   "qid": "R087",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:decoy_years",
+    "hard:related_party"
+   ],
+   "in_run": true,
+   "strict": 9,
+   "lenient": 9,
+   "doc10": true
+  },
+  {
+   "qid": "R088",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:related_party"
+   ],
+   "in_run": true,
+   "strict": 46,
+   "lenient": 19,
+   "doc10": true
+  },
+  {
+   "qid": "R089",
+   "groups": [
+    "all",
+    "evidence:kpi",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:investor_presentations",
+    "hard:period_format",
+    "hard:decoy_quarters",
+    "hard:lakh_units"
+   ],
+   "in_run": true,
+   "strict": 13,
+   "lenient": 13,
+   "doc10": false
+  },
+  {
+   "qid": "R090",
+   "groups": [
+    "all",
+    "evidence:kpi",
+    "style:exact",
+    "company:HEROMOTOCO",
+    "doctype:investor_presentations",
+    "hard:decoy_years",
+    "hard:guidance"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": false
+  },
+  {
+   "qid": "R091",
+   "groups": [
+    "all",
+    "evidence:chart",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:investor_presentations",
+    "hard:chart_labels",
+    "hard:graphic_layout"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true
+  },
+  {
+   "qid": "R092",
+   "groups": [
+    "all",
+    "evidence:chart",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:investor_presentations",
+    "hard:chart_labels",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": 2,
+   "lenient": 2,
+   "doc10": true
+  },
+  {
+   "qid": "R093",
+   "groups": [
+    "all",
+    "evidence:chart",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:investor_presentations",
+    "hard:chart_labels",
+    "hard:third_party_data",
+    "hard:dense_slide"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true
+  },
+  {
+   "qid": "R094",
+   "groups": [
+    "all",
+    "evidence:kpi",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:investor_presentations",
+    "hard:kpi_tiles",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": 7,
+   "lenient": 7,
+   "doc10": true
+  },
+  {
+   "qid": "R095",
+   "groups": [
+    "all",
+    "evidence:chart",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:investor_presentations",
+    "hard:chart_labels",
+    "hard:third_party_data",
+    "hard:near_duplicate_slides"
+   ],
+   "in_run": true,
+   "strict": 8,
+   "lenient": 8,
+   "doc10": true
+  },
+  {
+   "qid": "R096",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:boilerplate_repeats_across_years"
+   ],
+   "in_run": true,
+   "strict": 14,
+   "lenient": 14,
+   "doc10": true
+  },
+  {
+   "qid": "R097",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:boilerplate_repeats_across_years"
+   ],
+   "in_run": true,
+   "strict": 6,
+   "lenient": 6,
+   "doc10": true
+  },
+  {
+   "qid": "R098",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:exact",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:many_duplicates"
+   ],
+   "in_run": true,
+   "strict": 33,
+   "lenient": 33,
+   "doc10": true
+  },
+  {
+   "qid": "R099",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:decoy_years",
+    "hard:numbers_in_prose"
+   ],
+   "in_run": true,
+   "strict": 15,
+   "lenient": 15,
+   "doc10": false
+  },
+  {
+   "qid": "R100",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:graphic_layout",
+    "hard:rotated_spread"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true
+  },
+  {
+   "qid": "R101",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:lakh_units",
+    "hard:graphic_layout"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true
+  },
+  {
+   "qid": "R102",
+   "groups": [
+    "all",
+    "evidence:chart",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:indian_grouping",
+    "hard:chart_labels",
+    "hard:brsr"
+   ],
+   "in_run": true,
+   "strict": 2,
+   "lenient": 2,
+   "doc10": true
+  },
+  {
+   "qid": "R103",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:concall_transcripts",
+    "hard:spoken_numbers",
+    "hard:decoy_quarters"
+   ],
+   "in_run": true,
+   "strict": 13,
+   "lenient": 13,
+   "doc10": false
+  },
+  {
+   "qid": "R104",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:concall_transcripts",
+    "hard:no_numbers",
+    "hard:new_names"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true
+  },
+  {
+   "qid": "R105",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:vague",
+    "company:HEROMOTOCO",
+    "doctype:concall_transcripts",
+    "hard:spoken_numbers"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true
+  },
+  {
+   "qid": "R106",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:concall_transcripts",
+    "hard:spoken_numbers"
+   ],
+   "in_run": true,
+   "strict": 14,
+   "lenient": 14,
+   "doc10": false
+  },
+  {
+   "qid": "R107",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:concall_transcripts",
+    "hard:guidance",
+    "hard:spoken_numbers"
+   ],
+   "in_run": true,
+   "strict": 7,
+   "lenient": 7,
+   "doc10": true
+  },
+  {
+   "qid": "R108",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:concall_transcripts",
+    "hard:spoken_numbers",
+    "hard:decoy_quarters"
+   ],
+   "in_run": true,
+   "strict": 3,
+   "lenient": 3,
+   "doc10": true
+  },
+  {
+   "qid": "R109",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:concall_transcripts",
+    "hard:festive_numbers_recur_every_year"
+   ],
+   "in_run": true,
+   "strict": 15,
+   "lenient": 15,
+   "doc10": true
+  },
+  {
+   "qid": "R110",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:concall_transcripts",
+    "hard:festive_numbers_recur_every_year"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true
+  },
+  {
+   "qid": "R111",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:concall_transcripts",
+    "hard:festive_numbers_recur_every_year"
+   ],
+   "in_run": true,
+   "strict": 5,
+   "lenient": 5,
+   "doc10": true
+  },
+  {
+   "qid": "R112",
+   "groups": [
+    "all",
+    "evidence:scan",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:image_only_page",
+    "hard:scanned_form",
+    "hard:signatures"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true
+  },
+  {
+   "qid": "R113",
+   "groups": [
+    "all",
+    "evidence:scan",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:image_only_page",
+    "hard:scanned_letter",
+    "hard:ordinal"
+   ],
+   "in_run": true,
+   "strict": 4,
+   "lenient": 4,
+   "doc10": true
+  },
+  {
+   "qid": "R114",
+   "groups": [
+    "all",
+    "evidence:scan",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:investor_presentations",
+    "hard:image_only_page",
+    "hard:hindi_text",
+    "hard:advert"
+   ],
+   "in_run": true,
+   "strict": 2,
+   "lenient": 2,
+   "doc10": true
+  },
+  {
+   "qid": "R115",
+   "groups": [
+    "all",
+    "evidence:multi",
+    "style:analytical",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:cross_doc",
+    "hard:multi_hop",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true
+  },
+  {
+   "qid": "R116",
+   "groups": [
+    "all",
+    "evidence:multi",
+    "style:analytical",
+    "company:HEROMOTOCO",
+    "doctype:investor_presentations",
+    "hard:cross_doc",
+    "hard:multi_hop"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": false
+  },
+  {
+   "qid": "R117",
+   "groups": [
+    "all",
+    "evidence:multi",
+    "style:analytical",
+    "company:HEROMOTOCO",
+    "doctype:concall_transcripts",
+    "hard:cross_doc",
+    "hard:multi_hop",
+    "hard:festive_numbers_recur_every_year"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true
+  },
+  {
+   "qid": "R118",
+   "groups": [
+    "all",
+    "evidence:multi",
+    "style:analytical",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:multi_hop",
+    "hard:standalone_vs_consolidated"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true
+  },
+  {
+   "qid": "R119",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:annual_reports",
+    "hard:indian_grouping",
+    "hard:decoy_years",
+    "hard:lakhs_unit"
+   ],
+   "in_run": true,
+   "strict": 48,
+   "lenient": 48,
+   "doc10": true
+  },
+  {
+   "qid": "R120",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:annual_reports",
+    "hard:decoy_years",
+    "hard:full_rupees_unit"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": 12,
+   "doc10": true
+  },
+  {
+   "qid": "R121",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:vague",
+    "company:E2E",
+    "doctype:annual_reports",
+    "hard:cross_doc",
+    "hard:numbers_in_prose"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": false
+  },
+  {
+   "qid": "R122",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:annual_reports",
+    "hard:auditor_report",
+    "hard:boilerplate_repeats_across_years"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": false
+  },
+  {
+   "qid": "R123",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:annual_reports",
+    "hard:lakhs_unit",
+    "hard:decoy_years",
+    "hard:small_print"
+   ],
+   "in_run": true,
+   "strict": 14,
+   "lenient": 14,
+   "doc10": true
+  },
+  {
+   "qid": "R124",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:annual_reports",
+    "hard:lakhs_unit",
+    "hard:small_print"
+   ],
+   "in_run": true,
+   "strict": 2,
+   "lenient": 2,
+   "doc10": true
+  },
+  {
+   "qid": "R125",
+   "groups": [
+    "all",
+    "evidence:statement",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:investor_presentations",
+    "hard:period_format",
+    "hard:decoy_periods",
+    "hard:slide_table"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": false
+  },
+  {
+   "qid": "R126",
+   "groups": [
+    "all",
+    "evidence:statement",
+    "style:exact",
+    "company:E2E",
+    "doctype:periodic_results",
+    "hard:bad_text_layer",
+    "hard:indian_grouping",
+    "hard:lakhs_unit"
+   ],
+   "in_run": true,
+   "strict": 14,
+   "lenient": 6,
+   "doc10": false
+  },
+  {
+   "qid": "R127",
+   "groups": [
+    "all",
+    "evidence:statement",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:investor_presentations",
+    "hard:lakhs_unit",
+    "hard:slide_table",
+    "hard:decoy_periods"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": false
+  },
+  {
+   "qid": "R128",
+   "groups": [
+    "all",
+    "evidence:statement",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:annual_reports",
+    "hard:full_rupees_unit",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": 6,
+   "lenient": 6,
+   "doc10": true
+  },
+  {
+   "qid": "R129",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:annual_reports",
+    "hard:continued_table",
+    "hard:many_similar_rows"
+   ],
+   "in_run": true,
+   "strict": 5,
+   "lenient": 5,
+   "doc10": true
+  },
+  {
+   "qid": "R130",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:annual_reports",
+    "hard:full_rupees_unit",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": 4,
+   "lenient": 4,
+   "doc10": true
+  },
+  {
+   "qid": "R131",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:vague",
+    "company:E2E",
+    "doctype:annual_reports",
+    "hard:lakhs_unit",
+    "hard:reconciliation_table"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true
+  },
+  {
+   "qid": "R132",
+   "groups": [
+    "all",
+    "evidence:chart",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:investor_presentations",
+    "hard:chart_labels",
+    "hard:indian_grouping",
+    "hard:decoy_quarters"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true
+  },
+  {
+   "qid": "R133",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:investor_presentations",
+    "hard:unit_million",
+    "hard:slide_table"
+   ],
+   "in_run": true,
+   "strict": 2,
+   "lenient": 2,
+   "doc10": true
+  },
+  {
+   "qid": "R134",
+   "groups": [
+    "all",
+    "evidence:chart",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:investor_presentations",
+    "hard:chart_labels",
+    "hard:footnote",
+    "hard:unit_million"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true
+  },
+  {
+   "qid": "R135",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:exact",
+    "company:E2E",
+    "doctype:investor_presentations",
+    "hard:decoy_quarters",
+    "hard:unit_million"
+   ],
+   "in_run": true,
+   "strict": 5,
+   "lenient": 5,
+   "doc10": true
+  },
+  {
+   "qid": "R136",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:vague",
+    "company:E2E",
+    "doctype:investor_presentations",
+    "hard:slide_table",
+    "hard:callout_box"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": false
+  },
+  {
+   "qid": "R137",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:investor_presentations",
+    "hard:near_duplicate_slides",
+    "hard:footnote"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true
+  },
+  {
+   "qid": "R138",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:investor_presentations",
+    "hard:footnote",
+    "hard:small_print"
+   ],
+   "in_run": true,
+   "strict": 28,
+   "lenient": 28,
+   "doc10": false
+  },
+  {
+   "qid": "R139",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:investor_presentations",
+    "hard:slide_table",
+    "hard:competitor_data"
+   ],
+   "in_run": true,
+   "strict": 7,
+   "lenient": 6,
+   "doc10": true
+  },
+  {
+   "qid": "R140",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:investor_presentations",
+    "hard:slide_table",
+    "hard:indian_grouping",
+    "hard:competitor_data"
+   ],
+   "in_run": true,
+   "strict": 4,
+   "lenient": 1,
+   "doc10": true
+  },
+  {
+   "qid": "R141",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:annual_reports",
+    "hard:indian_grouping",
+    "hard:related_party",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true
+  },
+  {
+   "qid": "R142",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:annual_reports",
+    "hard:full_rupees_unit",
+    "hard:comparative_column",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true
+  },
+  {
+   "qid": "R143",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:annual_reports",
+    "hard:full_rupees_unit",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": false
+  },
+  {
+   "qid": "R144",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:annual_reports",
+    "hard:contingent_liability"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": 1,
+   "doc10": true
+  },
+  {
+   "qid": "R145",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:annual_reports",
+    "hard:no_numbers_in_answer_key",
+    "hard:boilerplate"
+   ],
+   "in_run": true,
+   "strict": 24,
+   "lenient": 24,
+   "doc10": false
+  },
+  {
+   "qid": "R146",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:annual_reports",
+    "hard:continued_table",
+    "hard:decoy_years",
+    "hard:no_header_on_page"
+   ],
+   "in_run": true,
+   "strict": 8,
+   "lenient": 8,
+   "doc10": true
+  },
+  {
+   "qid": "R147",
+   "groups": [
+    "all",
+    "evidence:statement",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:annual_reports",
+    "hard:lakhs_unit",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": 30,
+   "lenient": 30,
+   "doc10": false
+  },
+  {
+   "qid": "R148",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:annual_reports",
+    "hard:numbers_in_prose"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true
+  },
+  {
+   "qid": "R149",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:vague",
+    "company:E2E",
+    "doctype:concall_transcripts",
+    "hard:no_numbers"
+   ],
+   "in_run": true,
+   "strict": 2,
+   "lenient": 2,
+   "doc10": true
+  },
+  {
+   "qid": "R150",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:concall_transcripts",
+    "hard:spoken_numbers"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true
+  },
+  {
+   "qid": "R151",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:concall_transcripts",
+    "hard:cross_doc",
+    "hard:numbers_in_prose"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true
+  },
+  {
+   "qid": "R152",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:vague",
+    "company:E2E",
+    "doctype:concall_transcripts",
+    "hard:no_numbers",
+    "hard:management_commentary"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true
+  },
+  {
+   "qid": "R153",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:concall_transcripts",
+    "hard:spoken_numbers",
+    "hard:correction"
+   ],
+   "in_run": true,
+   "strict": 5,
+   "lenient": 5,
+   "doc10": true
+  },
+  {
+   "qid": "R154",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:concall_transcripts",
+    "hard:guidance",
+    "hard:spoken_numbers"
+   ],
+   "in_run": true,
+   "strict": 8,
+   "lenient": 8,
+   "doc10": true
+  },
+  {
+   "qid": "R155",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:concall_transcripts",
+    "hard:spoken_numbers"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true
+  },
+  {
+   "qid": "R156",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:concall_transcripts",
+    "hard:spoken_numbers"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": false
+  },
+  {
+   "qid": "R157",
+   "groups": [
+    "all",
+    "evidence:scan",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:annual_reports",
+    "hard:image_only_page",
+    "hard:numbers_in_prose",
+    "hard:lakhs_unit"
+   ],
+   "in_run": true,
+   "strict": 8,
+   "lenient": 8,
+   "doc10": true
+  },
+  {
+   "qid": "R158",
+   "groups": [
+    "all",
+    "evidence:scan",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:annual_reports",
+    "hard:image_only_page",
+    "hard:graphic_layout"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true
+  },
+  {
+   "qid": "R159",
+   "groups": [
+    "all",
+    "evidence:multi",
+    "style:analytical",
+    "company:E2E",
+    "doctype:investor_presentations",
+    "hard:cross_doc",
+    "hard:multi_hop"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true
+  },
+  {
+   "qid": "R160",
+   "groups": [
+    "all",
+    "evidence:multi",
+    "style:analytical",
+    "company:E2E",
+    "doctype:investor_presentations",
+    "hard:cross_doc",
+    "hard:multi_hop",
+    "hard:unit_conversion"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true
+  },
+  {
+   "qid": "R161",
+   "groups": [
+    "all",
+    "evidence:multi",
+    "style:analytical",
+    "company:E2E",
+    "doctype:concall_transcripts",
+    "hard:cross_doc",
+    "hard:multi_hop",
+    "hard:unit_mismatch"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true
+  },
+  {
+   "qid": "R162",
+   "groups": [
+    "all",
+    "evidence:statement",
+    "style:paraphrase",
+    "company:ESCONET",
+    "doctype:periodic_results",
+    "hard:period_format",
+    "hard:decoy_periods",
+    "hard:scanned_results",
+    "hard:lakhs_unit"
+   ],
+   "in_run": true,
+   "strict": 30,
+   "lenient": 30,
+   "doc10": false
+  },
+  {
+   "qid": "R163",
+   "groups": [
+    "all",
+    "evidence:statement",
+    "style:paraphrase",
+    "company:ESCONET",
+    "doctype:annual_reports",
+    "hard:standalone_vs_consolidated",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": 42,
+   "lenient": 42,
+   "doc10": false
+  },
+  {
+   "qid": "R164",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:ESCONET",
+    "doctype:annual_reports",
+    "hard:related_party",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": 16,
+   "lenient": 2,
+   "doc10": true
+  },
+  {
+   "qid": "R165",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:exact",
+    "company:ESCONET",
+    "doctype:annual_reports",
+    "hard:cross_company_decoy",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": false
+  },
+  {
+   "qid": "R166",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:ESCONET",
+    "doctype:annual_reports",
+    "hard:decoy_years",
+    "hard:standalone_vs_consolidated"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": 4,
+   "doc10": true
+  },
+  {
+   "qid": "R167",
+   "groups": [
+    "all",
+    "evidence:statement",
+    "style:exact",
+    "company:ESCONET",
+    "doctype:annual_reports",
+    "hard:decoy_years",
+    "hard:restated_eps"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": 10,
+   "doc10": true
+  },
+  {
+   "qid": "R168",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:ESCONET",
+    "doctype:annual_reports",
+    "hard:decoy_years",
+    "hard:long_table"
+   ],
+   "in_run": true,
+   "strict": 4,
+   "lenient": 4,
+   "doc10": true
+  },
+  {
+   "qid": "R169",
+   "groups": [
+    "all",
+    "evidence:statement",
+    "style:paraphrase",
+    "company:ESCONET",
+    "doctype:periodic_results",
+    "hard:period_format",
+    "hard:decoy_periods",
+    "hard:scanned_results",
+    "hard:half_yearly"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true
+  },
+  {
+   "qid": "R170",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:ESCONET",
+    "doctype:investor_presentations",
+    "hard:slide_table",
+    "hard:indian_grouping"
+   ],
+   "in_run": true,
+   "strict": 27,
+   "lenient": 7,
+   "doc10": true
+  },
+  {
+   "qid": "R171",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:ESCONET",
+    "doctype:investor_presentations",
+    "hard:period_format",
+    "hard:crore_vs_lakhs",
+    "hard:decoy_periods"
+   ],
+   "in_run": true,
+   "strict": 49,
+   "lenient": 49,
+   "doc10": false
+  },
+  {
+   "qid": "R172",
+   "groups": [
+    "all",
+    "evidence:chart",
+    "style:paraphrase",
+    "company:ESCONET",
+    "doctype:investor_presentations",
+    "hard:chart_labels",
+    "hard:duplicate_documents"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": false
+  },
+  {
+   "qid": "R173",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:paraphrase",
+    "company:ESCONET",
+    "doctype:annual_reports",
+    "hard:no_numbers",
+    "hard:boilerplate_repeats_across_years"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": false
+  },
+  {
+   "qid": "R174",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:paraphrase",
+    "company:ESCONET",
+    "doctype:annual_reports",
+    "hard:badge_image",
+    "hard:graphic_layout"
+   ],
+   "in_run": true,
+   "strict": 18,
+   "lenient": 18,
+   "doc10": true
+  },
+  {
+   "qid": "R175",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:paraphrase",
+    "company:ESCONET",
+    "doctype:concall_transcripts",
+    "hard:no_numbers",
+    "hard:sme_half_yearly"
+   ],
+   "in_run": true,
+   "strict": 43,
+   "lenient": 43,
+   "doc10": true
+  },
+  {
+   "qid": "R176",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:vague",
+    "company:ESCONET",
+    "doctype:concall_transcripts",
+    "hard:no_numbers",
+    "hard:product_name"
+   ],
+   "in_run": true,
+   "strict": 14,
+   "lenient": 14,
+   "doc10": true
+  },
+  {
+   "qid": "R177",
+   "groups": [
+    "all",
+    "evidence:scan",
+    "style:vague",
+    "company:ESCONET",
+    "doctype:investor_presentations",
+    "hard:image_only_page",
+    "hard:logos_only"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": false
+  },
+  {
+   "qid": "R178",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:ESCONET",
+    "doctype:annual_reports",
+    "hard:negative_values",
+    "hard:footnote",
+    "hard:lakhs_unit"
+   ],
+   "in_run": true,
+   "strict": 4,
+   "lenient": 1,
+   "doc10": true
+  },
+  {
+   "qid": "R179",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:paraphrase",
+    "company:ESCONET",
+    "doctype:annual_reports",
+    "hard:indian_grouping",
+    "hard:numbers_in_prose"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": 49,
+   "doc10": true
+  },
+  {
+   "qid": "R180",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:exact",
+    "company:ESCONET",
+    "doctype:annual_reports",
+    "hard:indian_grouping",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": 21,
+   "lenient": 8,
+   "doc10": true
+  },
+  {
+   "qid": "R181",
+   "groups": [
+    "all",
+    "evidence:multi",
+    "style:analytical",
+    "company:ESCONET",
+    "doctype:investor_presentations",
+    "hard:crore_vs_lakhs",
+    "hard:analytical"
+   ],
+   "in_run": true,
+   "strict": 7,
+   "lenient": 7,
+   "doc10": true
+  },
+  {
+   "qid": "R182",
+   "groups": [
+    "all",
+    "evidence:multi",
+    "style:analytical",
+    "company:ESCONET",
+    "doctype:annual_reports",
+    "hard:cross_doc",
+    "hard:multi_hop",
+    "hard:restated_eps"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true
+  },
+  {
+   "qid": "R183",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:paraphrase",
+    "company:C2C",
+    "doctype:annual_reports",
+    "hard:footnote",
+    "hard:small_print",
+    "hard:lakhs_unit"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true
+  },
+  {
+   "qid": "R184",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:C2C",
+    "doctype:annual_reports",
+    "hard:small_print",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": 28,
+   "lenient": 2,
+   "doc10": true
+  },
+  {
+   "qid": "R185",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:C2C",
+    "doctype:annual_reports",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true
+  },
+  {
+   "qid": "R186",
+   "groups": [
+    "all",
+    "evidence:scan",
+    "style:vague",
+    "company:C2C",
+    "doctype:annual_reports",
+    "hard:image_only_page",
+    "hard:product_brochure"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true
+  },
+  {
+   "qid": "R187",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:paraphrase",
+    "company:C2C",
+    "doctype:annual_reports",
+    "hard:boilerplate_notice"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true
+  },
+  {
+   "qid": "R188",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:C2C",
+    "doctype:annual_reports",
+    "hard:wide_table",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": 6,
+   "lenient": 6,
+   "doc10": true
+  },
+  {
+   "qid": "R189",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:C2C",
+    "doctype:annual_reports",
+    "hard:decoy_years",
+    "hard:ageing_table"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true
+  },
+  {
+   "qid": "R190",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:vague",
+    "company:C2C",
+    "doctype:annual_reports",
+    "hard:table_plus_prose",
+    "hard:peer_names"
+   ],
+   "in_run": true,
+   "strict": 14,
+   "lenient": 14,
+   "doc10": false
+  },
+  {
+   "qid": "R191",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:paraphrase",
+    "company:C2C",
+    "doctype:concall_transcripts",
+    "hard:no_numbers_in_question",
+    "hard:governance"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": false
+  },
+  {
+   "qid": "R192",
+   "groups": [
+    "all",
+    "evidence:chart",
+    "style:paraphrase",
+    "company:C2C",
+    "doctype:investor_presentations",
+    "hard:chart_labels",
+    "hard:third_party_data",
+    "hard:typo_in_source"
+   ],
+   "in_run": true,
+   "strict": 3,
+   "lenient": 3,
+   "doc10": true
+  },
+  {
+   "qid": "R193",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:C2C",
+    "doctype:investor_presentations",
+    "hard:slide_table",
+    "hard:unit_missing",
+    "hard:inconsistent_total"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true
+  },
+  {
+   "qid": "R194",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:C2C",
+    "doctype:periodic_results",
+    "hard:indian_grouping",
+    "hard:mixed_number_formats"
+   ],
+   "in_run": true,
+   "strict": 8,
+   "lenient": 8,
+   "doc10": true
+  },
+  {
+   "qid": "R195",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:paraphrase",
+    "company:C2C",
+    "doctype:concall_transcripts",
+    "hard:guidance",
+    "hard:spoken_numbers"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true
+  },
+  {
+   "qid": "R196",
+   "groups": [
+    "all",
+    "evidence:statement",
+    "style:paraphrase",
+    "company:C2C",
+    "doctype:annual_reports",
+    "hard:decoy_years",
+    "hard:wide_table"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true
+  },
+  {
+   "qid": "R197",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:C2C",
+    "doctype:investor_presentations",
+    "hard:slide_table"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true
+  },
+  {
+   "qid": "R198",
+   "groups": [
+    "all",
+    "evidence:multi",
+    "style:analytical",
+    "company:C2C",
+    "doctype:concall_transcripts",
+    "hard:cross_doc",
+    "hard:multi_hop",
+    "hard:crore_vs_lakhs"
+   ],
+   "in_run": true,
+   "strict": 18,
+   "lenient": 18,
+   "doc10": true
+  },
+  {
+   "qid": "R199",
+   "groups": [
+    "all",
+    "evidence:multi",
+    "style:analytical",
+    "company:C2C",
+    "doctype:concall_transcripts",
+    "hard:cross_doc",
+    "hard:multi_hop",
+    "hard:crore_vs_lakhs"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": false
+  },
+  {
+   "qid": "R200",
+   "groups": [
+    "all",
+    "evidence:multi",
+    "style:analytical",
+    "company:C2C",
+    "doctype:annual_reports",
+    "hard:cross_doc",
+    "hard:multi_hop",
+    "hard:working_capital"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": false
+  }
+ ],
+ "compare": null
+}

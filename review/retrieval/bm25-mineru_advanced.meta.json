@@ -1,0 +1,10 @@
+{
+ "retriever": "bm25",
+ "parser": "mineru",
+ "cache": "parsed_advanced",
+ "chunks": "parsed_advanced/_chunks/mineru.jsonl",
+ "n_chunks": 40767,
+ "documents": 228,
+ "filter_company": false,
+ "top": 50
+}

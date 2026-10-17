@@ -85,7 +85,7 @@ only as a "has content" filter (the answers were still read off the images). C2C
 it got several pages per document.
 
 **Columns.** `qid, question, answer, unit, symbol, period, evidence, style, primary_doc, primary_page,
-answer_pages, hard, cand_id, note`.
+answer_pages, match, hard, cand_id, note`.
 - `answer` — what the page says, with the decoy values next to it where useful (prior year, other quarter).
 - `evidence` — `statement` (primary statements and their notes), `table` (other tables, incl. slide tables),
   `chart`, `kpi` (slide KPI tiles), `prose`, `concall`, `scan` (page has no text layer), `multi` (needs two
@@ -94,7 +94,7 @@ answer_pages, hard, cand_id, note`.
   `vague` (no metric named), `analytical` (comparison across pages).
 - `answer_pages` — empty when the primary page is the only verified answer page; otherwise the full list
   (`doc#page;doc#page`). For `multi` questions **all** listed pages are needed (match=all); for the others any
-  one of them answers (match=any) — the `note` says which.
+  one of them answers (match=any) — the `match` column says which (14 questions are `all`).
 - `hard` — tags for what makes it hard: `decoy_years`, `decoy_quarters`, `standalone_vs_consolidated`,
   `period_format`, `crore_vs_lakhs`/`lakhs_unit`/`unit_million`/`full_rupees_unit`, `indian_grouping`,
   `footnote`, `image_only_page`, `chart_labels`, `boilerplate_repeats_across_years`,
