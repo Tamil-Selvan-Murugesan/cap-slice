@@ -38,6 +38,7 @@ NUM = re.compile(r"\d[\d,]*(?:\.\d+)?")
 WORD = re.compile(r"[a-z0-9]+(?:\.[0-9]+)?")
 TAGS = re.compile(r"</?[A-Za-z][A-Za-z0-9]*(?:\s[^<>]*)?/?>")   # real HTML tags only, not "<1x"
 COMMENT_LABEL = re.compile(r"<!--\s*(?:header:|image text|image)?\s*|\s*-->")
+MD_IMAGE = re.compile(r"!\[([^\]]*)\]\([^)]*\)")   # ![alt](images/<hash>.jpg): keep alt, drop the path
 MIN_GOLD_CHARS = 50
 
 
@@ -56,7 +57,8 @@ def gold_reliable(text: str) -> bool:
 
 def plain(md: str) -> str:
     """Markdown/HTML -> plain text: keep comment payloads (headers, image text), drop tags."""
-    t = COMMENT_LABEL.sub(" ", md)
+    t = MD_IMAGE.sub(r" \1 ", md)
+    t = COMMENT_LABEL.sub(" ", t)
     t = TAGS.sub(" ", t)
     t = html.unescape(t)
     t = re.sub(r"[#*`|_]+", " ", t)

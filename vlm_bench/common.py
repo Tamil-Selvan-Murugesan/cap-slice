@@ -10,6 +10,7 @@ Every runner writes the same artifacts so models are directly comparable:
 from __future__ import annotations
 
 import json
+import os
 import re
 import statistics
 import subprocess
@@ -31,6 +32,27 @@ def run_dir(results_root: str, model: str, run_name: str) -> Path:
     d = Path(results_root) / model / run_name
     (d / "md").mkdir(parents=True, exist_ok=True)
     return d
+
+
+# --------------------------------------------------------------------------- outputs
+def write_atomic(path: Path, text: str):
+    """Write to a temp file and rename: a crash mid-write never leaves a truncated file that
+    --skip-existing would treat as done."""
+    tmp = path.with_name(path.name + ".tmp")
+    tmp.write_text(text)
+    os.replace(tmp, path)
+
+
+def page_done(md_dir: Path, page_id: str) -> bool:
+    """A page counts as done only if both outputs exist and the JSON parses."""
+    md, js = md_dir / f"{page_id}.md", md_dir / f"{page_id}.json"
+    if not (md.exists() and js.exists()):
+        return False
+    try:
+        json.loads(js.read_text())
+        return True
+    except (ValueError, OSError):
+        return False
 
 
 # --------------------------------------------------------------------------- GPU monitor

@@ -96,11 +96,23 @@ if mk tools; then
   ok tools
 fi
 
+# 6) MinerU 4 (MinerU2.5-Pro on its own vLLM 0.28 + the small layout/table models, client side).
+#    Pinned set from main (requirements-mineru-cu130.txt); needs a CUDA 13 driver, like vllm_server.
+#    Models (~3 GB) go to MINERU_HOME and HF_HOME on /workspace.
+if mk mineru; then
+  source $WS/venvs/mineru/bin/activate
+  uv pip install -r $WS/ocr_bench/requirements-mineru-cu130.txt --extra-index-url https://download.pytorch.org/whl/cu130 --index-strategy unsafe-best-match   # +cu130 torch wheels; works with old uv (no --torch-backend cu130)
+  MINERU_HOME=$WS/mineru_home mineru-kit models download --tier standard --vlm-engine vllm   # "standard" = small models + MinerU2.5-Pro (also what advanced uses)
+  deactivate
+  ok mineru
+fi
+
 # ---- verify each env imports and sees the GPU
 $WS/venvs/paddle_client/bin/python -c "import paddle; print('paddle', paddle.__version__, 'cuda:', paddle.device.is_compiled_with_cuda()); paddle.utils.run_check()" 2>&1 | tail -2
 $WS/venvs/vllm_server/bin/python -c "import vllm, torch; print('vllm', vllm.__version__, '| torch', torch.__version__, '| gpu', torch.cuda.get_device_name(0), torch.cuda.get_device_capability(0))"
 $WS/venvs/paddle_server/bin/python -c "import vllm; print('paddle_server vllm', vllm.__version__)"
 $WS/venvs/glm_client/bin/python -c "import glmocr; print('glmocr ok')"
 $WS/venvs/tools/bin/python -c "import pymupdf, openai, PIL, psutil; print('tools ok')"
+$WS/venvs/mineru/bin/python -c "import importlib.metadata as m, vllm, torch; print('mineru', m.version('mineru'), '| vllm', vllm.__version__, '| cuda', torch.cuda.is_available())"
 du -sh $WS/venvs $UV_CACHE_DIR 2>/dev/null
 echo "done. venvs in $WS/venvs"

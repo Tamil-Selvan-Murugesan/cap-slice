@@ -25,40 +25,19 @@ Pipeline options are set explicitly (not left to installed defaults):
 """
 import argparse
 import json
-import os
 import subprocess
 import sys
 import time
 from pathlib import Path
 
-from common import (GpuMonitor, Sampler, load_manifest, run_dir, scrape_counters,
-                    write_summary)
+from common import (GpuMonitor, Sampler, load_manifest, page_done, run_dir, scrape_counters,
+                    write_atomic, write_summary)
 
 
 def page_markdown(res) -> str:
     md = res.markdown or {}
     text = md.get("markdown_texts", "")
     return "\n\n".join(text) if isinstance(text, list) else (text or "")
-
-
-def write_atomic(path: Path, text: str):
-    """Write to a temp file and rename: a crash mid-write never leaves a truncated file that
-    --skip-existing would treat as done."""
-    tmp = path.with_name(path.name + ".tmp")
-    tmp.write_text(text)
-    os.replace(tmp, path)
-
-
-def page_done(md_dir: Path, page_id: str) -> bool:
-    """A page counts as done only if both outputs exist and the JSON parses."""
-    md, js = md_dir / f"{page_id}.md", md_dir / f"{page_id}.json"
-    if not (md.exists() and js.exists()):
-        return False
-    try:
-        json.loads(js.read_text())
-        return True
-    except (ValueError, OSError):
-        return False
 
 
 def input_path(res) -> str:

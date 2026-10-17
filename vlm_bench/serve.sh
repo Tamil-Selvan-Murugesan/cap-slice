@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Start ONE model server at a time:   ./serve.sh paddle | glm | unlimited
+# Start ONE model server at a time:   ./serve.sh paddle | paddle030 | glm | unlimited | mineru
 # Logs go to /workspace/logs/<model>_server.log. Stop with: pkill -f "vllm|genai_server"
 #
 # Single pod, one server at a time. GPU memory split: Paddle and GLM also run a layout model
@@ -16,8 +16,8 @@ MAX_SEQS=${MAX_SEQS:-256}
 # The image's toolkit is CUDA 12.8, but FlashInfer needs >= 12.9 for the RTX 5090 (sm_120)
 # ("SM 12.x requires CUDA >= 12.9" -> "FlashInfer requires GPUs with sm75 or higher"). Point it at the
 # CUDA 13 nvcc that pip installed into the vllm_server venv (matches its torch cu130).
-use_venv_cuda() {
-  export CUDA_HOME=$WS/venvs/vllm_server/lib/python3.12/site-packages/nvidia/cu13
+use_venv_cuda() {  # $1 = venv holding the pip CUDA 13 toolkit (default vllm_server)
+  export CUDA_HOME=$WS/venvs/${1:-vllm_server}/lib/python3.12/site-packages/nvidia/cu13
   export PATH=$CUDA_HOME/bin:$PATH
   # The only FlashInfer kernel that gets JIT-compiled is the top-k/top-p sampler, and that build fails
   # on this image ("CUDA compiler and CUDA toolkit headers are incompatible"). We decode greedily
@@ -82,7 +82,19 @@ EOF
       > $WS/logs/unlimited_server.log 2>&1 &
     PORT=8000 ;;
 
-  *) echo "usage: $0 paddle|paddle030|glm|unlimited"; exit 1 ;;
+  mineru)
+    # MinerU2.5-Pro (1.2B) through MinerU's own launcher (`mineru-kit vlm-server`): it adds MinerU's
+    # logits processor and resolves the weights from HF_HOME. Its vLLM is 0.28 in the mineru venv.
+    # 0.5 of VRAM: the MinerU client runs its layout/table models on the same GPU.
+    source $WS/venvs/mineru/bin/activate
+    export MINERU_HOME=$WS/mineru_home
+    use_venv_cuda mineru
+    nohup mineru-kit vlm-server --engine vllm --port 30000 \
+      --gpu-memory-utilization ${GPU_UTIL:-0.5} --max-num-seqs ${MAX_SEQS} \
+      > $WS/logs/mineru_server.log 2>&1 &
+    PORT=30000 ;;
+
+  *) echo "usage: $0 paddle|paddle030|glm|unlimited|mineru"; exit 1 ;;
 esac
 
 echo -n "waiting for server on :$PORT "

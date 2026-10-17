@@ -330,6 +330,50 @@ $WS/venvs/tools/bin/python score.py --results /workspace/results_full --bench $W
   --runs paddleocr-vl-1.6=full
 ```
 
+## Full-corpus run 2: MinerU 4 (MinerU2.5-Pro), for comparison with Paddle
+
+Same 369 PDFs / 15,683 pages, run after Paddle (one server on the GPU at a time). Settings match our
+full-vision decision: `--tier advanced` (the 1.2B VLM does layout and reads every block) and
+`--parse-mode ocr` (never take text from the PDF's text layer; MinerU's default `auto` keeps it for
+PDFs it judges digital, which brings back the wrong OCR layers of our scans). MinerU parses whole
+PDFs; `run_mineru.py` splits the output into the same per-page files as Paddle
+(`md/<page_id>.md` + `.json`; whole-document JSON in `docs/<doc_id>.json`), so `score.py` and
+`detect_loops.py` work unchanged.
+
+**M1 [pod] — environment (~5 min; pinned set from main's `docker/requirements-mineru-cu130.txt`)**
+The `mineru` block of `setup_pod.sh`: venv from `requirements-mineru-cu130.txt` via the PyTorch cu130
+index (the image's uv 0.9 has no `--torch-backend cu130`), then
+`mineru-kit models download --tier standard --vlm-engine vllm` (small models + MinerU2.5-Pro, 3.1 GB,
+into `MINERU_HOME=/workspace/mineru_home`; "standard" is the download set advanced also uses).
+
+**M2 [pod] — server, smoke on the 3 smallest PDFs, full run (inside tmux)**
+```bash
+source /workspace/ocr_bench/env.sh
+pkill -f "vllm serve"; sleep 20
+./serve.sh mineru                         # mineru-kit vlm-server on :30000, 0.5 of VRAM
+source $WS/venvs/mineru/bin/activate
+export MINERU_MALLOC_TRIM=1 MALLOC_ARENA_MAX=2   # give freed RAM back after each page window (62 GB pod limit)
+FP=/workspace/data/full_pages
+export MINERU_PROCESSING_WINDOW_SIZE=32          # 32-page windows: lower RAM peak per process
+PYTHONUNBUFFERED=1 python run_mineru.py --manifest $FP/manifest.jsonl --procs 4 --workers 1 \
+  --skip-existing --results /workspace/results_full --run-name full 2>&1 | tee -a $WS/logs/mineru_full.log
+```
+`run_mineru_full.sh` does all of M2 (waits for Paddle, smoke first). `--procs` = parser processes (each
+loads its own MinerU models; PDFs split so each gets ~the same pages); `--workers` = PDFs in
+flight (threads sharing one set of layout models); each PDF sends up to 100 VLM requests at once.
+Re-run the same command to resume: `--skip-existing` skips PDFs whose pages are all written.
+Watch RAM: `cat /sys/fs/cgroup/memory.current` (limit `memory.max`, 62 GB); lower `--procs` if it
+nears the limit.
+
+**M3 [pod] — score both runs on the same pages**
+```bash
+cp $WS/data/bench_set/questions.json $WS/data/full_set/   # the 25 questions' pages are in the full set
+$WS/venvs/tools/bin/python score.py --results /workspace/results_full --bench $WS/data/full_set \
+  --runs paddleocr-vl-1.6=full mineru2.5-pro=full
+$WS/venvs/tools/bin/python detect_loops.py --run /workspace/results_full/mineru2.5-pro/full \
+  --manifest $WS/data/full_pages/manifest.jsonl    # loop counts per model (no re-run needed to compare)
+```
+
 ## 5. Reading the results
 
 Throughput (`comparison.csv`):
@@ -368,9 +412,10 @@ Accuracy (`score_summary.csv`):
 |---|---|
 | `setup_pod.sh` | one-time setup: 5 venvs, caches on `/workspace`, GPU/import checks |
 | `env.sh` | `source` in every new pod shell: cache paths, `$P`, `$RESULTS`, cd |
-| `serve.sh` | start one model server (`paddle` / `glm` / `unlimited`) |
+| `serve.sh` | start one model server (`paddle` / `paddle030` / `glm` / `unlimited` / `mineru`) |
 | `prep_pages.py` | render the benchmark manifest (or whole PDFs) to PNG at fixed DPI |
 | `run_paddle.py`, `run_glm.py`, `run_unlimited.py` | one benchmark run each: markdown + timings |
+| `run_mineru.py`, `requirements-mineru-cu130.txt` | MinerU 4 (MinerU2.5-Pro) over whole PDFs, split into per-page outputs; its pinned environment |
 | `sweep.sh` | runs one model at several concurrency levels (`LEVELS=...`, `MULTI=0`) |
 | `summarize.py` | throughput table + cost projection |
 | `score.py` | accuracy: control-page gold, questions, cross-model agreement |

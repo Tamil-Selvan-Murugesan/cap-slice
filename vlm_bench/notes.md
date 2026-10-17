@@ -7,7 +7,7 @@ Exact numbers and observations from each run, in the order they happened. Times 
   comparison CSVs (all three models), `logs/` (server, sweep, CPU-throttle logs), `early_smoke_runs/`.
 - `data/parsing_eval/results/repr/` — 600-page representative-sample Paddle runs (vLLM 0.10.2 n1–n4,
   vLLM 0.30 v030_n1–n3), markdown + per-page JSON.
-- Full-corpus run (in progress): `data/parsing_eval/results/full/` (README "Full-corpus run" F4).
+- Full-corpus runs (Paddle + MinerU, 15,683 pages each): `data/parsing_eval/results/full/` (sections 6–7); pod logs in `data/parsing_eval/results/pod_logs/`. Backed up to R2 `sirisha/data/parsing_eval/`.
 
 ## Machine
 
@@ -398,3 +398,61 @@ On reliable control pages, 1,194 of 22,837 numbers Paddle output (5.2%) are not 
 
 **Still to do:** hand-check the 15 pages in `page_checks.json` across the three models (row attribution, chart
 values) and the top of `disagreements.csv`; optionally measure Paddle with 2–3 parallel clients.
+
+## 6. Full-corpus run: PaddleOCR-VL-1.6 (2026-10-04)
+
+All 369 PDFs / 15,683 pages, vLLM 0.30 (`serve.sh paddle030`), concurrency 64.
+- **First attempt, 2 clients: one client OOM-killed after 14 min** (pod cgroup limit 62 GB; `memory.events`
+  oom_kill 1). Each Paddle client holds 16–22 GB RSS and grows ~0.25 GB/min; two clients + server reached the
+  limit. Client 0 finished its half (7,842 pages); client 1 had written 550.
+- With both clients the pair managed only ~1.3 pages/s (memory pressure); **client 0 alone did 2.89 pages/s**.
+- **Resumed with 1 client** (`--skip-existing`, hardened `run_paddle.py`: atomic writes, JSON-validated resume):
+  remaining 7,291 pages, memory peaked at ~41 GB real (anon 32 GB), finished 14:21. 15,683/15,683 pages.
+- **Lesson: on this 62 GB pod use 1 Paddle client**; it is as fast as 2.
+
+## 7. Full-corpus run: MinerU 4 (MinerU2.5-Pro), for comparison (2026-10-04)
+
+`run_mineru.py`, tier **advanced**, **parse_mode=ocr** (default `auto` keeps text-layer text on PDFs it judges
+digital — would bring back wrong OCR layers), **4 processes × 1 PDF**, `MINERU_PROCESSING_WINDOW_SIZE=32`,
+`MINERU_MALLOC_TRIM=1 MALLOC_ARENA_MAX=2`. Env pinned from main (`requirements-mineru-cu130.txt`, vLLM 0.28).
+- 15,683/15,683 pages, 0 failed PDFs, no OOM (anon RAM ~26–30 GB). **2.73 pages/s** (96 min), GPU 86% busy,
+  21.5 VLM requests and 1,323 generated tokens per page (Paddle: ~20 and ~1,040).
+
+Accuracy, both full runs (`score.py --runs paddleocr-vl-1.6=full mineru2.5-pro=full`, 12,498 control pages):
+
+| | Paddle | MinerU |
+|---|---|---|
+| questions (25, must_contain) | **25/25** | 23/25 (missed Q15 ROE chart, Q23 income/PAT-margin chart) |
+| num_recall / precision / word_f1 (markdown) | 0.828 / 0.955 / 0.940 | 0.755 / 0.974 / 0.929 |
+| empty pages | 16 | 42 |
+
+The markdown recall gap is **not** misreading: MinerU's markdown drops `header`, `footer`, `page_number` blocks
+(its JSON keeps them; Paddle's markdown keeps headers). Counting **all blocks** on both sides (sample of 1,500
+text + 800 table-dense control pages):
+
+| all blocks | Paddle recall / precision | MinerU recall / precision |
+|---|---|---|
+| text pages | 0.966 / 0.949 | **0.975 / 0.969** |
+| table-dense pages | 0.978 / 0.981 | **0.984 / 0.988** |
+
+Non-control pages (numbers output, all blocks): scans with old OCR 75,667 vs 75,767; scans without text
+6,011 vs 6,139 — equal. **Charts: MinerU outputs 32% fewer numbers** (19,575 vs 28,796 on 1,219 chart pages).
+- MinerU does read charts (`image_analysis` is on by default and used by the advanced tier only): 2,431 chart
+  blocks → tables (bar 1,485, donut 192, line 126, pie 124, …). But **6,807 image blocks have no sub-type and
+  empty content** — charts its layout calls a plain image are never read (e.g. Adisoft ROE chart, 534_p031).
+  No setting turns this on; a fix would be a second pass on empty image crops.
+- Many chart tables are **estimates off the axes** (`~61300`, `~2,380`) or meaningless (`| Blue | ~35% |`,
+  marker/colour legends). Dangerous as facts for the analysis agent unless filtered (drop `~` values).
+
+**Verdict:** MinerU is slightly better on born-digital text and tables and equal on scans; Paddle is clearly
+better on charts (labelled values, 25/25 questions). Keep **PaddleOCR-VL-1.6** as the parser. If chunking needs
+both, MinerU's per-page JSON (block types, boxes, HTML tables) is in `results/full/mineru2.5-pro/full/md/`.
+
+**Repetition loops** (`detect_loops.py`, both runs): 92 pages flagged each (0.6%), but **Paddle has 34 runaway
+loops** (a phrase ≥150×: `177_p031` "Month" ×2017, `104_p034` "I was" ×508, `166_p032` Korean ×679, …) vs
+**MinerU 1** (`433_p003`). MinerU's server adds its own logits processor with a repetition stop (vLLM counter
+`finished_reason="repetition"`); its other flags are genuinely repetitive tables (rating lists). Re-run lists:
+`results/full/<model>/full/loops.jsonl`.
+
+**Still to do:** re-run Paddle's flagged pages with `--repetition-penalty 1.05` on a future pod (F5) and merge;
+hand-check top of `disagreements.csv`.
