@@ -20,9 +20,9 @@ Four options were on the table:
 | 1 | **Expand the golden set** | Laptop, no GPU | ~120–150 new facts read off page images, from documents *not* in v1, weighted to hard cases: scanned statements, tables across pages, nested/merged headers, slide charts, footnotes, continued sections, concall Q&A | Removes the ceiling and the "seen data" problem *before* the GPU decision rests on it. **Done 2026-10-02: 150 facts (`data/golden/v2_facts.csv`)** |
 | 2 | **One GPU session** | RTX 5090 32 GB (A40 fallback) — runbook: [`gpu-run.md`](gpu-run.md) | Run **Docling and MinerU on all 12,980 pages**, with per-document caching and resume; record latency and failures. Benchmark on a few hundred pages in the first hour before committing to the full run | Parse the whole collection once; then compare both on the expanded golden set |
 | 3 | **Choose the parser** | Laptop | Score both from the caches (no re-parsing). Also try routing: fast parser for ordinary pages, Docling/MinerU for scanned and table-heavy pages | Accuracy, speed and failure types measured on data neither parser was tuned on |
-| 4 | **Retrieval golden set** | Laptop | ~100 questions with known answer pages, across companies and years | Needs the full-collection parse in place |
-| 5 | **Chunking × retrieval experiments** | Laptop | Compare the chunking variants below, scored by retrieval | Chunking only matters through retrieval, so it's judged there |
-| 6 | **Embedding model, then full indexing** | Laptop or GPU | Voyage (current choice) or a local model, compared on the same questions; then index everything | Last, because it depends on all the choices above |
+| 4 | **Retrieval golden set** | Laptop | **200 hard questions** with every answering page listed, across companies, years, document types and evidence kinds (tables, charts, prose, concall Q&A, scanned pages) — see [Retrieval experiments](#retrieval-experiments-agreed-2026-10-17) | Needs the full-collection parse in place |
+| 5 | **Retrieval experiments** | Laptop | Embedding model, chunking, image handling, hybrid search + reranker — one variable per round, in the order below | Chunking only matters through retrieval, so it's judged there |
+| 6 | **Full indexing** | Laptop or GPU | Index everything with the winning setup | Last, because it depends on all the choices above |
 
 ## Chunking
 
@@ -37,6 +37,72 @@ The current structure-aware chunker (`structured_chunk.py`) is good at what we'v
   5. Possibly semantic chunking, for long prose sections only
 
 Semantic chunking is deferred, not rejected: it can help inside long prose sections with no headings, but not with tables or Q&A, which are our main problems.
+
+## Retrieval experiments (agreed 2026-10-17)
+
+Parsing is measured by "did the fact survive" (golden v1–v3). From here on every choice is measured by
+**"does search find the page that answers the question"**, on one fixed question set, changing one
+thing at a time.
+
+### Held fixed in every round
+
+| Fixed | Value |
+|---|---|
+| Parser and its cache | the parser chosen in step 3, full collection (12,980 pages), never re-parsed during the experiments |
+| Clean-up | `page_clean.py`, same version throughout |
+| Corpus | all 228 documents of the five pilot companies — every question competes against every page, including the same table in other years and the other companies' versions of it |
+| Question set | `data/golden/retrieval_questions.csv` (200 questions), frozen before the first experiment; never edited to suit a result |
+| Scoring | page-level hit: a retrieved chunk counts if it covers any of the question's answer pages; Recall@5/@10/@20, MRR@10, reported overall and per stratum |
+| Retrieval settings | top-k, distance (cosine), vector store (Qdrant) unchanged within a round; metadata filters either all on or all off within a round (both are reported) |
+
+### Varied, one per round, in this order
+
+| Round | Variable | Options | Held at |
+|---|---|---|---|
+| 0 | — | baseline: current structure-aware chunker (after the known-bug fixes below, tagged), dense search only | — |
+| 1 | **Embedding model** | one closed (`voyage-finance-2`, the current choice; a newer Voyage general or contextual model as alternate) and one open (Qwen3-Embedding 4B/8B or BGE-M3; check the MTEB retrieval board at the time) | baseline chunker |
+| 2 | **Chunking** | (a) baseline; (b) a context header on every chunk — company, doc type, period, section, page; (c) tables as their own chunks with an embedded one-line summary, full table returned; (d) per-type splits — one Q&A pair per concall chunk, one slide per chunk; (e) small-to-big | round-1 winner |
+| 3 | **Images** | A text only (what the parser reads from pictures); B generated per-image summaries embedded as text, flagged `generated`; C page-image embeddings (ColPali/ColQwen-style or a multimodal embedding model) for image-heavy pages; D = A + C routed by page type | round-2 winner |
+| 4 | **Search** | dense only vs hybrid (BM25 + dense, fused); then + a reranker on the top 50–100 | round-3 winner |
+| 5 | **Re-check** | both embedding models again on the final setup (the best model can change with chunking) | final setup |
+
+**Before round 0 (bug fixes, not experiments):** chunks carrying a stale heading from an earlier
+section, lost units/subsection labels, and labels split from their values (found in the 2026-10-06
+visual review). Fix, then tag the chunker version as the baseline.
+
+**Decision rule.** A variant wins only if it improves Recall@10 overall **and** no stratum with ≥ 15
+questions drops by more than one question in ten. With 200 questions, overall differences under ~4
+points are within noise: compare per-question hits of the two variants (paired; count questions
+won and lost) rather than headline percentages.
+
+**Images: how the choice is made.** Each question records its evidence kind, so the chart, KPI-tile and
+scanned-page questions form their own strata. B or C is adopted only if it lifts those strata without
+lowering the text and table strata (generated text adds noise that can push wrong chunks up). Generated
+summaries and chart-estimated values are stored with a `generated` flag so the answering step never
+quotes them as printed figures — the number-fidelity check showed MinerU invents chart values.
+
+**After retrieval:** answer accuracy (does the final answer quote the right value) on the same
+questions, once an answering step exists.
+
+### The question set (step 4)
+
+`data/golden/retrieval_questions.csv` — 200 questions, built 2026-10-17 by the same rule as the golden
+facts: **every answer is read off a rendered page image, never from parser output.** The same number is
+often printed in several places (next year's comparative column, the results PDF, repeated slides), so
+each question has a **strict** answer-page list (checked on the image) and a **lenient** one that adds
+pages found by searching the text layers for the answer's distinctive numbers
+(`retrieval_answer_pages_auto.csv`, not individually checked; 6 of 8 in a spot check answered). Report
+retrieval at both levels.
+
+Targets were: statement tables 45, other tables 25, charts 25, slide KPI tiles 15, annual-report prose 30,
+concall Q&A 35, scanned pages 10, multi-page 15. **Built:** statement 25 + other tables 63, prose 33,
+concall 33, charts 15, KPI tiles 6, scanned 10, multi-page 15 — tables over and charts/KPIs under, because
+pages were taken in seeded random order rather than hand-picked. Wording: 140 paraphrased, 25 in the
+document's own terms, 20 vague, 15 analytical. Built to be hard: periods in a different form than printed
+(quarter ended December 2023 vs Q3 FY24), standalone vs consolidated, units (crore vs lakh vs million vs
+full rupees), footnote-dependent answers, guidance that changes between calls, and metrics that recur
+across years so near-duplicate pages compete. All five companies, FY2011-12 to Q1 FY27. Details in
+`data/golden/README.md`.
 
 ## Before renting the GPU
 

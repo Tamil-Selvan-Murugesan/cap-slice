@@ -1,0 +1,22 @@
+cand_id,doc,page,reason
+statement-APAR-09,data/APARINDS/concall_transcripts/Jul-2020.pdf,26,not reached (pool quota met from earlier candidates)
+prose-APAR-06,data/APARINDS/annual_reports/FY2023-24.pdf,150,accounting-policy boilerplate already covered by R009
+scan-APAR-01,data/APARINDS/investor_presentations/Feb-2024.pdf,14,section divider (no content)
+scan-APAR-02,data/APARINDS/investor_presentations/Jul-2024-b.pdf,66,section divider (no content)
+scan-APAR-03,data/APARINDS/annual_reports/FY2013-14.pdf,37,section divider (no content)
+scan-APAR-04,data/APARINDS/investor_presentations/May-2023.pdf,14,section divider (no content)
+scan-APAR-05,data/APARINDS/annual_reports/FY2017-18.pdf,179,blank page
+scan-APAR-06,data/APARINDS/investor_presentations/Nov-2023.pdf,22,section divider (no content)
+statement-HERO-06,data/HEROMOTOCO/annual_reports/FY2017-18.pdf,222,taxation policy boilerplate (no distinctive fact)
+statement-HERO-12,data/HEROMOTOCO/annual_reports/FY2016-17.pdf,138,accounting-policy boilerplate (no distinctive fact)
+statement-HERO-09,data/HEROMOTOCO/annual_reports/FY2022-23.pdf,152,accounting-policy boilerplate (no distinctive fact)
+hero-slide-05,data/HEROMOTOCO/investor_presentations/Feb-2020.pdf,28,positioning scatter without readable values (near-duplicate of May-2019 p36)
+statement-E2E-08,data/E2E/annual_reports/2021-08-25_FY2020-21.pdf,36,auditor-report boilerplate (covered by R122)
+prose-E2E-01,data/E2E/annual_reports/2020-08-19_FY2019-20.pdf,53,accounting-policy boilerplate (no distinctive fact)
+scan-content,data/E2E/investor_presentations/Aug-2023.pdf,8,section divider stock photo (numbers on the photo are decorative)
+scan-content,data/E2E/investor_presentations/Nov-2021.pdf,24,section divider stock photo
+scan-content,data/E2E/investor_presentations/Jul-2022.pdf,6,section divider stock photo
+scan-ESCO-01,data/ESCONET/annual_reports/2025-08-13_FY2024-25.pdf,135,blank page
+scan-ESCO-02,data/ESCONET/investor_presentations/2024-12-03_Dec-2024.pdf,9,section divider photo
+scan-ESCO-04,data/ESCONET/annual_reports/2026-08-25_FY2025-26.pdf,154,blank Notes page
+scan-ESCO-06,data/ESCONET/concall_transcripts/2026-08-17_Aug-2026.pdf,20,closing line only

@@ -10,6 +10,7 @@ Ground truth for comparing PDF parsers and chunkers. **Every fact is read by a p
 | `v2_facts.csv` | **v2** (2026-10-02): 150 facts from 61 of those pages |
 | `v2_skipped.csv` | 9 sampled pages with no usable fact, with reasons. 8 are image-only decorative slides/photos — kept as **hallucination checks** (a parser should output ~nothing for them) |
 | `v3_pages.csv`, `v3_facts.csv`, `v3_skipped.csv` | **v3** (2026-10-05): the **hard** set — 123 facts from 26 pages of 21 documents (charts, image-only pages, rotated and two-level tables, dense notes) + 3 decorative hallucination-check slides. Built by `tools/golden/v3_candidates.py` |
+| `retrieval_questions.csv`, `retrieval_answer_pages_auto.csv`, `retrieval_skipped.csv` | **Retrieval set** (2026-10-17): 200 questions with the pages that answer them, for the retrieval experiments in `docs/plan.md`. See [Retrieval questions](#retrieval-questions) |
 
 ## v2 at a glance
 
@@ -65,3 +66,62 @@ Render the page (`page.get_pixmap(dpi=150–220)`), read it, append rows, keep I
 
 ## Status
 The scorer (`src/cap_slice/compare_parsers.py`) currently reads v1 only. Wiring v2 in (documents by path) is part of the GPU-run preparation.
+
+## Retrieval questions
+
+`retrieval_questions.csv` (2026-10-17): 200 questions a user might ask of the five companies' filings, each
+with the page(s) that answer it. Used to score **retrieval** (does search return an answering page), not
+parsing. Same rule as the facts: every answer was read off a rendered page image, never from a parser.
+
+**How the pages were chosen.** `tools/golden/retrieval_candidates.py draw` lists, per evidence pool
+(statement, other table, slide, annual-report graphic page, prose, concall Q&A page, image-only page) and per
+company, every eligible page in a seeded random order (seed 20261017), one page per document per pool. v1
+documents (the chunker was tuned on them) and the exact pages carrying v2/v3 facts are excluded. Questions
+were written from the first suitable pages in that order; unsuitable pages (blank, section dividers, stock
+photos, pure boilerplate) are listed with reasons in `retrieval_skipped.csv`. Two pools needed extra draws
+with the same seed: Hero's decks (few pages pass the slide filter) and image-only pages, where most draws
+are dividers, so pages with real content were drawn from all 441 image-only pages using the parser cache
+only as a "has content" filter (the answers were still read off the images). C2C has only 7 documents, so
+it got several pages per document.
+
+**Columns.** `qid, question, answer, unit, symbol, period, evidence, style, primary_doc, primary_page,
+answer_pages, hard, cand_id, note`.
+- `answer` — what the page says, with the decoy values next to it where useful (prior year, other quarter).
+- `evidence` — `statement` (primary statements and their notes), `table` (other tables, incl. slide tables),
+  `chart`, `kpi` (slide KPI tiles), `prose`, `concall`, `scan` (page has no text layer), `multi` (needs two
+  pages).
+- `style` — `exact` (the document's own words), `paraphrase` (different words from the answer line),
+  `vague` (no metric named), `analytical` (comparison across pages).
+- `answer_pages` — empty when the primary page is the only verified answer page; otherwise the full list
+  (`doc#page;doc#page`). For `multi` questions **all** listed pages are needed (match=all); for the others any
+  one of them answers (match=any) — the `note` says which.
+- `hard` — tags for what makes it hard: `decoy_years`, `decoy_quarters`, `standalone_vs_consolidated`,
+  `period_format`, `crore_vs_lakhs`/`lakhs_unit`/`unit_million`/`full_rupees_unit`, `indian_grouping`,
+  `footnote`, `image_only_page`, `chart_labels`, `boilerplate_repeats_across_years`,
+  `festive_numbers_recur_every_year`, `guidance_changes_over_time`, `cross_company_decoy`, `bad_text_layer`, …
+
+**Mix.**
+
+| | Count |
+|---|---|
+| By company | APAR 64, Hero 54, E2E 43, Esconet 21, C2C 18 |
+| By evidence | table 63, prose 33, concall 33, statement 25, chart 15, multi 15, scan 10, kpi 6 |
+| By style | paraphrase 140, exact 25, vague 20, analytical 15 |
+| By primary document type | annual reports 111, presentations 47, concalls 38, results 4 |
+| Periods | FY2011-12 to Q1 FY27 |
+
+Against the plan's targets: tables are over (88 statement + table vs 70) and charts + KPI tiles are under (21
+vs 40), because the seeded draw of slide pages produced more slide tables than charts. Score the chart/KPI
+strata knowing they are small.
+
+**Other answering pages.** The same number is often printed elsewhere (next year's comparative column, the
+same slide in several decks, the results PDF and the annual report). Two levels:
+- **Strict** — `primary_page` + `answer_pages`: every page checked on the image.
+- **Lenient** — strict plus `retrieval_answer_pages_auto.csv`: 201 more pages for 52 questions, found by
+  searching every text layer of the same company for the answer's distinctive numbers (≥ 5 digits; round
+  numbers like 15,000 dropped). Not individually checked: a seeded check of 8 found 6 that answer the question
+  and 2 that don't (a number that happens to appear on a stock-price page; the same share count before the IPO,
+  when the question asks after). Questions without distinctive numbers (prose, concall, scanned pages) have
+  no automatic candidates, so their strict list may miss pages that also answer them.
+
+Report retrieval scores at both levels; the truth lies between them.
