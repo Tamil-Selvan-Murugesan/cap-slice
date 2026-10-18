@@ -68,7 +68,9 @@ thing at a time.
 
 **Before round 0 (bug fixes, not experiments):** chunks carrying a stale heading from an earlier
 section, lost units/subsection labels, and labels split from their values (found in the 2026-10-06
-visual review). Fix, then tag the chunker version as the baseline.
+visual review). Fix, then tag the chunker version as the baseline. **Done 2026-10-18:** fixes S13–S21
+(`bugs_resolved.md`), golden v2+v3 L4 up for both finalists with no fact worse, keyword baseline unchanged
+within noise; baseline tagged `chunker-baseline-2026-10-18`.
 
 **Decision rule.** A variant wins only if it improves Recall@10 overall **and** no stratum with ≥ 15
 questions drops by more than one question in ten. With 200 questions, overall differences under ~4

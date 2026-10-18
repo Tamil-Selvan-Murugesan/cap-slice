@@ -12,8 +12,16 @@ Compared with chunk.py (the baseline):
   of the page across sub-headings — is always
   included, even when other text sits between it and the table.
 - A table that continues at the top of the next page with the same number of
-  columns is merged, so rows on page 2 keep the header from page 1.
+  columns is merged, so rows on page 2 keep the header from page 1 — unless the
+  new table opens with a different header of its own (then it is a new table).
 - Prose overlap starts at a sentence boundary and never enters a table.
+
+Fixes S13–S21 (2026-10-18, bugs_resolved.md): short edge lines are kept unless they
+match a repeated header; a heading with only a line or two under it is not
+carried onto the next page; consecutive headings are joined and prose keeps the
+section it started in; a units line after the tables on a page reaches them;
+captions stay on the table's page; split tables repeat the active subsection row
+and don't leave a one-row tail; different tables on consecutive pages aren't merged.
 """
 
 from __future__ import annotations
@@ -103,7 +111,12 @@ def _is_boilerplate(line: str, drop: set[str]) -> bool:
     # Table rows are data even at a page edge (tables often run to the bottom).
     if not drop or UNIT_HINT.search(line) or line.lstrip().startswith("|"):
         return False
-    rest = [f for f in _FRAGMENT_SPLIT.split(line) if _key(f) and _key(f) not in drop]
+    frags = [f for f in _FRAGMENT_SPLIT.split(line) if _key(f)]
+    # Only a line that contains a repeated fragment can be boilerplate; a line with few letters
+    # ("SEC/2511/2017") is not boilerplate just because it is short (fix S13).
+    if not any(_key(f) in drop for f in frags):
+        return False
+    rest = [f for f in frags if _key(f) not in drop]
     return len("".join(_key(f) for f in rest)) < 5
 
 
@@ -130,13 +143,18 @@ def _blocks(pages: list[ParsedPage]) -> list[Block]:
             else:
                 page_blocks.append(Block(kind, [s], page.number))
         page_blocks = [b for b in page_blocks if b.lines and any(l.strip() for l in b.lines)]
-        # Table continued from the previous page: same column count -> merge.
+        # Table continued from the previous page: same column count -> merge, unless the new
+        # table opens with a header of its own that differs from the previous table's (fix S20).
         if (page_blocks and blocks and page_blocks[0].kind == "table"
                 and blocks[-1].kind == "table"
                 and _ncols(page_blocks[0]) == _ncols(blocks[-1])):
-            cont = page_blocks.pop(0)
-            blocks[-1].lines += [l for l in cont.lines if not SEPARATOR.match(l)]
-            blocks[-1].end_page = page.number
+            new_head, old_head = _own_header(page_blocks[0]), _own_header(blocks[-1])
+            if new_head is None or _same_rows(new_head, old_head):
+                cont = page_blocks.pop(0)
+                skip = (len(new_head) + (_sep_header(cont) is not None)) if new_head else 0
+                body = cont.lines[skip:]  # drop a repeated header
+                blocks[-1].lines += [l for l in body if not SEPARATOR.match(l)]
+                blocks[-1].end_page = page.number
         blocks += page_blocks
     for b in blocks:
         b.end_page = b.end_page or b.page
@@ -147,15 +165,75 @@ def _ncols(table: Block) -> int:
     return max(l.count("|") for l in table.lines) - 1
 
 
-def _header_rows(table: Block) -> list[str]:
-    """Rows to repeat when a table is split: up to and including the MD separator."""
+def _sep_header(table: Block) -> list[str] | None:
+    """Header rows above a Markdown separator in the first 4 lines, or None."""
     for i, l in enumerate(table.lines[:4]):
         if SEPARATOR.match(l):
-            return table.lines[:i + 1]
-    # No separator (Option 1): repeat leading rows until the first one with a number.
+            return table.lines[:i]
+    return None
+
+
+AMOUNT = re.compile(r"\d[\d,]*\.\d\d|\d{1,3}(,\d{2,3})+")
+YEAR = re.compile(r"\b(19|20)\d\d\b")
+
+
+def _own_header(table: Block) -> list[str] | None:
+    """The table's header rows if it visibly opens with one, else None (a bare continuation).
+    With a Markdown separator: the rows above it. Without one: the leading rows before the first
+    amount, if they include a title row repeated across all cells or a row of period headers
+    (years in two or more cells) — a continued table starts with data, not with those."""
+    head = _sep_header(table)
+    if head is not None:
+        # Rows with amounts above a separator are data, not a header: some parsers put a separator
+        # under the first row of a continued table ("| Net Profit Margin (%) | 12.44 |").
+        return None if any(AMOUNT.search(l) for l in head) else head
+    lead = []
+    for l in table.lines[:4]:
+        if AMOUNT.search(l):
+            break
+        lead.append(l)
+    if any(_uniform(l) or sum(bool(YEAR.search(c)) for c in _cells(l)) >= 2 for l in lead):
+        return lead
+    return None
+
+
+def _same_rows(a: list[str] | None, b: list[str] | None) -> bool:
+    norm = lambda rows: [re.sub(r"[^a-z0-9]+", "", r.lower()) for r in rows or []]  # noqa: E731
+    return norm(a) == norm(b)
+
+
+def _cells(row: str) -> list[str]:
+    return [c.strip() for c in row.strip().strip("|").split("|")]
+
+
+NUMERIC_CELL = re.compile(r"[\s(\-–−]*(?:₹|rs\.?|inr)?\s*\d[\d,]*(?:\.\d+)?\s*%?[)\s]*", re.I)
+
+
+def _uniform(row: str) -> bool:
+    """A group row: every non-empty cell repeats the same text ("Income | Income | Income")."""
+    cells = [c for c in _cells(row) if c]
+    return len(cells) > 1 and len(set(cells)) == 1
+
+
+def _is_label_row(row: str) -> bool:
+    """A subsection row inside a table: a label and no values ("Segment Results - % to Revenue")."""
+    cells = _cells(row)
+    if not cells or not re.search(r"[A-Za-z]", cells[0]):
+        return False
+    return not any(NUMERIC_CELL.fullmatch(c) for c in cells[1:] if c)
+
+
+def _header_rows(table: Block) -> list[str]:
+    """Rows to repeat when a table is split: up to and including the MD separator."""
+    head = _sep_header(table)
+    if head is not None:
+        return table.lines[:len(head) + 1]
+    # No separator (Option 1, some MinerU/Paddle tables): repeat leading rows until the first one
+    # with an amount, or a group row after the first ("I. EQUITY | I. EQUITY | ..."). Up to 4 rows,
+    # so a units row + group header + date row all repeat (fix S18).
     head = []
-    for l in table.lines[:3]:
-        if re.search(r"\d[\d,]*\.\d\d|\d{1,3}(,\d{2,3})+", l):
+    for k, l in enumerate(table.lines[:4]):
+        if AMOUNT.search(l) or (k and _uniform(l)):
             break
         head.append(l)
     return head
@@ -171,67 +249,115 @@ def _sentence_tail(text: str, max_words: int) -> str:
     return " ".join(tail)
 
 
+WEAK_HEADING_WORDS = 30  # a heading followed by less than this on its page is not carried to the next page
+HEADING_RUN = 3          # consecutive headings joined into one section ("Human Capital / 519")
+
+
+def _units_line(b: Block, max_words: int = 25) -> str | None:
+    return next((l for l in reversed(b.lines) if UNIT_HINT.search(l) and len(l.split()) <= max_words), None)
+
+
 def chunk_structured(pages: list[ParsedPage]) -> list[StructuredChunk]:
     chunks: list[StructuredChunk] = []
     section = ""
+    run: list[str] = []    # consecutive headings with no content between them
+    section_page = 0
+    section_words = 0      # words of content after the current heading, on the heading's page
+    page = 0
     buf: list[Block] = []  # pending prose
+    buf_section = ""       # section active when the pending prose started
     carry = ""             # overlap text for the next prose chunk
     units = ""             # latest units statement (kept across headings on the same page)
     units_page = 0
 
-    def emit(kind: str, text: str, first: int, last: int, notes: list[str] | None = None) -> None:
-        body = (f"## {section}\n" if section else "") + text.strip()
-        chunks.append(StructuredChunk(len(chunks), kind, body, section, first, last, notes or []))
+    def emit(kind: str, text: str, first: int, last: int, notes: list[str] | None = None,
+             sec: str | None = None) -> None:
+        sec = section if sec is None else sec
+        body = (f"## {sec}\n" if sec else "") + text.strip()
+        chunks.append(StructuredChunk(len(chunks), kind, body, sec, first, last, notes or []))
 
     def flush_text() -> None:
         nonlocal buf, carry
         if not buf:
             return
         text = "\n\n".join(b.text for b in buf)
+        # The section is the one active when the text started, not the latest heading (fix S15).
+        # A heading kept as text has no end_page of its own; the chunk ends on its last real page
+        # (fix S21: 451 chunks had page_end 0 and covered no page at all).
         emit("text", (carry + "\n\n" if carry else "") + text,
-             buf[0].page, buf[-1].end_page, ["starts with overlap"] if carry else [])
+             buf[0].page, max(x.end_page or x.page for x in buf), ["starts with overlap"] if carry else [],
+             buf_section)
         carry = _sentence_tail(text, OVERLAP_WORDS)
         buf = []
 
-    for i, b in enumerate(_blocks(pages)):
+    def add_text(b: Block) -> None:
+        nonlocal buf_section
+        if buf and sum(x.words() for x in buf) + b.words() > TEXT_WORDS:
+            flush_text()
+        if not buf:
+            buf_section = section
+        buf.append(b)
+
+    blocks = _blocks(pages)
+    for i, b in enumerate(blocks):
+        if b.page != page:
+            # New page: a heading that only had a line or two under it on its own page (a
+            # signatory's name, a KPI value marked as a heading) does not label the next page (fix S14).
+            if section and section_page < b.page and 0 < section_words < WEAK_HEADING_WORDS:
+                section, run = "", []
+            page = b.page
         if b.kind == "heading":
+            h = b.lines[0]
             if sum(x.words() for x in buf) >= 50:
                 flush_text()
                 carry = ""
             elif buf:
                 # Chunk too small to close: keep the heading as text so it isn't lost.
-                buf.append(Block("text", [f"## {b.lines[0]}"], b.page))
-            section = b.lines[0]
+                buf.append(Block("text", [f"## {h}"], b.page))
+            # Headings in a row with nothing between them belong together ("Human Capital", "519");
+            # joining them keeps a KPI value that a parser marked as a heading (fix S15).
+            prev = blocks[i - 1] if i else None
+            run = (run if prev is not None and prev.kind == "heading" and prev.page == b.page else [])
+            run = (run + [h])[-HEADING_RUN:]
+            section, section_page, section_words = " / ".join(run), b.page, 0
             # A units statement ("Amount in crores of INR") covers the rest of its page even when a
             # parser marks a sub-table title ("B. Other Equity") as a heading (fix S10).
             if b.page != units_page:
                 units = ""
             continue
+        if b.page == section_page:
+            section_words += b.words()
         if b.kind == "text":
-            found = next((l for l in reversed(b.lines)
-                          if UNIT_HINT.search(l) and len(l.split()) <= 25), None)
+            found = _units_line(b)
             if found:
                 units, units_page = found, b.end_page or b.page
-            if buf and sum(x.words() for x in buf) + b.words() > TEXT_WORDS:
-                flush_text()
-            buf.append(b)
+            add_text(b)
             continue
         if len([l for l in b.lines if not SEPARATOR.match(l)]) < MIN_TABLE_ROWS:
-            b = Block("text", b.lines, b.page, b.end_page)  # too small to stand alone
-            if buf and sum(x.words() for x in buf) + b.words() > TEXT_WORDS:
-                flush_text()
-            buf.append(b)
+            add_text(Block("text", b.lines, b.page, b.end_page))  # too small to stand alone
             continue
-        # Caption: the short text blocks right before the table (title, units
-        # line), up to CAPTION_WORDS, plus the section's units statement.
+        # Caption: the short text blocks right before the table (title, units line) on the
+        # table's own page (fix S17: not the previous page's signature block), up to CAPTION_WORDS,
+        # plus the section's units statement.
         cap_blocks: list[str] = []
         for x in reversed(buf):
-            if x.words() + sum(len(c.split()) for c in cap_blocks) > CAPTION_WORDS:
+            if x.page != b.page or x.words() + sum(len(c.split()) for c in cap_blocks) > CAPTION_WORDS:
                 break
             cap_blocks.insert(0, x.text)
         caption = "\n".join(c for c in cap_blocks if c.strip())
-        if units and units not in caption:
-            caption = (units + "\n" + caption).strip()
+        table_units = units
+        if not (units and units_page == b.page):
+            # A units line printed after the tables on the same page ("Figures in Rs Crore" under a
+            # row of charts) applies to them too (fix S16).
+            for x in blocks[i + 1:]:
+                if x.page != b.end_page:
+                    break
+                u = _units_line(x, 12) if x.kind == "text" else None
+                if u:
+                    table_units = u
+                    break
+        if table_units and table_units not in caption:
+            caption = (table_units + "\n" + caption).strip()
         flush_text()
         carry = ""
         head = _header_rows(b)
@@ -242,12 +368,24 @@ def chunk_structured(pages: list[ParsedPage]) -> list[StructuredChunk]:
             continue
         part: list[str] = []
         parts: list[list[str]] = []
+        label = None  # latest subsection row ("Segment contribution - as % to total revenue")
         for r in rows:
             if part and len(" ".join(head + part + [r]).split()) > TABLE_WORDS:
+                moved = [part.pop()] if len(part) > 1 and _is_label_row(part[-1]) else []
                 parts.append(part)
-                part = []
+                # A part that starts mid-subsection repeats the subsection row (fix S19).
+                part = moved or ([label] if label and not _is_label_row(r) else [])
+            if _is_label_row(r):
+                label = r
             part.append(r)
         parts.append(part)
+        # Don't leave a tiny tail (one or two rows) on its own if it fits with the part before.
+        if len(parts) > 1 and len(parts[-1]) < 3 and \
+                len(" ".join(head + parts[-2] + parts[-1]).split()) <= TABLE_WORDS * 1.3:
+            tail = parts.pop()
+            if tail and _is_label_row(tail[0]) and tail[0] in parts[-1]:
+                tail = tail[1:]  # the repeated subsection row is already there
+            parts[-1] += tail
         for n, part in enumerate(parts, 1):
             emit("table", (caption + "\n\n" if caption else "") + "\n".join(head + part),
                  b.page, b.end_page, notes + [f"table part {n}/{len(parts)}, header rows repeated"])
@@ -265,7 +403,8 @@ def _merge_small(chunks: list[StructuredChunk]) -> list[StructuredChunk]:
                 # Drop the repeated "## section" line only when both share the section.
                 same = c.section and c.section == pending.section and c.text.startswith("## ")
                 body = c.text.split("\n", 1)[1] if same else c.text
-                c = StructuredChunk(0, "text", pending.text + "\n\n" + body, c.section,
+                # The merged chunk starts with the pending one, so it keeps that section.
+                c = StructuredChunk(0, "text", pending.text + "\n\n" + body, pending.section or c.section,
                                     pending.page_start, c.page_end, pending.notes + c.notes)
             else:
                 out.append(pending)
