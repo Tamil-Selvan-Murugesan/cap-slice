@@ -53,14 +53,15 @@ thing at a time.
 | Corpus | all 228 documents of the five pilot companies — every question competes against every page, including the same table in other years and the other companies' versions of it |
 | Question set | `data/golden/retrieval_questions.csv` (200 questions), frozen before the first experiment; never edited to suit a result |
 | Scoring | page-level hit: a retrieved chunk counts if it covers any of the question's answer pages; Recall@5/@10/@20, MRR@10, reported overall and per stratum |
-| Retrieval settings | top-k, distance (cosine), vector store (Qdrant) unchanged within a round; metadata filters either all on or all off within a round (both are reported) |
+| Retrieval settings | top-k, distance (cosine), vector store (Qdrant, local) unchanged within a round; every round reports the same filter setups (see [Filters](#filters-agreed-2026-10-19)) |
+| Stored metadata | the payload schema in [Vector store and metadata](#vector-store-and-metadata-agreed-2026-10-19) |
 
 ### Varied, one per round, in this order
 
 | Round | Variable | Options | Held at |
 |---|---|---|---|
 | 0 | — | baseline: current structure-aware chunker (after the known-bug fixes below, tagged), dense search only | — |
-| 1 | **Embedding model** | one closed (`voyage-finance-2`, the current choice; a newer Voyage general or contextual model as alternate) and one open (Qwen3-Embedding 4B/8B or BGE-M3; check the MTEB retrieval board at the time) | baseline chunker |
+| 1 | **Embedding model** | closed: **Voyage 4 Large** (API); open: **Nemotron 3 Embed 1B** (open weights) — both at 2048 dimensions (decided 2026-10-19, see below) | baseline chunker |
 | 2 | **Chunking** | (a) baseline; (b) a context header on every chunk — company, doc type, period, section, page; (c) tables as their own chunks with an embedded one-line summary, full table returned; (d) per-type splits — one Q&A pair per concall chunk, one slide per chunk; (e) small-to-big | round-1 winner |
 | 3 | **Images** | A text only (what the parser reads from pictures); B generated per-image summaries embedded as text, flagged `generated`; C page-image embeddings (ColPali/ColQwen-style or a multimodal embedding model) for image-heavy pages; D = A + C routed by page type | round-2 winner |
 | 4 | **Search** | dense only vs hybrid (BM25 + dense, fused); then + a reranker on the top 50–100 | round-3 winner |
@@ -76,6 +77,63 @@ within noise; baseline tagged `chunker-baseline-2026-10-18`.
 questions drops by more than one question in ten. With 200 questions, overall differences under ~4
 points are within noise: compare per-question hits of the two variants (paired; count questions
 won and lost) rather than headline percentages.
+
+### Embedding models (agreed 2026-10-19)
+
+| | Voyage 4 Large (closed) | Nemotron 3 Embed 1B (open) |
+|---|---|---|
+| Access | Voyage API | open weights (OpenMDW-1.1, commercial use allowed; built on Ministral-3-3B, Apache 2.0) |
+| Context | 32K tokens | 32K tokens |
+| Dimensions | 1024 default; 256/512/2048 | 2048 native; 512/1024 |
+| Used at | **2048** | **2048** — same size for both, so dimension doesn't decide the result |
+| Query vs document | `input_type="query"` / `"document"` | prefixes `query: ` / `passage: ` are required (the plain `encode()` call adds none — quality drops silently without them) |
+| Cost / compute | ~34M tokens for the corpus, ~$4 at ~$0.12/M (third-party price — confirm on Voyage's pricing page before running) | free; CPU on this laptop is likely too slow — time 200 chunks first, else a short GPU session or a hosted endpoint |
+
+Disk: ~330 MB of vectors plus ~50 MB of text per collection at 40,593 chunks × 2048 floats; check
+`df -h /mnt/c` first (C: had 2.1 GB free on 2026-10-19).
+
+### Vector store and metadata (agreed 2026-10-19)
+
+Local Qdrant (`data/qdrant/`), **one collection per setup** — vectors from different models or chunkers
+can't share one — named `<round>__<model>__<chunker>`, e.g. `r1__voyage-4-large__baseline`.
+
+**What gets embedded vs what is stored.** Changing the embedded text means re-embedding (cost, hours);
+changing the payload doesn't (Qdrant `set_payload`). So in round 1 the embedded text is the bare chunk and
+all metadata is payload only. Writing metadata *into* the embedded text (a context header) is round 2(b).
+
+| Group | Fields | Source |
+|---|---|---|
+| Provenance (citations, debugging) | `doc_id`, `path`, `company`, `symbol`, `listing_tier`, `doc_type`, `period_label`, `filed_date`, `source_url`, `chunk_index`, `page_start`, `page_end`, `text` | matrix + chunker |
+| Filters (values a question can supply) | `symbol`, `doc_type`, **`fiscal_year`** (int, year the FY ends: FY2018-19 → 2019, Q3 FY24 → 2024), **`period_kind`** (`annual` / `quarter` / `half_year` / `event`), `chunk_kind` (`table` / `text`), `section` | new normaliser for `fiscal_year` / `period_kind` from `period_label` + `filed_date`; chunker |
+| Bookkeeping | `parser`, `chunker_version` (git tag), `embedding_model`, `image_only_page` (page inventory), `generated` (round 3 summaries) | run settings |
+
+Left out for now: standalone vs consolidated and units — users ask about them, but there is no reliable
+source yet, and a wrong label used as a filter makes the right page unreachable. Revisit after round 2.
+At the full 11–14M pages (~40M chunks, ~160 GB of float vectors) this needs a Qdrant server, payload
+indexes and quantised vectors; the field names carry over.
+
+### Filters (agreed 2026-10-19)
+
+A filter narrows the pool before ranking (R002: 40,593 chunks → APAR 16,975 → APAR FY2018-19 report 921).
+Fewer look-alike pages compete, but a wrong filter makes the answer unreachable. Every filter production
+will use is tested — what matters is **where the filter's value comes from**:
+
+| Setup | Filter values come from | Role |
+|---|---|---|
+| No filter | — | the retriever on its own |
+| **Question-based** | a query reader that sees **only the question text** and outputs `symbol`, `fiscal_year`, `doc_type` (or nothing when the question doesn't say — 13 questions name no period) | **the production number; decisions use this** |
+| Answer-key | the gold page's metadata | upper bound only, never quoted as a result; the gap to question-based is what the query reader costs |
+
+Each filtered setup in two variants:
+- **Hard** — search only inside the filtered pool. Best when the query reader is right; a wrong filter means no chance.
+- **Soft** — search everything, rank chunks matching the filter higher. Safer when the reader is wrong; smaller gain when it's right.
+
+Reported every round: no filter; company only (hard, soft); company + year + doc type, question-based
+(hard, soft); the same from the answer key (hard, soft). The existing BM25 company filter reads `symbol`
+from the answer key, which equals what a query reader gets because all 200 questions name the company.
+Hard cases the query reader must handle: fiscal vs calendar periods ("quarter ended December 2023" = Q3
+FY24), event-dated decks (R015 "six months to September 2023" → `Oct-2023` deck), and answers repeated in
+the next year's comparative column (R002).
 
 **Images: how the choice is made.** Each question records its evidence kind, so the chart, KPI-tile and
 scanned-page questions form their own strata. B or C is adopted only if it lifts those strata without

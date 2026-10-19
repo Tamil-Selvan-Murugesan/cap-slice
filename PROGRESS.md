@@ -2,7 +2,7 @@
 
 Living status for `cap-slice`. Update at the end of every session. Stable rules and facts are in [`AGENTS.md`](AGENTS.md).
 
-**Last updated:** 2026-10-18
+**Last updated:** 2026-10-19
 
 ## Current status
 
@@ -113,13 +113,14 @@ Living status for `cap-slice`. Update at the end of every session. Stable rules 
 3. **Reconcile branch `tamil/codex-pilot-verification` (`a6ca47b`)** into main: its verification doc, catalogue/history corrections and APAR issuer sources. Resolve `AGENTS.md`/`PROGRESS.md` conflicts by hand, keeping both agents' findings.
 4. Correct the catalogue: relabel the C2C allotment row; fill missing `filed_date`s where possible; re-discover the 13 wrong URLs.
 5. Switch `index.py` to the chosen parser + `structured_chunk.py`; add a pipeline/model version to the index payload.
-6. Retrieval set, scorer and chunker fixes done (2026-10-17/18; BM25 baseline strict R@10 0.41, 0.47 with company filter). Next: round 0/1 of the retrieval experiments in `docs/plan.md` (both embedding models on the tagged chunker); run a small approved embedding test first (`cap-slice-index --symbol C2C`, then `cap-slice-search`).
+6. Retrieval set, scorer and chunker fixes done and re-verified (2026-10-17/18/19; BM25 baseline strict R@10 0.41, 0.47 with company filter). Payload schema, filter setups and round-1 models agreed 2026-10-19 (`docs/plan.md`). Next: `fiscal_year`/`period_kind` normaliser; query reader (question → company, year, doc type); time Nemotron 3 Embed 1B on 200 chunks; then round 1 — Voyage 4 Large vs Nemotron 3 Embed 1B at 2048 dimensions on the tagged chunker, local Qdrant (Voyage calls need approval; check C: free space first).
 7. Discuss the open questions above (Screener dependency, shareholding, paid NSE route, results discovery).
 
 ## Decision log
 
 | Date | Decision | Why |
 |---|---|---|
+| 2026-10-19 | Round 1 compares **Voyage 4 Large** (closed) and **Nemotron 3 Embed 1B** (open), both at 2048 dimensions, in local Qdrant with one collection per setup; payload schema agreed, adding normalised `fiscal_year` / `period_kind`; every round reports no filter, question-based filters (hard and soft) and answer-key filters (upper bound only) | User's choice of models. Filters production will use belong in the test, but their values must come from the question text, as in production; filtering from the answer key hides query-reading errors (13 questions name no period; fiscal vs calendar periods; event-dated decks), so it is reported only as a ceiling. Metadata goes in the payload, which can change without re-embedding; standalone/consolidated and units left out until there's a reliable source |
 | 2026-10-17 | Recommend tested MinerU advanced as default with moderate confidence; require documented quality gates and broader scanned-financial validation before scaling; retain Paddle as challenger, with no automatic hybrid selected | All golden totals reproduce; 38 source-checked disagreements include many formatting/context artifacts, plus genuine failures on both sides. Digital-number flags and measured cost favor MinerU; Paddle's dashboard strengths and limited scanned evidence prevent high confidence. Recommendation only; no integration or bulk work performed |
 | 2026-10-06 | Recommend MinerU advanced with shared cleanup and structured chunking; no integration authorized by this review | Close finalist scores include formatting artifacts; inspected financial errors favor MinerU, generated image blocks have an existing exclusion path, and measured throughput is 52% higher. Recommendation, not a user-approved production decision |
 | 2026-10-05 | Compare parsers only after a shared clean-up step (`page_clean.py`) and scorer fixes applied to every parser | Several "losses" were formatting (units line skipped, literal `\n`, LaTeX superscripts, commas) or scorer artifacts, not reading errors |
