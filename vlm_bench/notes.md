@@ -438,14 +438,23 @@ text + 800 table-dense control pages):
 Non-control pages (numbers output, all blocks): scans with old OCR 75,667 vs 75,767; scans without text
 6,011 vs 6,139 — equal. **Charts: MinerU outputs 32% fewer numbers** (19,575 vs 28,796 on 1,219 chart pages).
 - MinerU does read charts (`image_analysis` is on by default and used by the advanced tier only): 2,431 chart
-  blocks → tables (bar 1,485, donut 192, line 126, pie 124, …). But **6,807 image blocks have no sub-type and
-  empty content** — charts its layout calls a plain image are never read (e.g. Adisoft ROE chart, 534_p031).
-  No setting turns this on; a fix would be a second pass on empty image crops.
+  blocks → tables (bar 1,485, donut 192, line 126, pie 124, …). But some charts are never read (e.g. 534_p027,
+  534_p031). Of image blocks with no sub-type (= never analysed), **810 are large regions** (708 pages); in 326
+  of them (306 pages, ~12,300 numbers) Paddle read numbers, and Paddle labels 173 of those `chart` — i.e. MinerU
+  misses roughly 7% of charts (173 vs 2,429 read). Per-region list: `results/full/mineru2.5-pro/full/image_regions.jsonl`.
+  - Likely cause (code, `mineru-vl-utils` 2.0.5 `mineru_client.py` `prepare_for_extract`): an image/chart ≥90%
+    inside an `image_block` container is skipped, and `image_block` itself is in `skip_list`, so nothing is
+    read. Hardcoded, no setting — but patchable in the venv (like the vLLM `deepencoder.py` fix).
+  - **To test on the next pod:** log the layout blocks/skip reason for ~20 affected PDFs (incl. 534), patch so
+    contained images/charts are analysed, re-run those PDFs and count recovered charts. If the cause is instead
+    an empty model answer, retry the empty crop with MinerU's own `Image Analysis:` prompt.
+  - Leave the small-region size threshold (8,090 skipped blocks, mostly logos/icons) and "natural_image"
+    calls (24 regions) alone: changing them would mostly add icon noise.
 - Many chart tables are **estimates off the axes** (`~61300`, `~2,380`) or meaningless (`| Blue | ~35% |`,
   marker/colour legends). Dangerous as facts for the analysis agent unless filtered (drop `~` values).
 
 **Verdict:** MinerU is slightly better on born-digital text and tables and equal on scans; Paddle is clearly
-better on charts (labelled values, 25/25 questions). Keep **PaddleOCR-VL-1.6** as the parser. If chunking needs
+better on charts (labelled values, 25/25 questions). Keep **PaddleOCR-VL-1.6** as the parser (superseded 2026-10-19: MinerU, see §8). If chunking needs
 both, MinerU's per-page JSON (block types, boxes, HTML tables) is in `results/full/mineru2.5-pro/full/md/`.
 
 **Repetition loops** (`detect_loops.py`, both runs): 92 pages flagged each (0.6%), but **Paddle has 34 runaway
@@ -456,3 +465,60 @@ loops** (a phrase ≥150×: `177_p031` "Month" ×2017, `104_p034` "I was" ×508,
 
 **Still to do:** re-run Paddle's flagged pages with `--repetition-penalty 1.05` on a future pod (F5) and merge;
 hand-check top of `disagreements.csv`.
+
+## 8. Main's parser-decision steps re-run on our corpus (2026-10-17 – 2026-10-19)
+
+Main (`5e35ee3`, `docs/parser-decision-2026-10-17.md`) chose **MinerU advanced** on its own five companies. Same
+steps, main's code unchanged, on our 369 PDFs and our two full runs: `parsing_eval/main_repl/` (how to re-run),
+outputs in `data/parsing_eval/main_repl/review/`. Our MinerU run is `parse_mode=ocr` (pure vision); main's MinerU
+took the PDF text layer for 214/228 PDFs, which its own doc lists as unresolved.
+
+**D. Number fidelity** (`number_check.py`: numbers ≥3 digits vs the PDF text layer on digital pages; "changed" = one
+digit off a printed number), per 10,000 output numbers:
+
+| | pages | MinerU | Paddle |
+|---|---|---|---|
+| as main runs it | 9,369 | 39.0 | 73.0 |
+| pages with a real text layer (`gold_reliable`) | 9,298 | 29.7 | 64.4 |
+| same, without doc 9 (Reliance AR 2017-18: shifted-glyph table fonts, ~525 false flags each) | 9,106 | **16.6** | **52.9** |
+| (main, its corpus) | 7,318 | 22 | 46 |
+
+Printed numbers missed: MinerU 9.6%, Paddle 7.7%. Manual audit of main's seeded 15 flags per parser: MinerU 11
+text-layer gaps (doc 9), 3 chart estimates, 1 invented text (Kannada page); Paddle 5 text-layer gaps, 5 loops /
+invented sequences, 3 misreads (`1,23,594`→`124594`, `100,00,00,000`→`100,000,000,000`, `0.00`→`0000`), 2 chart
+estimates. `review/number_fidelity/audit_sample.csv`.
+
+**B. Golden facts** read off page images (never parser output), main's samplers and seeds: v2 248 facts / 64 pages /
+51 docs (+7 decorative hallucination-check pages), v3 116 facts / 25 hand-picked hard pages / 20 docs (+3).
+`data/parsing_eval/main_repl/data/golden/`.
+
+**C. Score** (`cap-slice-score --clean`, L4 = label, value, column header and unit in one chunk):
+
+| | MinerU | Paddle |
+|---|---|---|
+| v2 (random strata) | **211**/248 | 209/248 |
+| v3 (hard pages) | **88**/116 | 85/116 |
+| pooled | **299**/364 | 294/364 |
+| v3 chart points | **14**/22 | 9/22 |
+| v2+v3 image-only pages | 35/52 | 35/52 |
+| v2 rotated scan (4 facts) | 0/4 | 3/4 (units-line chunking, both read the values identically) |
+
+Hallucination pages: both output little more than the slide title; Paddle adds stray glyphs (`▶`, `三`, `★`).
+
+**E. Every disagreement** (55 facts; `review/disagreements/classification.csv`): 23 unit/header line not in the chunk
+(same row in both), 5 chunker drops (text in the page output, in no chunk), 5 formatting (`&amp;`, LaTeX, spacing),
+17 content dropped by the parser — MinerU 13 (mostly whole charts: Reliance crack-spread and Kaynes charts, a donut,
+merged "Joint Ventures/Associates" cells), Paddle 4 (a bullet, a chart, and on one slide a price series estimated off a
+line chart instead of the printed table) — and 5 wrong row/column: **Paddle 4** (income block shifted one row:
+revenue values under "Income"; chart titles shifted one chart; 2019-20 EPS column dropped so 2018-19 values sit
+under 2019-20, scored L4; expense labels collapsed into one cell), **MinerU 1** (grouped-bar series shifted one year,
+scored L4; a second shift with an omission on the same slide).
+
+**Verdict:** main's direction holds on our data and without the text layer: MinerU has 2–3× fewer changed numbers,
+slightly more L4 facts, and fewer silent row/column errors; Paddle keeps more printed numbers and more charts.
+MinerU's chart drops are the image-block skip in §7 (patch to test). Main's cost argument does not carry over: on
+our pod the two ran at the same speed (MinerU 2.73, Paddle 2.85 pages/s; main measured 3.91 vs 2.57).
+
+**Decision (2026-10-19): MinerU 4.0.10 advanced tier (MinerU2.5-Pro, vLLM 0.28), `parse_mode=ocr`, is the PDF parser.**
+PaddleOCR-VL-1.6 is the runner-up. Open items: test the image-block patch (§7) for MinerU's unread charts; MinerU's chart
+tables can be axis estimates (`~` values) — keep them out of factual chunks unless verified.

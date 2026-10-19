@@ -11,6 +11,7 @@ venv/
 
 # Virtual environments
 .venv
+r2.env
 
 # Downloaded documents (large binaries; re-create with cap-slice-download)
 data/*/*/*.pdf

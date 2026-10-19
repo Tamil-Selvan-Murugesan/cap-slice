@@ -265,7 +265,7 @@ Then tell Claude the results are in `data/parsing_eval/results/bench/`: it reads
 
 ## Full-corpus run (PaddleOCR-VL-1.6, full vision)
 
-Decision and numbers: `notes.md` §5. Every page of all 369 selected PDFs (15,683 pages) with PaddleOCR-VL-1.6
+Numbers: `notes.md` §5 (Paddle was chosen there; superseded by MinerU in §8). Every page of all 369 selected PDFs (15,683 pages) with PaddleOCR-VL-1.6
 served by **vLLM 0.30** (`serve.sh paddle030`, ~2× faster than PaddleOCR's pinned vLLM 0.10.2, same output),
 **2 clients × concurrency 64** (~2.85 pages/s on typical pages → ~1.5 h on one RTX 5090).
 

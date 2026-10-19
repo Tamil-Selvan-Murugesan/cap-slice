@@ -3,7 +3,8 @@
 Code for comparing PDF parsers on our BSE/NSE filings and for building the evaluation sets used by the
 GPU benchmark in [`../vlm_bench/`](../vlm_bench/). Results and decisions: [`../vlm_bench/notes.md`](../vlm_bench/notes.md).
 
-**Outcome so far:** PaddleOCR-VL-1.6 (served by vLLM 0.30) on *every* page ("full vision") — most accurate of
+**Decision (2026-10-19): MinerU 4.0.10 advanced, `parse_mode=ocr`** — see `../vlm_bench/notes.md` §8
+(main's decision steps re-run on our data). Earlier outcome, now superseded: PaddleOCR-VL-1.6 (served by vLLM 0.30) on *every* page ("full vision") — most accurate of
 the three vision models tested (25/25 questions, number precision 0.99 on the hard-page set), reads charts into
 labelled tables, ~2.85 pages/s on one RTX 5090. The CPU baselines (pymupdf4llm, Docling) are exact on
 born-digital pages but fail on scans, scans with wrong embedded OCR layers, garbled-font text layers and charts.

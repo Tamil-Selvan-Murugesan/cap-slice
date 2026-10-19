@@ -34,7 +34,7 @@ Read `progress.md` for completed work, current counts, decisions and next steps.
 
 # Working practices
 
-- Keep changes focused on the user's requested stage. No vector database or embedding model has been selected yet. PDF parsing: PaddleOCR-VL-1.6 on every page (served by vLLM 0.30); evaluation code in `parsing_eval/` and `vlm_bench/`, results in `vlm_bench/notes.md`, generated data in `data/parsing_eval/` (never commit it).
+- Keep changes focused on the user's requested stage. No vector database or embedding model has been selected yet. PDF parsing: MinerU 4.0.10 advanced tier (MinerU2.5-Pro on vLLM 0.28), `parse_mode=ocr` (decided 2026-10-19, `vlm_bench/notes.md` §8; PaddleOCR-VL-1.6 is the runner-up); evaluation code in `parsing_eval/` and `vlm_bench/`, results in `vlm_bench/notes.md`, generated data in `data/parsing_eval/` (never commit it).
 - For collection/filter changes, prefer offline tests and saved exchange responses before requesting new downloads. `venv/bin/python -m unittest tests.test_nse_filtering` runs the existing NSE regression checks.
 - After changes affecting curation, run `venv/bin/python -m filings.curate` and inspect SQLite selection counts and affected records. Both collectors also curate automatically after a run.
 - Update `progress.md` after meaningful milestones with what changed, how it was verified, remaining limitations and the next useful action. Keep durable project rules in this file and session-specific status in `progress.md`.
