@@ -61,7 +61,7 @@ thing at a time.
 | Round | Variable | Options | Held at |
 |---|---|---|---|
 | 0 | — | baseline: current structure-aware chunker (after the known-bug fixes below, tagged), dense search only | — |
-| 1 | **Embedding model** | closed: **Voyage 4 Large** (API); open: **Nemotron 3 Embed 1B** (open weights) — both at 2048 dimensions (decided 2026-10-19, see below) | baseline chunker |
+| 1 | **Embedding model** | closed: **Voyage 4 Large** (API); open: **Nemotron 3 Embed 8B**, BF16 checkpoint (open weights) — compared at 2048 dimensions (decided 2026-10-19, see below) | baseline chunker |
 | 2 | **Chunking** | (a) baseline; (b) a context header on every chunk — company, doc type, period, section, page; (c) tables as their own chunks with an embedded one-line summary, full table returned; (d) per-type splits — one Q&A pair per concall chunk, one slide per chunk; (e) small-to-big | round-1 winner |
 | 3 | **Images** | A text only (what the parser reads from pictures); B generated per-image summaries embedded as text, flagged `generated`; C page-image embeddings (ColPali/ColQwen-style or a multimodal embedding model) for image-heavy pages; D = A + C routed by page type | round-2 winner |
 | 4 | **Search** | dense only vs hybrid (BM25 + dense, fused); then + a reranker on the top 50–100 | round-3 winner |
@@ -80,17 +80,17 @@ won and lost) rather than headline percentages.
 
 ### Embedding models (agreed 2026-10-19)
 
-| | Voyage 4 Large (closed) | Nemotron 3 Embed 1B (open) |
+| | Voyage 4 Large (closed) | Nemotron 3 Embed 8B, BF16 (open) — `nvidia/Nemotron-3-Embed-8B-BF16` |
 |---|---|---|
-| Access | Voyage API | open weights (OpenMDW-1.1, commercial use allowed; built on Ministral-3-3B, Apache 2.0) |
-| Context | 32K tokens | 32K tokens |
-| Dimensions | 1024 default; 256/512/2048 | 2048 native; 512/1024 |
-| Used at | **2048** | **2048** — same size for both, so dimension doesn't decide the result |
-| Query vs document | `input_type="query"` / `"document"` | prefixes `query: ` / `passage: ` are required (the plain `encode()` call adds none — quality drops silently without them) |
-| Cost / compute | ~34M tokens for the corpus, ~$4 at ~$0.12/M (third-party price — confirm on Voyage's pricing page before running) | free; CPU on this laptop is likely too slow — time 200 chunks first, else a short GPU session or a hosted endpoint |
+| Access | Voyage API | open weights (OpenMDW-1.1, commercial use allowed; built on Ministral-3-8B-Instruct-2512, Apache 2.0) |
+| Context | 32K tokens | 32K tokens (NVIDIA evaluated at 4096) |
+| Dimensions | 1024 default; 256/512/2048 | 4096 native; can be cut to the first 2048 or 1024 and L2-renormalised |
+| Compared at | **2048** (its largest) | **2048** (first 2048 dims, renormalised) — same size, so dimension doesn't decide the result; native 4096 scored once as a side check if disk allows |
+| Query vs document | `input_type="query"` / `"document"` | Sentence Transformers `encode_query` / `encode_document` apply the saved prompts; with plain Transformers or vLLM the `query: ` / `passage: ` prefixes must be added by hand (quality drops silently without them) |
+| Cost / compute | ~34M tokens for the corpus, ~$4 at ~$0.12/M (third-party price — confirm on Voyage's pricing page before running) | ~16 GB of BF16 weights: **needs a GPU** (Ampere or newer; NVIDIA tested A100/H100 80 GB; a 32 GB RTX 5090 fits). Not feasible on this laptop's CPU. Options: a short RunPod session (Sentence Transformers ≥ 5.4.1 / Transformers ≥ 5.2.0, or vLLM 0.25) or a hosted endpoint (DeepInfra, Fireworks) |
 
-Disk: ~330 MB of vectors plus ~50 MB of text per collection at 40,593 chunks × 2048 floats; check
-`df -h /mnt/c` first (C: had 2.1 GB free on 2026-10-19).
+Disk: ~330 MB of vectors plus ~50 MB of text per collection at 40,593 chunks × 2048 floats (~665 MB at
+4096); check `df -h /mnt/c` first (C: had 2.1 GB free on 2026-10-19).
 
 ### Vector store and metadata (agreed 2026-10-19)
 
@@ -104,8 +104,26 @@ all metadata is payload only. Writing metadata *into* the embedded text (a conte
 | Group | Fields | Source |
 |---|---|---|
 | Provenance (citations, debugging) | `doc_id`, `path`, `company`, `symbol`, `listing_tier`, `doc_type`, `period_label`, `filed_date`, `source_url`, `chunk_index`, `page_start`, `page_end`, `text` | matrix + chunker |
-| Filters (values a question can supply) | `symbol`, `doc_type`, **`fiscal_year`** (int, year the FY ends: FY2018-19 → 2019, Q3 FY24 → 2024), **`period_kind`** (`annual` / `quarter` / `half_year` / `event`), `chunk_kind` (`table` / `text`), `section` | new normaliser for `fiscal_year` / `period_kind` from `period_label` + `filed_date`; chunker |
-| Bookkeeping | `parser`, `chunker_version` (git tag), `embedding_model`, `image_only_page` (page inventory), `generated` (round 3 summaries) | run settings |
+| Filters (values a question can supply) | `symbol`, `doc_type`, **`fiscal_year`** (int, year the FY ends: FY2018-19 → 2019, Q3 FY24 → 2024), **`period_kind`** (`annual` / `quarter` / `half_year` / `event`), `chunk_kind` (`table` / `text`), `section` | `periods.py` normaliser (below); chunker |
+| Bookkeeping | `period`, `period_source`, `parser`, `chunker_version` (git tag), `embedding_model`, `image_only_page` (page inventory), `generated` (round 3 summaries) | run settings |
+
+**Period normaliser** (`src/cap_slice/periods.py`, built 2026-10-19). Adds `fiscal_year`, `period_kind`,
+`period` ("Q3 FY24") and `period_source` to every document:
+- `label` — annual reports and results: read from the catalogue label (`FY2018-19` → 2019, `Q4/FY2025-26` →
+  Q4 FY26, `H1 FY26` → H1 FY26).
+- `event_rule` — concalls and decks are labelled by the month of the event, not the period discussed, so
+  they get the latest quarter that ended before that month (Aug 2026 → Q1 FY27 → 2027); for NSE SME
+  companies, which file half-yearly, the latest half-year (C2C Aug 2026 → H2 FY26 → 2026).
+- `override` — `data/period_overrides.csv`, where the document itself states a different period.
+
+Checked against the documents (`uv run cap-slice-periods` → `review/periods/`): the first 10 pages of all
+228 documents were searched for the period they state ("Q1 FY27", "quarter ended June 30, 2026", "H1 FY26",
+"Annual Report 2018-19"). 173 state exactly the normalised period, 5 the same fiscal year, 48 state none
+(38 general corporate decks, 8 investor-day / broker-conference calls — the event rule stays), 3 disagree:
+APAR's Jul-2020 call is on Q4 FY20 (COVID-delayed results) and Esconet's Aug-2026 call on Q1 FY27 (an SME
+company now holding quarterly calls) — both overridden; E2E's FY2021-22 report was flagged only because the
+parser misread its image-only cover ("ANNUAL REPORT 2022" as "2022-23"; the body says year ended March 2022
+132 times) — no override.
 
 Left out for now: standalone vs consolidated and units — users ask about them, but there is no reliable
 source yet, and a wrong label used as a filter makes the right page unreachable. Revisit after round 2.

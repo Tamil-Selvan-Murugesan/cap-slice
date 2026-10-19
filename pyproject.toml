@@ -28,6 +28,7 @@ cap-slice-parse = "cap_slice.batch_parse:main"
 cap-slice-score = "cap_slice.score:main"
 cap-slice-retrieval-score = "cap_slice.retrieval_score:main"
 cap-slice-retrieval-bm25 = "cap_slice.retrieval_bm25:main"
+cap-slice-periods = "cap_slice.periods:main"
 
 [build-system]
 requires = ["uv_build>=0.12.5,<0.13.0"]
