@@ -2,6 +2,7 @@
 export WS=/workspace
 export HF_HOME=$WS/hf_cache
 export PADDLE_PDX_CACHE_HOME=$WS/paddlex_cache
+export MINERU_HOME=$WS/mineru_home       # MinerU small models + config
 export UV_CACHE_DIR=$WS/uv_cache
 export P=$WS/data/pages                 # rendered pages + manifests
 export RESULTS=$WS/results
