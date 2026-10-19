@@ -2,6 +2,14 @@
 
     uv run cap-slice-retrieval-bm25 --parser mineru --cache parsed_advanced --out review/retrieval/bm25.jsonl
     uv run cap-slice-retrieval-bm25 ... --filter-company    # search only the question's company
+    uv run cap-slice-retrieval-bm25 ... --filter question_next --soft
+
+Filters (docs/plan.md, Filters): `company` (the question's company), `question` (company + fiscal years +
+doc type from query_reader.read(), which sees only the question), `question_next` (the same, also keeping
+the following fiscal year), `answer_key` (the gold document's own metadata: an upper bound, never a
+production number). Hard (default) searches only the documents the filter keeps; --soft searches
+everything and multiplies a chunk's score by SOFT_BOOST for each filter field its document matches.
+SOFT_BOOST was fixed before the first run and is not tuned on the question set.
 
 Builds the chunk corpus the experiments use (every document in the cache -> page_clean.py ->
 structured_chunk.py; the same path as cap-slice-score --clean), ranks chunks for each question with
@@ -25,6 +33,7 @@ from cap_slice.downloader import REPO_ROOT
 from cap_slice.retrieval_score import load_questions
 
 TOKEN = re.compile(r"[a-z]+|\d[\d,]*(?:\.\d+)?")
+SOFT_BOOST = 1.5
 STOP = set("a an and are as at be by did do does for from has have how in is it its of on or the to "
            "was what when where which who why with".split())
 
@@ -91,20 +100,39 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--out", type=Path, default=Path("review/retrieval/bm25.jsonl"))
     ap.add_argument("--chunks", type=Path, help="corpus cache (default <cache>/_chunks/<parser>.jsonl, gitignored)")
     ap.add_argument("--top", type=int, default=50)
-    ap.add_argument("--filter-company", action="store_true", help="restrict each search to the question's company")
+    ap.add_argument("--filter-company", action="store_true", help="same as --filter company")
+    ap.add_argument("--filter", choices=["none", "company", "question", "question_next", "answer_key"], default="none")
+    ap.add_argument("--soft", action="store_true", help="boost matching documents instead of excluding the rest")
     args = ap.parse_args(argv)
+    if args.filter_company:
+        args.filter = "company"
 
     chunks_path = args.chunks or args.cache / "_chunks" / f"{args.parser}.jsonl"
     chunks = load_or_build(chunks_path, args.cache, args.parser)
     index = BM25([tokens(c["section"] + "\n" + c["text"]) for c in chunks])
-    by_company = collections.defaultdict(set)
-    for i, c in enumerate(chunks):
-        by_company[c["doc"].split("/")[1]].add(i)
+    meta = {}
+    if args.filter != "none":
+        from cap_slice.query_reader import answer_key_filter, doc_meta, keeps, read
+        meta = doc_meta()
+    fields = {"none": (), "company": ("symbol",), "question": ("symbol", "year", "doc_type"),
+              "question_next": ("symbol", "year", "doc_type"), "answer_key": ("symbol", "year", "doc_type")}[args.filter]
+    nxt = args.filter == "question_next"
 
     lines = []
     for q in load_questions():
-        allowed = by_company[q["symbol"]] if args.filter_company else None
-        scores = index.search(tokens(q["question"]), allowed)
+        if args.filter == "none":
+            scores = index.search(tokens(q["question"]))
+        else:
+            f = answer_key_filter(q, meta) if args.filter == "answer_key" else read(q["question"])
+            docs = {c["doc"] for c in chunks}
+            if args.soft:
+                matched = {d: sum(keeps(f, meta[d], (fld,), nxt) for fld in fields) for d in docs}
+                scores = {i: s * SOFT_BOOST ** matched[chunks[i]["doc"]]
+                          for i, s in index.search(tokens(q["question"])).items()}
+            else:
+                kept = {d for d in docs if keeps(f, meta[d], fields, nxt)}
+                allowed = {i for i, c in enumerate(chunks) if c["doc"] in kept}
+                scores = index.search(tokens(q["question"]), allowed)
         top = sorted(scores.items(), key=lambda kv: -kv[1])[:args.top]
         lines.append(json.dumps({"qid": q["qid"], "results": [
             {"doc": chunks[i]["doc"], "chunk": chunks[i]["chunk"], "page_start": chunks[i]["page_start"],
@@ -113,7 +141,8 @@ def main(argv: list[str] | None = None) -> int:
     args.out.write_text("\n".join(lines) + "\n")
     meta = {"retriever": "bm25", "parser": args.parser, "cache": str(args.cache), "chunks": str(chunks_path),
             "n_chunks": len(chunks), "documents": len({c["doc"] for c in chunks}),
-            "filter_company": args.filter_company, "top": args.top}
+            "filter": args.filter, "soft": args.soft, "soft_boost": SOFT_BOOST if args.soft else None,
+            "top": args.top}
     args.out.with_suffix(".meta.json").write_text(json.dumps(meta, indent=1))
     print(f"{len(chunks)} chunks from {meta['documents']} documents; wrote {args.out}")
     return 0

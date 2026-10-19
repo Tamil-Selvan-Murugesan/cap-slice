@@ -27,6 +27,7 @@ Target: roughly 2015–2026 (or from listing date if later), eventually for ~3,0
 |---|---|
 | `data/document_availability_matrix.csv` | Pilot catalog: one row per document, 5 companies |
 | `docs/plan.md` | Agreed plan for scaling to all 12,980 pages (golden set → GPU parse with Docling + MinerU → parser choice → retrieval → chunking → embeddings) |
+| `docs/architecture.md` | **Map of all components and their status** (Mermaid diagram + table) — update it whenever a component is added, replaced or changes status |
 | `docs/document-sourcing-report.md` | Findings report: sources, workarounds, ToS, scaling issues, open questions |
 | `docs/pdf-parsers-pymupdf4llm-vs-docling.md` | Explainer: what PyMuPDF4LLM and Docling do, their models, how each does OCR, and our measured results |
 | `docs/media/pymupdf4llm-vs-docling.mp4`, `tools/explainer_video/` | 3-min captioned video of both parsers on one scanned page (real outputs), and the scripts that build it |
@@ -42,6 +43,7 @@ Target: roughly 2015–2026 (or from listing date if later), eventually for ~3,0
 | `src/cap_slice/parsing/mineru_vlm.py`, `html_table.py` | MinerU 4 adapter (MinerU2.5-Pro via a VLM server; tier `standard`/`advanced`) and HTML-table → pipe-table converter |
 | `src/cap_slice/parsing/paddleocr_vl.py`, `tools/gpu/setup_paddleocr_vl.sh`, `docs/paddleocr-vl.md` | Option 5: PaddleOCR-VL-1.6 (layout model + 0.9B VLM on vLLM 0.30), settings from the co-founder's `main-sirisha` evaluation; own envs `paddle` + `vllm030` |
 | `src/cap_slice/periods.py` (`cap-slice-periods`), `data/period_overrides.csv` | Period normaliser: `fiscal_year` / `period_kind` / `period` for every document (label, event-month rule, or checked override), and a check against the periods the documents state → `review/periods/` |
+| `src/cap_slice/retrieval_score.py`, `retrieval_bm25.py`, `query_reader.py` (`cap-slice-retrieval-score`, `-retrieval-bm25`, `-query-reader`) | Retrieval experiments: scorer for the 200-question set, BM25 baseline with filter setups (`--filter`, `--soft`), rules-based question reader → `review/retrieval/`, `review/query_reader/` |
 | `src/cap_slice/score.py` (`cap-slice-score`) | Scores a parser's cache against golden v2 (default) or v1 (`--facts data/golden/parse_facts.csv --out review/v1`) → `review/<set>/<parser>.md` |
 | `docker/`, `tools/gpu/`, `docs/gpu-run.md` | Pinned GPU environments (`docker/requirements-*-{cu130,cu128}.txt`), Dockerfiles, RunPod setup (`setup_runpod.sh`: venvs, since pods can't run Docker), session scripts (`session.sh`: smoke / bench / full runs for all four parsers / `compare`), benchmark builder/report, `full_report.py` (exhaustive comparison of the full runs → `review/gpu/COMPARISON.md`), and the copy-paste runbook |
 | `parsed*/` | Batch caches (gitignored; synced with rsync) |

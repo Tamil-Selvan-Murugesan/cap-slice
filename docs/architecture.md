@@ -1,0 +1,134 @@
+# Architecture
+
+How the pieces fit together, and the state of each. **Update this page whenever a component is added,
+replaced or changes status** (and say so in `PROGRESS.md`). The diagram is Mermaid: GitHub renders it, and
+it is edited as text.
+
+**Last updated:** 2026-10-19
+
+```mermaid
+flowchart TB
+    classDef done fill:#d8f0d8,stroke:#2e7d32,color:#000
+    classDef next fill:#fff1c2,stroke:#b8860b,color:#000
+    classDef planned fill:#eeeeee,stroke:#888,color:#000,stroke-dasharray:4 3
+    classDef data fill:#e3ecfa,stroke:#3a5ea8,color:#000
+
+    subgraph ACQ["1 · Acquisition"]
+        SCR["Screener.in<br/>(index only)"]
+        MAT[("document_availability_matrix.csv<br/>267 rows")]
+        DL["downloader.py<br/>cap-slice-download"]
+        PDF[("data/&lt;SYMBOL&gt;/…pdf<br/>228 PDFs · 12,980 pages")]
+        SCR --> MAT --> DL --> PDF
+    end
+
+    subgraph PARSE["2 · Parsing (GPU run 2026-10-04)"]
+        MIN["MinerU 2.5-Pro advanced<br/>(chosen, 2026-10-17)"]
+        PAD["PaddleOCR-VL 1.6<br/>(challenger)"]
+        CACHE[("parsed_advanced/mineru/<br/>pages.json per doc")]
+        CLEAN["page_clean.py<br/>shared clean-up"]
+        PDF --> MIN --> CACHE --> CLEAN
+        PDF -.-> PAD
+    end
+
+    subgraph CHUNK["3 · Chunking"]
+        SC["structured_chunk.py<br/>tag chunker-baseline-2026-10-18"]
+        CORP[("_chunks/mineru.jsonl<br/>40,593 chunks")]
+        CLEAN --> SC --> CORP
+    end
+
+    subgraph META["4 · Metadata"]
+        PER["periods.py<br/>fiscal_year · period_kind · period"]
+        OVR[("period_overrides.csv")]
+        PAY["payload schema<br/>(docs/plan.md)"]
+        MAT --> PER
+        OVR --> PER --> PAY
+    end
+
+    subgraph INDEX["5 · Indexes"]
+        BM["BM25 keyword index<br/>retrieval_bm25.py"]
+        EMB["Embedders<br/>Voyage 4 Large (API) ·<br/>Nemotron 3 Embed 8B BF16 (GPU)"]
+        QD[("Qdrant (local)<br/>one collection per setup")]
+        CORP --> BM
+        CORP --> EMB --> QD
+        PAY --> QD
+    end
+
+    subgraph QUERY["6 · Query time"]
+        Q(["User question"])
+        QR["query_reader.py<br/>→ company · fiscal years · doc type"]
+        FIL["Filters<br/>hard / soft"]
+        RET["Retriever<br/>BM25 · dense · hybrid"]
+        RR["Reranker<br/>(round 4)"]
+        ANS["Answer step<br/>(quotes printed figures only)"]
+        Q --> QR --> FIL --> RET --> RR --> ANS
+        PER -.->|same fiscal-year scale| FIL
+        BM --> RET
+        QD --> RET
+    end
+
+    subgraph EVAL["7 · Evaluation"]
+        GOLD[("Golden facts v1/v2/v3<br/>28 + 150 + 123")]
+        PSC["cap-slice-score<br/>parse quality L1–L4"]
+        RQ[("Retrieval set<br/>200 questions")]
+        RSC["cap-slice-retrieval-score<br/>R@k · MRR · paired sign test"]
+        PCK["cap-slice-periods<br/>period check"]
+        QRE["cap-slice-query-reader<br/>reader accuracy"]
+        ANE["Answer accuracy<br/>(after retrieval)"]
+        GOLD --> PSC
+        RQ --> RSC
+        RQ --> QRE
+    end
+
+    CLEAN -.-> PSC
+    SC -.-> PSC
+    RET -.->|ranked chunks| RSC
+    QR -.-> QRE
+    PER -.-> PCK
+    ANS -.-> ANE
+
+    class SCR,DL,MIN,PAD,CLEAN,SC,PER,BM,QR,FIL,PSC,RSC,PCK,QRE done
+    class EMB,QD,PAY next
+    class RR,ANS,ANE planned
+    class MAT,PDF,CACHE,CORP,OVR,GOLD,RQ data
+    class RET next
+```
+
+Legend: green = built and checked · yellow = next (round 1) · grey dashed = planned · blue = data.
+Solid arrows = data flow; dotted arrows = what each evaluation tool reads.
+
+## Components
+
+| # | Component | Code / data | Status | Notes |
+|---|---|---|---|---|
+| 1 | Catalogue | `data/document_availability_matrix.csv` | done | Discovery via Screener.in; archive URLs recorded, not Screener |
+| 1 | Downloader | `downloader.py` (`cap-slice-download`) | done | Sequential, throttled; unpacks NSE ZIPs |
+| 2 | Parser | MinerU 2.5-Pro advanced → `parsed_advanced/` | done | Chosen 2026-10-17 (`docs/parser-decision-2026-10-17.md`); Paddle kept as challenger |
+| 2 | Clean-up | `page_clean.py` | done | Same for every parser; held fixed in the experiments |
+| 3 | Chunker | `structured_chunk.py`, tag `chunker-baseline-2026-10-18` | done | Round 2 varies it (context header, table chunks, per-type splits, small-to-big) |
+| 4 | Period normaliser | `periods.py`, `data/period_overrides.csv` | done | Label / event-month rule / checked override; `review/periods/` |
+| 4 | Payload schema | `docs/plan.md` § Vector store and metadata | next | Written when the Qdrant collections are built |
+| 5 | Keyword index | `retrieval_bm25.py` | done | Baseline and the keyword half of round 4 |
+| 5 | Embedders | Voyage 4 Large · Nemotron 3 Embed 8B (BF16) | next | Round 1, both at 2048 dims; Nemotron needs a GPU |
+| 5 | Vector store | Qdrant local, `r<round>__<model>__<chunker>` | next | `vectorstore.py` exists from the legacy indexer |
+| 6 | Question reader | `query_reader.py` | done | Rules only; an LLM reader is a possible later comparison |
+| 6 | Filters | `--filter` / `--soft` in `retrieval_bm25.py` | done | No filter · company · question-based (± next year) · answer key (upper bound) |
+| 6 | Hybrid + reranker | — | planned | Round 4 |
+| 6 | Answer step | — | planned | Must not quote `generated` content as printed figures |
+| 7 | Parse scorer | `score.py` / `compare_parsers.py` | done | Golden v1–v3, levels L1–L4 |
+| 7 | Retrieval scorer | `retrieval_score.py` | done | Strict and lenient answer keys, per-group, paired sign test |
+| 7 | Answer accuracy | — | planned | Same 200 questions, once the answer step exists |
+
+**Legacy, not used by the experiments:** `extract.py` → `chunk.py` → `embed.py` → `vectorstore.py`
+(`cap-slice-index`): PyMuPDF text, flat ~500-word chunks, `voyage-finance-2`. Nothing has been indexed
+with it. Round 1 replaces its inputs (MinerU chunks, new models) and reuses the Qdrant wrapper.
+
+## Current numbers (keyword search, strict R@10)
+
+| Filter | R@10 |
+|---|---|
+| None | 0.41 |
+| Company | 0.47 |
+| Question-based (company + year + doc type) | **0.66** |
+| Answer key (upper bound) | 0.73 |
+
+Details: `review/retrieval/README.md`.
