@@ -4,7 +4,7 @@ How the pieces fit together, and the state of each. **Update this page whenever 
 replaced or changes status** (and say so in `PROGRESS.md`). The diagram is Mermaid: GitHub renders it, and
 it is edited as text.
 
-**Last updated:** 2026-10-19 (round 1, Voyage)
+**Last updated:** 2026-10-19 (round 1 done)
 
 ```mermaid
 flowchart TB
@@ -46,7 +46,7 @@ flowchart TB
 
     subgraph INDEX["5 · Indexes"]
         BM["BM25 keyword index<br/>retrieval_bm25.py"]
-        EMB["retrieval_dense.py<br/>Voyage 4 Large (API) ·<br/>Nemotron 3 Embed 8B BF16 (hosted)"]
+        EMB["retrieval_dense.py<br/>Voyage 4 Large (chosen) ·<br/>Nemotron 3 Embed 8B (round 5)"]
         QD[("Qdrant server 1.19.1 (local)<br/>HNSW · payload indexes<br/>one collection per setup")]
         CORP --> BM
         CORP --> EMB --> QD
@@ -108,7 +108,7 @@ Solid arrows = data flow; dotted arrows = what each evaluation tool reads.
 | 4 | Period normaliser | `periods.py`, `data/period_overrides.csv` | done | Label / event-month rule / checked override; `review/periods/` |
 | 4 | Payload schema | `docs/plan.md` § Vector store and metadata | done | Written into every point by `retrieval_dense.py load` |
 | 5 | Keyword index | `retrieval_bm25.py` | done | Baseline and the keyword half of round 4 |
-| 5 | Embedders | `retrieval_dense.py` (`cap-slice-retrieval-dense count / embed / load / search`): Voyage 4 Large · Nemotron 3 Embed 8B (BF16) | Voyage done, Nemotron next | Round 1, both at 2048 dims; batches saved before the next request (resumable); Nemotron via a hosted endpoint, own branch |
+| 5 | Embedders | `retrieval_dense.py` (`cap-slice-retrieval-dense count / embed / load / search`): Voyage 4 Large · Nemotron 3 Embed 8B (BF16) | done — Voyage 4 Large chosen | Round 1, both at 2048 dims; batches saved before the next request (resumable); Nemotron via a hosted endpoint, own branch |
 | 5 | Vector store | Qdrant server v1.19.1 run locally (`tools/qdrant/serve.sh`), collections `r<round>__<model>-<dim>__<chunker>` | done | HNSW m 16 / ef_construct 128; payload indexes on the filter fields; exact search as a check |
 | 6 | Question reader | `query_reader.py` | done | Rules only; an LLM reader is a possible later comparison |
 | 6 | Filters | `--filter` / `--soft` in `retrieval_bm25.py` | done | No filter · company · question-based (± next year) · answer key (upper bound) |
@@ -124,11 +124,11 @@ with it. The experiments use `retrieval_dense.py` instead (MinerU chunks, new mo
 
 ## Current numbers (strict R@10, 200 questions)
 
-| Filter | Keyword (BM25) | Voyage 4 Large |
-|---|---|---|
-| None | 0.41 | 0.68 |
-| Company | 0.47 | 0.69 (soft) |
-| Question-based (company + year + doc type) | 0.66 | **0.81** (soft) |
-| Answer key (upper bound) | 0.73 | 0.86 (soft) |
+| Filter | Keyword (BM25) | Voyage 4 Large | Nemotron 3 Embed 8B |
+|---|---|---|---|
+| None | 0.41 | 0.68 | 0.59 |
+| Company | 0.47 | 0.69 (soft) | 0.63 |
+| Question-based (company + year + doc type) | 0.66 | **0.81** (soft) | 0.76 |
+| Answer key (upper bound) | 0.73 | 0.86 (soft) | 0.81 |
 
 Details: `review/retrieval/README.md`.

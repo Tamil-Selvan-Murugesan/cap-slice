@@ -27,13 +27,20 @@ search The 200 questions (input_type "query", cached), top 50 per question -> ru
 --dry-run N  embed / load / search only the first N chunks (and the first 3 questions) into a separate
              vectors folder and a `dryrun__` collection: checks the whole path for a few cents.
 
-Providers: `voyage` (VOYAGE_API_KEY). Another provider (e.g. a hosted Nemotron endpoint) only needs an
-Embedder with embed(texts, input_type) and count(texts).
+Providers:
+  voyage   Voyage API (VOYAGE_API_KEY); input_type does the query/document prompts.
+  openai   any OpenAI-compatible /v1/embeddings server, e.g. a self-hosted Nemotron 3 Embed 8B:
+           --endpoint (or EMBED_ENDPOINT), key from --key-env (default NEMOTRON_API_KEY), `dimensions` sent
+           with every request. Nemotron's /v1/embeddings ignores input_type, so the retrieval prompts are
+           added here (--doc-prefix "passage: ", --query-prefix "query: "); without them quality drops
+           silently. Token counts are estimated (chars / 3) for batching; the server's counts are logged.
+           Requests run --workers at a time.
 """
 
 from __future__ import annotations
 
 import argparse
+import concurrent.futures
 import csv
 import hashlib
 import json
@@ -61,6 +68,8 @@ PRICES = {"voyage-4-large": 0.12}  # USD per 1M tokens, docs.voyageai.com/docs/p
 
 
 class VoyageEmbedder:
+    max_texts, max_tokens, workers = MAX_TEXTS, MAX_TOKENS, 1
+
     def __init__(self, model: str, dim: int, need_key: bool = True):
         import voyageai
         self.model, self.dim = model, dim
@@ -77,9 +86,54 @@ class VoyageEmbedder:
         return np.asarray(r.embeddings, dtype=np.float32), r.total_tokens
 
 
+class OpenAICompatEmbedder:
+    """OpenAI-compatible /v1/embeddings (self-hosted Nemotron 3 Embed); prompts added client-side."""
+    max_texts, max_tokens = 32, 24_000
+
+    def __init__(self, model: str, dim: int, endpoint: str, key_env: str, prefixes: dict[str, str],
+                 workers: int = 4, need_key: bool = True):
+        import requests
+        self.model, self.dim, self.prefixes, self.workers = model, dim, prefixes, workers
+        self.url = endpoint.rstrip("/") + ("" if endpoint.rstrip("/").endswith("/v1/embeddings") else "/v1/embeddings")
+        key = os.environ.get(key_env, "") if need_key else ""
+        if need_key and not key:
+            raise SystemExit(f"{key_env} is not set")
+        self.session = requests.Session()
+        self.session.headers["Authorization"] = f"Bearer {key}"
+
+    def count(self, texts: list[str]) -> list[int]:
+        return [len(t) // 3 + 1 for t in texts]  # estimate, for batching only
+
+    def embed(self, texts: list[str], input_type: str) -> tuple[np.ndarray, int]:
+        body = {"model": self.model, "input": [self.prefixes[input_type] + t for t in texts], "dimensions": self.dim}
+        for attempt in range(6):
+            try:
+                r = self.session.post(self.url, json=body, timeout=300)
+                if r.status_code < 500 and r.status_code != 429:
+                    r.raise_for_status()
+                    j = r.json()
+                    data = sorted(j["data"], key=lambda d: d["index"])
+                    return (np.asarray([d["embedding"] for d in data], dtype=np.float32),
+                            j.get("usage", {}).get("total_tokens", 0))
+            except Exception:
+                if attempt == 5:
+                    raise
+            time.sleep(2 ** attempt)
+        raise SystemExit(f"{self.url}: failed after retries (HTTP {r.status_code}: {r.text[:200]})")
+
+
+PROVIDER_ARGS: dict = {}  # set from the command line
+
+
 def embedder(provider: str, model: str, dim: int, need_key: bool = True):
     if provider == "voyage":
         return VoyageEmbedder(model, dim, need_key)
+    if provider == "openai":
+        a = PROVIDER_ARGS
+        if not a.get("endpoint"):
+            raise SystemExit("--endpoint (or EMBED_ENDPOINT) is required for provider openai")
+        return OpenAICompatEmbedder(model, dim, a["endpoint"], a["key_env"],
+                                    {"document": a["doc_prefix"], "query": a["query_prefix"]}, a["workers"], need_key)
     raise SystemExit(f"unknown provider {provider!r}")
 
 
@@ -92,7 +146,8 @@ def load_chunks() -> list[dict]:
 
 
 def tag(model: str, dim: int) -> str:
-    return f"{model}-{dim}" + (f"-dryrun{DRY_RUN}" if DRY_RUN else "")
+    """Folder / collection tag: nvidia/Nemotron-3-Embed-8B-BF16 -> nemotron-3-embed-8b-bf16-2048."""
+    return f"{model.split('/')[-1].lower()}-{dim}" + (f"-dryrun{DRY_RUN}" if DRY_RUN else "")
 
 
 def client():
@@ -100,10 +155,10 @@ def client():
     return QdrantClient(url=QDRANT_URL, timeout=300)
 
 
-def batches(ntok: list[int]) -> list[tuple[int, int]]:
+def batches(ntok: list[int], max_texts: int = MAX_TEXTS, max_tokens: int = MAX_TOKENS) -> list[tuple[int, int]]:
     out, start, used = [], 0, 0
     for i, n in enumerate(ntok):
-        if i > start and (used + n > MAX_TOKENS or i - start >= MAX_TEXTS):
+        if i > start and (used + n > max_tokens or i - start >= max_texts):
             out.append((start, i))
             start, used = i, 0
         used += n
@@ -113,10 +168,12 @@ def batches(ntok: list[int]) -> list[tuple[int, int]]:
 
 def cmd_count(args) -> int:
     chunks = load_chunks()
-    ntok = embedder(args.provider, args.model, args.dim, need_key=False).count([c["text"] for c in chunks])
+    emb = embedder(args.provider, args.model, args.dim, need_key=False)
+    ntok = emb.count([c["text"] for c in chunks])
     total = sum(ntok)
     price = PRICES.get(args.model)
-    print(f"{len(chunks):,} chunks, {total:,} tokens (max {max(ntok):,}), {len(batches(ntok))} requests"
+    print(f"{len(chunks):,} chunks, {total:,} tokens (max {max(ntok):,}), "
+          f"{len(batches(ntok, emb.max_texts, emb.max_tokens))} requests"
           + (f"; ${total / 1e6 * price:.2f} at ${price}/1M tokens" if price else ""))
     return 0
 
@@ -131,17 +188,18 @@ def cmd_embed(args) -> int:
     corpus_hash = hashlib.sha256(CHUNKS.read_bytes()).hexdigest()  # of the whole file, also in a dry run
     if manifest.exists() and json.loads(manifest.read_text())["corpus_sha256"] != corpus_hash:
         raise SystemExit(f"{out} was embedded from a different chunk file; move it away first")
-    manifest.write_text(json.dumps({"model": args.model, "dim": args.dim, "provider": args.provider,
+    extra = ({"prefixes": emb.prefixes, "served_by": "self-hosted OpenAI-compatible server"}
+             if args.provider == "openai" else {})
+    manifest.write_text(json.dumps({"model": args.model, "dim": args.dim, "provider": args.provider, **extra,
                                     "corpus": str(CHUNKS.relative_to(REPO_ROOT)), "corpus_sha256": corpus_hash,
                                     "n_chunks": len(chunks), "chunker_version": CHUNKER_VERSION}, indent=1))
-    plan = batches(emb.count(texts))
+    plan = batches(emb.count(texts), emb.max_texts, emb.max_tokens)
     log = out / "log.jsonl"
-    done = sum((out / f"{a:06d}-{b:06d}.npy").exists() for a, b in plan)
-    print(f"{len(plan)} requests, {done} already done")
-    for k, (a, b) in enumerate(plan):
+    todo = [(k, a, b) for k, (a, b) in enumerate(plan) if not (out / f"{a:06d}-{b:06d}.npy").exists()]
+    print(f"{len(plan)} requests, {len(plan) - len(todo)} already done, {emb.workers} at a time")
+
+    def one(k: int, a: int, b: int) -> str:
         shard = out / f"{a:06d}-{b:06d}.npy"
-        if shard.exists():
-            continue
         t = time.time()
         vecs, used = emb.embed(texts[a:b], "document")
         assert vecs.shape == (b - a, args.dim), vecs.shape
@@ -150,7 +208,14 @@ def cmd_embed(args) -> int:
         with log.open("a") as f:
             f.write(json.dumps({"shard": shard.name, "texts": b - a, "tokens": used,
                                 "seconds": round(time.time() - t, 2), "at": time.strftime("%Y-%m-%dT%H:%M:%S")}) + "\n")
-        print(f"[{k + 1}/{len(plan)}] chunks {a}-{b}: {used:,} tokens, {time.time() - t:.1f}s", flush=True)
+        return f"[{k + 1}/{len(plan)}] chunks {a}-{b}: {used:,} tokens, {time.time() - t:.1f}s"
+
+    t0 = time.time()
+    with concurrent.futures.ThreadPoolExecutor(emb.workers) as pool:
+        for i, fut in enumerate(concurrent.futures.as_completed([pool.submit(one, *x) for x in todo]), 1):
+            msg = fut.result()
+            if i % max(1, len(todo) // 50) == 0 or i == len(todo):
+                print(f"{msg}  ({i}/{len(todo)} this run, {time.time() - t0:.0f}s)", flush=True)
     return 0
 
 
@@ -191,7 +256,7 @@ def payloads(chunks: list[dict], model: str) -> list[dict]:
 
 
 def collection_name(model: str, dim: int) -> str:
-    return ("dryrun__" if DRY_RUN else "r1__") + f"{model}-{dim}__baseline"
+    return ("dryrun__" if DRY_RUN else "r1__") + f"{model.split('/')[-1].lower()}-{dim}__baseline"
 
 
 def cmd_load(args) -> int:
@@ -299,7 +364,12 @@ def cmd_search(args) -> int:
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("command", choices=["count", "embed", "load", "search"])
-    ap.add_argument("--provider", default="voyage")
+    ap.add_argument("--provider", default="voyage", choices=["voyage", "openai"])
+    ap.add_argument("--endpoint", default=os.environ.get("EMBED_ENDPOINT"), help="provider openai: server base URL")
+    ap.add_argument("--key-env", default="NEMOTRON_API_KEY", help="provider openai: env var holding the API key")
+    ap.add_argument("--doc-prefix", default="passage: ")
+    ap.add_argument("--query-prefix", default="query: ")
+    ap.add_argument("--workers", type=int, default=4, help="provider openai: concurrent requests")
     ap.add_argument("--model", default="voyage-4-large")
     ap.add_argument("--dim", type=int, default=2048)
     ap.add_argument("--filter", choices=["none", "company", "question", "question_next", "answer_key"], default="none")
@@ -311,6 +381,8 @@ def main(argv: list[str] | None = None) -> int:
     args = ap.parse_args(argv)
     global DRY_RUN
     DRY_RUN = args.dry_run
+    PROVIDER_ARGS.update(endpoint=args.endpoint, key_env=args.key_env, doc_prefix=args.doc_prefix,
+                         query_prefix=args.query_prefix, workers=args.workers)
     if args.command == "search" and not args.out:
         suffix = "" if args.filter == "none" else f"-{args.filter}" + ("-soft" if args.soft else "")
         suffix += "-exact" if args.exact else ""

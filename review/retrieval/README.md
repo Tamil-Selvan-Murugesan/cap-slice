@@ -29,6 +29,34 @@ statements 0.56 → 0.80, scanned pages 0.50 → 0.80, charts 0.67 → 0.80, pro
 Unchanged and still the weakest: **multi-page and analytical questions 0.13** (2 of 15 each) — single-chunk
 retrieval rarely brings back every page a comparison needs.
 
+## Round 1 — Nemotron 3 Embed 8B, BF16 (2026-10-19)
+
+`nvidia/Nemotron-3-Embed-8B-BF16`, self-hosted on RunPod behind an OpenAI-compatible `/v1/embeddings`
+(`cap-slice-retrieval-dense --provider openai`), `dimensions` 2048 (= the first 2048 of its native 4096,
+renormalised — checked against a 4096 request), prompts `passage: ` / `query: ` added by the runner because
+the server ignores `input_type`. 1,271 requests, 10.88M tokens, ~21 min. Checked before the pod was
+released: 30 random chunks and 10 questions re-embedded one at a time match the stored vectors (cosine
+≥ 0.9999; a one-row-shifted control gives 0.50); identical texts ≥ 0.9995; questions without the `query: `
+prompt score R@10 0.52 instead of 0.59. Collection `r1__nemotron-3-embed-8b-bf16-2048__baseline`; HNSW top 10
+identical to exact search.
+
+| Filter | BM25 | Voyage 4 Large | **Nemotron 3 Embed 8B** | Nemotron vs Voyage (R@10) |
+|---|---|---|---|---|
+| none | 0.41 | **0.68** | 0.59 | +14 / −30 (p = 0.02) |
+| company, hard | 0.47 | **0.67** | 0.63 | +17 / −25 |
+| company, soft | 0.47 | **0.69** | 0.63 | +12 / −25 (p = 0.05) |
+| question-based, hard | 0.66 | **0.78** | 0.76 | +11 / −14 |
+| question-based, soft | 0.65 | **0.81** | 0.76 | +6 / −15 (p = 0.08) |
+| question-based + next year, soft | 0.61 | **0.78** | 0.70 | +8 / −22 (p = 0.02) |
+| answer key, soft (*upper bound*) | 0.72 | **0.86** | 0.81 | +5 / −14 |
+
+Nemotron, question-based soft: R@1 0.38, R@5 0.67, R@20 0.81, MRR@10 0.50. By group (strict R@10, Voyage →
+Nemotron): ties on prose 0.79, charts 0.80, scanned pages 0.80, vague questions 0.85, APAR 0.83, C2C 0.89;
+Nemotron better on exact-wording questions 0.84 → 0.92 and multi-page / analytical 0.13 → 0.20 (2 → 3 of 15);
+worse on tables 0.94 → 0.87, concall 0.88 → 0.79, statements 0.80 → 0.72, KPI tiles 0.83 → 0.67, paraphrased
+questions 0.86 → 0.78, and E2E 0.81 → 0.63 (43 questions). **Voyage 4 Large wins round 1**; filters narrow
+the gap (no filter −0.09, question-based −0.05). Nemotron's native 4096 dimensions were not run.
+
 ## Keyword baseline
 
 Scored against `data/golden/retrieval_questions.csv` (200 questions) with `cap-slice-retrieval-score`.

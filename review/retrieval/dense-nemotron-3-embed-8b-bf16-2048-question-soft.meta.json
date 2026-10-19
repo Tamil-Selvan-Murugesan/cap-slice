@@ -1,0 +1,20 @@
+{
+ "retriever": "dense",
+ "provider": "openai",
+ "model": "nvidia/Nemotron-3-Embed-8B-BF16",
+ "dim": 2048,
+ "collection": "r1__nemotron-3-embed-8b-bf16-2048__baseline",
+ "qdrant": "server 1.19.1",
+ "search": "hnsw_ef=128",
+ "hnsw": {
+  "m": 16,
+  "ef_construct": 128
+ },
+ "corpus": "parsed_advanced/_chunks/mineru.jsonl",
+ "chunker_version": "chunker-baseline-2026-10-18",
+ "filter": "question",
+ "soft": true,
+ "soft_boost": 1.5,
+ "soft_pool": 500,
+ "top": 50
+}
