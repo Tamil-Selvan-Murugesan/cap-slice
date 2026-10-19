@@ -29,6 +29,12 @@ statements 0.56 → 0.80, scanned pages 0.50 → 0.80, charts 0.67 → 0.80, pro
 Unchanged and still the weakest: **multi-page and analytical questions 0.13** (2 of 15 each) — single-chunk
 retrieval rarely brings back every page a comparison needs.
 
+## Hybrid BM25 + Voyage (2026-10-19)
+
+RRF (k 60) and DBSF fusion of BM25 and Voyage runs with the same filters: **worse than Voyage alone** in
+every production setup (question-based soft: dense 0.81, RRF 0.74, DBSF 0.77). Helps prose and exact-wording
+questions, hurts tables, concall and scanned pages; not adopted. Details: `hybrid/README.md`.
+
 ## Keyword baseline
 
 Scored against `data/golden/retrieval_questions.csv` (200 questions) with `cap-slice-retrieval-score`.

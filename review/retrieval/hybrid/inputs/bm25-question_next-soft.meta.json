@@ -1,0 +1,12 @@
+{
+ "retriever": "bm25",
+ "parser": "mineru",
+ "cache": "parsed_advanced",
+ "chunks": "parsed_advanced/_chunks/mineru.jsonl",
+ "n_chunks": 40593,
+ "documents": 228,
+ "filter": "question_next",
+ "soft": true,
+ "soft_boost": 1.5,
+ "top": 100
+}
