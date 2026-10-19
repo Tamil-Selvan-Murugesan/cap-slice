@@ -53,7 +53,7 @@ thing at a time.
 | Corpus | all 228 documents of the five pilot companies — every question competes against every page, including the same table in other years and the other companies' versions of it |
 | Question set | `data/golden/retrieval_questions.csv` (200 questions), frozen before the first experiment; never edited to suit a result |
 | Scoring | page-level hit: a retrieved chunk counts if it covers any of the question's answer pages; Recall@5/@10/@20, MRR@10, reported overall and per stratum |
-| Retrieval settings | top-k, distance (cosine), vector store (Qdrant, local) unchanged within a round; every round reports the same filter setups (see [Filters](#filters-agreed-2026-10-19)) |
+| Retrieval settings | top-k, distance (cosine), vector store (Qdrant server, HNSW m 16 / ef_construct 128, search hnsw_ef 128) unchanged within a round; every round reports the same filter setups (see [Filters](#filters-agreed-2026-10-19)) |
 | Stored metadata | the payload schema in [Vector store and metadata](#vector-store-and-metadata-agreed-2026-10-19) |
 
 ### Varied, one per round, in this order
@@ -85,17 +85,22 @@ won and lost) rather than headline percentages.
 | Access | Voyage API | open weights (OpenMDW-1.1, commercial use allowed; built on Ministral-3-8B-Instruct-2512, Apache 2.0) |
 | Context | 32K tokens | 32K tokens (NVIDIA evaluated at 4096) |
 | Dimensions | 1024 default; 256/512/2048 | 4096 native; can be cut to the first 2048 or 1024 and L2-renormalised |
-| Compared at | **2048** (its largest) | **2048** (first 2048 dims, renormalised) — same size, so dimension doesn't decide the result; native 4096 scored once as a side check if disk allows |
+| Compared at | **2048** (its largest) | **2048** (first 2048 dims, renormalised) — same size, so dimension doesn't decide the result; native 4096 scored once as a side check |
 | Query vs document | `input_type="query"` / `"document"` | Sentence Transformers `encode_query` / `encode_document` apply the saved prompts; with plain Transformers or vLLM the `query: ` / `passage: ` prefixes must be added by hand (quality drops silently without them) |
 | Cost / compute | ~34M tokens for the corpus, ~$4 at ~$0.12/M (third-party price — confirm on Voyage's pricing page before running) | ~16 GB of BF16 weights: **needs a GPU** (Ampere or newer; NVIDIA tested A100/H100 80 GB; a 32 GB RTX 5090 fits). Not feasible on this laptop's CPU. Options: a short RunPod session (Sentence Transformers ≥ 5.4.1 / Transformers ≥ 5.2.0, or vLLM 0.25) or a hosted endpoint (DeepInfra, Fireworks) |
 
-Disk: ~330 MB of vectors plus ~50 MB of text per collection at 40,593 chunks × 2048 floats (~665 MB at
-4096); check `df -h /mnt/c` first (C: had 2.1 GB free on 2026-10-19).
-
 ### Vector store and metadata (agreed 2026-10-19)
 
-Local Qdrant (`data/qdrant/`), **one collection per setup** — vectors from different models or chunkers
-can't share one — named `<round>__<model>__<chunker>`, e.g. `r1__voyage-4-large__baseline`.
+A **Qdrant server** running locally (official v1.19.1 binary, `tools/qdrant/serve.sh`, storage in
+`data/qdrant/`, bound to 127.0.0.1) — the same engine and API as a production deployment, not the client's
+embedded mode. **One collection per setup** — vectors from different models or chunkers can't share one —
+named `<round>__<model>-<dim>__<chunker>`, e.g. `r1__voyage-4-large-2048__baseline`. Cosine distance, HNSW
+index (m 16, ef_construct 128), payload indexes on the filter fields (`symbol`, `doc_type`, `doc_id`,
+`period_kind`, `chunk_kind` as keyword; `fiscal_year` as integer). Searches use HNSW with hnsw_ef 128;
+each round also runs one exact (exhaustive) search to measure what the approximate index loses.
+Runner: `cap-slice-retrieval-dense count | embed | load | search` (`src/cap_slice/retrieval_dense.py`);
+embeddings are saved per request batch before the next is sent, so an interrupted run resumes without
+re-embedding.
 
 **What gets embedded vs what is stored.** Changing the embedded text means re-embedding (cost, hours);
 changing the payload doesn't (Qdrant `set_payload`). So in round 1 the embedded text is the bare chunk and

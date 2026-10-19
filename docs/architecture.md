@@ -4,7 +4,7 @@ How the pieces fit together, and the state of each. **Update this page whenever 
 replaced or changes status** (and say so in `PROGRESS.md`). The diagram is Mermaid: GitHub renders it, and
 it is edited as text.
 
-**Last updated:** 2026-10-19
+**Last updated:** 2026-10-19 (round 1, Voyage)
 
 ```mermaid
 flowchart TB
@@ -46,8 +46,8 @@ flowchart TB
 
     subgraph INDEX["5 · Indexes"]
         BM["BM25 keyword index<br/>retrieval_bm25.py"]
-        EMB["Embedders<br/>Voyage 4 Large (API) ·<br/>Nemotron 3 Embed 8B BF16 (GPU)"]
-        QD[("Qdrant (local)<br/>one collection per setup")]
+        EMB["retrieval_dense.py<br/>Voyage 4 Large (API) ·<br/>Nemotron 3 Embed 8B BF16 (hosted)"]
+        QD[("Qdrant server 1.19.1 (local)<br/>HNSW · payload indexes<br/>one collection per setup")]
         CORP --> BM
         CORP --> EMB --> QD
         PAY --> QD
@@ -87,7 +87,7 @@ flowchart TB
     ANS -.-> ANE
 
     class SCR,DL,MIN,PAD,CLEAN,SC,PER,BM,QR,FIL,PSC,RSC,PCK,QRE done
-    class EMB,QD,PAY next
+    class EMB,QD,PAY done
     class RR,ANS,ANE planned
     class MAT,PDF,CACHE,CORP,OVR,GOLD,RQ data
     class RET next
@@ -106,10 +106,10 @@ Solid arrows = data flow; dotted arrows = what each evaluation tool reads.
 | 2 | Clean-up | `page_clean.py` | done | Same for every parser; held fixed in the experiments |
 | 3 | Chunker | `structured_chunk.py`, tag `chunker-baseline-2026-10-18` | done | Round 2 varies it (context header, table chunks, per-type splits, small-to-big) |
 | 4 | Period normaliser | `periods.py`, `data/period_overrides.csv` | done | Label / event-month rule / checked override; `review/periods/` |
-| 4 | Payload schema | `docs/plan.md` § Vector store and metadata | next | Written when the Qdrant collections are built |
+| 4 | Payload schema | `docs/plan.md` § Vector store and metadata | done | Written into every point by `retrieval_dense.py load` |
 | 5 | Keyword index | `retrieval_bm25.py` | done | Baseline and the keyword half of round 4 |
-| 5 | Embedders | Voyage 4 Large · Nemotron 3 Embed 8B (BF16) | next | Round 1, both at 2048 dims; Nemotron needs a GPU |
-| 5 | Vector store | Qdrant local, `r<round>__<model>__<chunker>` | next | `vectorstore.py` exists from the legacy indexer |
+| 5 | Embedders | `retrieval_dense.py` (`cap-slice-retrieval-dense count / embed / load / search`): Voyage 4 Large · Nemotron 3 Embed 8B (BF16) | Voyage done, Nemotron next | Round 1, both at 2048 dims; batches saved before the next request (resumable); Nemotron via a hosted endpoint, own branch |
+| 5 | Vector store | Qdrant server v1.19.1 run locally (`tools/qdrant/serve.sh`), collections `r<round>__<model>-<dim>__<chunker>` | done | HNSW m 16 / ef_construct 128; payload indexes on the filter fields; exact search as a check |
 | 6 | Question reader | `query_reader.py` | done | Rules only; an LLM reader is a possible later comparison |
 | 6 | Filters | `--filter` / `--soft` in `retrieval_bm25.py` | done | No filter · company · question-based (± next year) · answer key (upper bound) |
 | 6 | Hybrid + reranker | — | planned | Round 4 |
@@ -120,15 +120,15 @@ Solid arrows = data flow; dotted arrows = what each evaluation tool reads.
 
 **Legacy, not used by the experiments:** `extract.py` → `chunk.py` → `embed.py` → `vectorstore.py`
 (`cap-slice-index`): PyMuPDF text, flat ~500-word chunks, `voyage-finance-2`. Nothing has been indexed
-with it. Round 1 replaces its inputs (MinerU chunks, new models) and reuses the Qdrant wrapper.
+with it. The experiments use `retrieval_dense.py` instead (MinerU chunks, new models, Qdrant server).
 
-## Current numbers (keyword search, strict R@10)
+## Current numbers (strict R@10, 200 questions)
 
-| Filter | R@10 |
-|---|---|
-| None | 0.41 |
-| Company | 0.47 |
-| Question-based (company + year + doc type) | **0.66** |
-| Answer key (upper bound) | 0.73 |
+| Filter | Keyword (BM25) | Voyage 4 Large |
+|---|---|---|
+| None | 0.41 | 0.68 |
+| Company | 0.47 | 0.69 (soft) |
+| Question-based (company + year + doc type) | 0.66 | **0.81** (soft) |
+| Answer key (upper bound) | 0.73 | 0.86 (soft) |
 
 Details: `review/retrieval/README.md`.

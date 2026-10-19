@@ -30,6 +30,7 @@ cap-slice-retrieval-score = "cap_slice.retrieval_score:main"
 cap-slice-retrieval-bm25 = "cap_slice.retrieval_bm25:main"
 cap-slice-periods = "cap_slice.periods:main"
 cap-slice-query-reader = "cap_slice.query_reader:main"
+cap-slice-retrieval-dense = "cap_slice.retrieval_dense:main"
 
 [build-system]
 requires = ["uv_build>=0.12.5,<0.13.0"]

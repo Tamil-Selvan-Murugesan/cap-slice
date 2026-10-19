@@ -1,5 +1,36 @@
 # Retrieval runs
 
+## Round 1 — Voyage 4 Large (2026-10-19)
+
+Dense search with `voyage-4-large` at 2048 dimensions (`cap-slice-retrieval-dense`), bare chunk text, same
+40,593 chunks as BM25, Qdrant server collection `r1__voyage-4-large-2048__baseline` (HNSW m 16 /
+ef_construct 128, hnsw_ef 128). Embedding: 105 requests, 10.38M tokens, ~8 min.
+
+| Filter | BM25 R@10 | **Voyage R@1** | **R@5** | **R@10** | **R@20** | **MRR@10** | Lenient R@10 | doc@10 | Voyage vs BM25 (R@10, same filter) |
+|---|---|---|---|---|---|---|---|---|---|
+| none | 0.41 | 0.31 | 0.56 | 0.68 | 0.76 | 0.42 | 0.71 | 0.86 | +63 / −9 |
+| company, hard | 0.47 | 0.30 | 0.60 | 0.67 | 0.79 | 0.43 | 0.71 | 0.85 | +54 / −14 |
+| company, soft | 0.47 | 0.33 | 0.61 | 0.69 | 0.81 | 0.45 | 0.74 | 0.89 | +57 / −11 |
+| question-based, hard | 0.66 | 0.39 | 0.71 | 0.78 | 0.83 | 0.52 | 0.81 | 0.92 | +33 / −9 |
+| **question-based, soft** | 0.65 | **0.40** | **0.73** | **0.81** | **0.86** | **0.54** | 0.83 | 0.95 | +37 / −5 |
+| question-based + next year, hard | 0.61 | 0.34 | 0.66 | 0.74 | 0.82 | 0.47 | 0.78 | 0.89 | +40 / −14 |
+| question-based + next year, soft | 0.61 | 0.36 | 0.69 | 0.78 | 0.86 | 0.50 | 0.81 | 0.92 | +41 / −8 |
+| answer key, hard (*upper bound*) | 0.73 | 0.48 | 0.80 | 0.83 | 0.87 | 0.61 | 0.85 | 0.96 | +29 / −8 |
+| answer key, soft (*upper bound*) | 0.72 | 0.48 | 0.81 | 0.86 | 0.90 | 0.62 | 0.88 | 0.98 | +34 / −6 |
+
+All Voyage-vs-BM25 differences p ≤ 0.001 (sign test). Within Voyage: question-based soft beats hard +6 / −0
+(p = 0.03) and beats company-soft +26 / −4; the company filter alone does nothing for dense search
+(+4 / −5 vs no filter) — the embedding already finds the right company. HNSW returns the same top 10 as
+exact search for all 200 questions (`…-exact`). Gap to the answer-key upper bound: 0.81 vs 0.86.
+
+By group (question-based soft, strict R@10, BM25 → Voyage): tables 0.78 → 0.94, concall 0.61 → 0.88,
+statements 0.56 → 0.80, scanned pages 0.50 → 0.80, charts 0.67 → 0.80, prose 0.73 → 0.79, KPI tiles
+0.83 → 0.83; vague questions 0.50 → 0.85, paraphrased 0.69 → 0.86. No group of ≥ 15 questions gets worse.
+Unchanged and still the weakest: **multi-page and analytical questions 0.13** (2 of 15 each) — single-chunk
+retrieval rarely brings back every page a comparison needs.
+
+## Keyword baseline
+
 Scored against `data/golden/retrieval_questions.csv` (200 questions) with `cap-slice-retrieval-score`.
 Each run: `<name>.jsonl` (ranked results per question), `<name>.meta.json` (how it was made),
 `<name>.score.md` / `.score.json` (metrics overall and per group, misses, paired comparison).
