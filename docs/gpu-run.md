@@ -114,7 +114,7 @@ git add -f parsed*/*/_runs parsed_bench/*/*/_runs data/bench/manifest.csv review
 git commit -m "GPU run: benchmark and full-run logs" && git push -u origin gpu-run
 ```
 ```bash
-# on the laptop: pull the caches (check `df -h /mnt/c` first — keep ≥ 500 MB free)
+# on the laptop: pull the caches
 rsync -av -e "ssh -p PORT" --include='*/' --include='pages.json' --include='meta.json' --include='_runs/***' --exclude='*' \
       root@IP:/workspace/cap-slice/parsed/ parsed/            # per-page text only: ~60 MB
 rsync -av -e "ssh -p PORT" root@IP:/workspace/cap-slice/parsed/ /some/bigger/disk/parsed/   # + raw JSON (~0.5 GB)

@@ -4,7 +4,7 @@ How the pieces fit together, and the state of each. **Update this page whenever 
 replaced or changes status** (and say so in `PROGRESS.md`). The diagram is Mermaid: GitHub renders it, and
 it is edited as text.
 
-**Last updated:** 2026-10-19 (round 1 done)
+**Last updated:** 2026-11-02 (round 1 and hybrid merged; round 2 next)
 
 ```mermaid
 flowchart TB
@@ -93,7 +93,7 @@ flowchart TB
     class RET next
 ```
 
-Legend: green = built and checked · yellow = next (round 1) · grey dashed = planned · blue = data.
+Legend: green = built and checked · yellow = next · grey dashed = planned · blue = data.
 Solid arrows = data flow; dotted arrows = what each evaluation tool reads.
 
 ## Components

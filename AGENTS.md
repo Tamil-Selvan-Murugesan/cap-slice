@@ -55,7 +55,7 @@ Target: roughly 2015–2026 (or from listing date if later), eventually for ~3,0
 
 Tooling: Python 3.12, `uv` for env/deps (`uv run`, `uv add`).
 
-**Disk:** keep C: above **500 MB** free (user's floor, 2026-10-03). The Linux disk is a virtual disk (`ext4.vhdx`, ~100 GB) on the Windows C: drive. It grows but never shrinks on its own, and on 2026-09-28 C: reached **~210 MB free**. Check `df -h /mnt/c` before any install or large write; don't trust the ~900 GB Linux `df -h /` shows. PyTorch must be CPU-only (configured in `pyproject.toml` via the `pytorch-cpu` index). Docling added ~2 GB (packages + ~0.5 GB models in `~/.cache/huggingface`).
+PyTorch is CPU-only on the laptop (configured in `pyproject.toml` via the `pytorch-cpu` index); GPU work runs on RunPod (`docs/gpu-run.md`).
 
 ## Pilot companies
 

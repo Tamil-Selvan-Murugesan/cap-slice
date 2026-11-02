@@ -65,7 +65,7 @@ thing at a time.
 | 2 | **Chunking** | (a) baseline; (b) a context header on every chunk — company, doc type, period, section, page; (c) tables as their own chunks with an embedded one-line summary, full table returned; (d) per-type splits — one Q&A pair per concall chunk, one slide per chunk; (e) small-to-big | round-1 winner |
 | 3 | **Images** | A text only (what the parser reads from pictures); B generated per-image summaries embedded as text, flagged `generated`; C page-image embeddings (ColPali/ColQwen-style or a multimodal embedding model) for image-heavy pages; D = A + C routed by page type | round-2 winner |
 | 4 | **Search** | dense only vs hybrid (BM25 + dense, fused); then + a reranker on the top 50–100. *Hybrid run early on the round-1 setup (2026-10-19): RRF and DBSF both worse than dense alone — not adopted; `review/retrieval/hybrid/`* | round-3 winner |
-| 5 | **Re-check** | both embedding models again on the final setup (the best model can change with chunking) | final setup |
+| 5 | **Re-check** | both embedding models again on the final setup (the best model can change with chunking); Voyage at 1024 vs 2048 dims and int8 vs binary + rescoring, on the stored vectors (no 4096: see PROGRESS 2026-11-02) | final setup |
 
 **Before round 0 (bug fixes, not experiments):** chunks carrying a stale heading from an earlier
 section, lost units/subsection labels, and labels split from their values (found in the 2026-10-06
