@@ -25,7 +25,7 @@ PYTHONDONTWRITEBYTECODE=1 .venv/bin/cap-slice-score \
 
 For Paddle use `--parser paddleocr_vl --cache parsed --name paddleocr_vl`; substitute the v2 facts/skipped files, or v1 `parse_facts.csv` with no skipped file. The generated Markdown report title always says “Golden v2”; use its selected input and JSON summary to identify the set.
 
-No Artifact tool is available, and the supplied hosted side-by-side URL was inaccessible through the web reader. The local self-contained [25-page viewer](../review/visual-2026-10-06/index.html) and its [findings](../review/visual-2026-10-06/README.md) were available; fresh source rendering and local caches underpin this review. No cloud objects were fetched or written, and no secrets were read. Initial disk checks were below the 500 MB floor; after the user explicitly instructed continuation and took responsibility for space, writes were limited to small documentation and roughly 8 MB of scratch evidence, without installs.
+No Artifact tool is available, and the supplied hosted side-by-side URL was inaccessible through the web reader. The local self-contained [25-page viewer](../review/visual-2026-10-06/index.html) and its [findings](../review/visual-2026-10-06/README.md) were available; fresh source rendering and local caches underpin this review. No cloud objects were fetched or written, and no secrets were read.
 
 ## Evidence per finalist
 
