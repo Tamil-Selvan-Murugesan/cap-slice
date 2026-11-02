@@ -57,6 +57,12 @@ worse on tables 0.94 → 0.87, concall 0.88 → 0.79, statements 0.80 → 0.72, 
 questions 0.86 → 0.78, and E2E 0.81 → 0.63 (43 questions). **Voyage 4 Large wins round 1**; filters narrow
 the gap (no filter −0.09, question-based −0.05). Nemotron's native 4096 dimensions were not run.
 
+## Hybrid BM25 + Voyage (2026-10-19)
+
+RRF (k 60) and DBSF fusion of BM25 and Voyage runs with the same filters: **worse than Voyage alone** in
+every production setup (question-based soft: dense 0.81, RRF 0.74, DBSF 0.77). Helps prose and exact-wording
+questions, hurts tables, concall and scanned pages; not adopted. Details: `hybrid/README.md`.
+
 ## Keyword baseline
 
 Scored against `data/golden/retrieval_questions.csv` (200 questions) with `cap-slice-retrieval-score`.

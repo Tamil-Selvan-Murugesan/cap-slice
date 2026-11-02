@@ -57,7 +57,7 @@ flowchart TB
         Q(["User question"])
         QR["query_reader.py<br/>→ company · fiscal years · doc type"]
         FIL["Filters<br/>hard / soft"]
-        RET["Retriever<br/>BM25 · dense · hybrid"]
+        RET["Retriever<br/>dense (Voyage) · BM25 ·<br/>hybrid tested, not adopted"]
         RR["Reranker<br/>(round 4)"]
         ANS["Answer step<br/>(quotes printed figures only)"]
         Q --> QR --> FIL --> RET --> RR --> ANS
@@ -112,7 +112,8 @@ Solid arrows = data flow; dotted arrows = what each evaluation tool reads.
 | 5 | Vector store | Qdrant server v1.19.1 run locally (`tools/qdrant/serve.sh`), collections `r<round>__<model>-<dim>__<chunker>` | done | HNSW m 16 / ef_construct 128; payload indexes on the filter fields; exact search as a check |
 | 6 | Question reader | `query_reader.py` | done | Rules only; an LLM reader is a possible later comparison |
 | 6 | Filters | `--filter` / `--soft` in `retrieval_bm25.py` | done | No filter · company · question-based (± next year) · answer key (upper bound) |
-| 6 | Hybrid + reranker | — | planned | Round 4 |
+| 6 | Hybrid search | `retrieval_hybrid.py` (`cap-slice-retrieval-hybrid`, RRF / DBSF) | tested, not adopted | 2026-10-19: worse than dense alone (0.77 vs 0.81 R@10); `review/retrieval/hybrid/` |
+| 6 | Reranker | — | planned | Round 4 |
 | 6 | Answer step | — | planned | Must not quote `generated` content as printed figures |
 | 7 | Parse scorer | `score.py` / `compare_parsers.py` | done | Golden v1–v3, levels L1–L4 |
 | 7 | Retrieval scorer | `retrieval_score.py` | done | Strict and lenient answer keys, per-group, paired sign test |
