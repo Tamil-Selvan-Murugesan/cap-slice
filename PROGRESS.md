@@ -178,8 +178,7 @@ Living status for `cap-slice`. Update at the end of every session. Stable rules 
 
 | Branch / worktree | Commit | What it is | Status |
 |---|---|---|---|
-| `round2-chunking` | latest (2026-11-24) | Round 2: chunk variants, `--corpus` runner, results in `review/retrieval/round2/` | Local; not pushed |
-| `main` | latest (2026-11-02) | Everything above, including round 1 (`round1-voyage`, `round1-nemotron`) and the hybrid test (`hybrid-bm25`), all merged | Pushed |
+| `main` | latest (2026-11-24) | Everything above, including round 1 (`round1-voyage`, `round1-nemotron`), the hybrid test (`hybrid-bm25`) and round 2 (`round2-chunking`), all merged | Pushed |
 | `gpu-run-1` (on GitHub) | `cce8cc4` and later | Reports from the 2026-10-04 pod (tune report, final comparison, MinerU standard vs advanced, Docling scores) — scored before the 2026-10-05 fixes | Pushed; reference only |
 | `main-sirisha` (on GitHub) | `de38611` | Co-founder's independent OCR-VLM benchmark (`vlm_bench/`: PaddleOCR-VL vs GLM-OCR vs Unlimited-OCR); separate codebase | Reference; settings reused in `parsing/paddleocr_vl.py` |
 | `tamil/codex-pilot-verification` (on GitHub) | `a6ca47b` (based on `cbe2f7f`) | Another agent's independent pilot verification: `docs/pilot-verification-2026-09-23.md`, corrected `AGENTS.md`/`PROGRESS.md`/report | **Not merged** — see Next steps 2 |
