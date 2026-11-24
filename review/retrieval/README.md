@@ -1,5 +1,13 @@
 # Retrieval runs
 
+## Round 4 — reranker (2026-11-24)
+
+**Voyage rerank-3 on the top 50 adopted.** After b2 dense search with question-based soft filters: strict R@10
+**0.865 → 0.915** (+10 / −0, p = 0.002), R@1 0.51 → 0.605, MRR@10 0.642 → 0.722; no group down, tables and concall
+evidence at 1.00. Depth 20 gives +8, 100 adds nothing. With the reranker, no filter (0.915) equals filtered.
+Hybrid BM25 + dense + rerank adds nothing (0.91). 17 misses left, 9 multi-page; 10 of the 17 are not in the top 50.
+~15M rerank tokens (free tier). [`round4/README.md`](round4/README.md).
+
 **Images pre-check (2026-11-24):** round 3 (images) moved after the answer step and round 4 (reranker) runs
 next. Only 4–5 image questions still miss, and 3 of the 4 chart misses are a parsing gap: the values are printed
 as text in the PDF, but MinerU dropped the chart (and its own picture descriptions don't hold them).
