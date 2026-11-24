@@ -4,7 +4,7 @@ How the pieces fit together, and the state of each. **Update this page whenever 
 replaced or changes status** (and say so in `PROGRESS.md`). The diagram is Mermaid: GitHub renders it, and
 it is edited as text.
 
-**Last updated:** 2026-11-24 (round 2 done: b2 context header; round 3 next)
+**Last updated:** 2026-11-24 (round 2 done: b2 context header; round 4 reranker next, images after the answer step)
 
 ```mermaid
 flowchart TB
@@ -113,7 +113,7 @@ Solid arrows = data flow; dotted arrows = what each evaluation tool reads.
 | 6 | Question reader | `query_reader.py` | done | Rules only; an LLM reader is a possible later comparison |
 | 6 | Filters | `--filter` / `--soft` in `retrieval_bm25.py` | done | No filter · company · question-based (± next year) · answer key (upper bound) |
 | 6 | Hybrid search | `retrieval_hybrid.py` (`cap-slice-retrieval-hybrid`, RRF / DBSF) | tested, not adopted | 2026-10-19: worse than dense alone (0.77 vs 0.81 R@10); `review/retrieval/hybrid/` |
-| 6 | Reranker | — | planned | Round 4 |
+| 6 | Reranker | — | next | Round 4, moved ahead of round 3 (images) on 2026-11-24 |
 | 6 | Answer step | — | planned | Must not quote `generated` content as printed figures |
 | 7 | Parse scorer | `score.py` / `compare_parsers.py` | done | Golden v1–v3, levels L1–L4 |
 | 7 | Retrieval scorer | `retrieval_score.py` | done | Strict and lenient answer keys, per-group, paired sign test |

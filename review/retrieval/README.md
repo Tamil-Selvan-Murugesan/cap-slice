@@ -1,5 +1,10 @@
 # Retrieval runs
 
+**Images pre-check (2026-11-24):** round 3 (images) moved after the answer step and round 4 (reranker) runs
+next. Only 4–5 image questions still miss, and 3 of the 4 chart misses are a parsing gap: the values are printed
+as text in the PDF, but MinerU dropped the chart (and its own picture descriptions don't hold them).
+[`images-precheck.md`](images-precheck.md).
+
 ## Round 2 — chunking (2026-11-24)
 
 **b2 adopted**: a context header (company · document · period · standalone/consolidated) and the heading path are
