@@ -152,9 +152,9 @@ def load_chunks() -> list[dict]:
     return chunks[:DRY_RUN] if DRY_RUN else chunks
 
 
-def tag(model: str, dim: int, corpus: bool = True) -> str:
+def tag(model: str, dim: int) -> str:
     """Folder / collection tag: nvidia/Nemotron-3-Embed-8B-BF16 -> nemotron-3-embed-8b-bf16-2048."""
-    return (f"{model.split('/')[-1].lower()}-{dim}" + (f"__r2-{CORPUS}" if CORPUS and corpus else "")
+    return (f"{model.split('/')[-1].lower()}-{dim}" + (f"__r2-{CORPUS}" if CORPUS else "")
             + (f"-dryrun{DRY_RUN}" if DRY_RUN else ""))
 
 
@@ -308,7 +308,9 @@ def cmd_load(args) -> int:
 
 
 def query_vectors(args, qs: list[dict]) -> np.ndarray:
-    path = VECTORS / tag(args.model, args.dim, corpus=False) / "queries.json"  # shared across corpora
+    # Question vectors depend only on model and dim: shared by every corpus (and by dry runs).
+    path = VECTORS / f"{args.model.split('/')[-1].lower()}-{args.dim}" / "queries.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
     cache = json.loads(path.read_text()) if path.exists() else {}
     missing = [q for q in qs if cache.get(q["qid"], {}).get("question") != q["question"]]
     if missing:

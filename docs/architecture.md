@@ -4,7 +4,7 @@ How the pieces fit together, and the state of each. **Update this page whenever 
 replaced or changes status** (and say so in `PROGRESS.md`). The diagram is Mermaid: GitHub renders it, and
 it is edited as text.
 
-**Last updated:** 2026-11-02 (round 1 and hybrid merged; round 2 next)
+**Last updated:** 2026-11-24 (round 2 done: b2 context header; round 3 next)
 
 ```mermaid
 flowchart TB
@@ -104,7 +104,7 @@ Solid arrows = data flow; dotted arrows = what each evaluation tool reads.
 | 1 | Downloader | `downloader.py` (`cap-slice-download`) | done | Sequential, throttled; unpacks NSE ZIPs |
 | 2 | Parser | MinerU 2.5-Pro advanced → `parsed_advanced/` | done | Chosen 2026-10-17 (`docs/parser-decision-2026-10-17.md`); Paddle kept as challenger |
 | 2 | Clean-up | `page_clean.py` | done | Same for every parser; held fixed in the experiments |
-| 3 | Chunker | `structured_chunk.py`, tag `chunker-baseline-2026-10-18` | done | Round 2 varies it (context header, table chunks, per-type splits, small-to-big) |
+| 3 | Chunker | `structured_chunk.py`, tag `chunker-baseline-2026-10-18`; round-2 variants in `chunk_variants.py` (`cap-slice-chunk-variants`) | done | **Round 2 (2026-11-24): b2 adopted** — context header + statement scope + heading path embedded, chunk text returned unchanged (`parsed_advanced/_chunks/r2-b2.jsonl`) |
 | 4 | Period normaliser | `periods.py`, `data/period_overrides.csv` | done | Label / event-month rule / checked override; `review/periods/` |
 | 4 | Payload schema | `docs/plan.md` § Vector store and metadata | done | Written into every point by `retrieval_dense.py load` |
 | 5 | Keyword index | `retrieval_bm25.py` | done | Baseline and the keyword half of round 4 |

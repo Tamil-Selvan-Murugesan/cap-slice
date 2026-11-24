@@ -1,0 +1,20 @@
+{
+ "retriever": "dense",
+ "provider": "voyage",
+ "model": "voyage-4-large",
+ "dim": 2048,
+ "collection": "r2__voyage-4-large-2048__e",
+ "qdrant": "server 1.19.1",
+ "search": "hnsw_ef=128",
+ "hnsw": {
+  "m": 16,
+  "ef_construct": 128
+ },
+ "corpus": "parsed_advanced/_chunks/r2-e.jsonl",
+ "chunker_version": "chunker-baseline-2026-10-18+r2-e",
+ "filter": "company",
+ "soft": true,
+ "soft_boost": 1.5,
+ "soft_pool": 500,
+ "top": 50
+}
