@@ -31,8 +31,8 @@ flowchart TB
     end
 
     subgraph CHUNK["3 · Chunking"]
-        SC["structured_chunk.py<br/>tag chunker-baseline-2026-10-18"]
-        CORP[("_chunks/mineru.jsonl<br/>40,593 chunks")]
+        SC["structured_chunk.py<br/>tag chunker-baseline-2026-10-18<br/>+ chunk_variants.py: b2 header (round 2)"]
+        CORP[("_chunks/r2-b2.jsonl<br/>40,593 chunks, header embedded")]
         CLEAN --> SC --> CORP
     end
 

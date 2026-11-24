@@ -132,6 +132,9 @@ parser misread its image-only cover ("ANNUAL REPORT 2022" as "2022-23"; the body
 
 Left out for now: standalone vs consolidated and units — users ask about them, but there is no reliable
 source yet, and a wrong label used as a filter makes the right page unreachable. Revisit after round 2.
+*(2026-11-24: round 2 puts standalone/consolidated into the embedded header instead — b2, labelled from statement
+headings for 2 pages after each; standalone-vs-consolidated questions 0.68 → 0.86. It is a ranking hint, not a
+filter, so a wrong label cannot make a page unreachable. Still not a payload filter.)*
 At the full 11–14M pages (~40M chunks, ~160 GB of float vectors) this needs a Qdrant server, payload
 indexes and quantised vectors; the field names carry over.
 

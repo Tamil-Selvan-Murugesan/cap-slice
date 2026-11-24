@@ -1,5 +1,15 @@
 # Retrieval runs
 
+## Round 2 — chunking (2026-11-24)
+
+**b2 adopted**: a context header (company · document · period · standalone/consolidated) and the heading path are
+embedded with every chunk; the returned text is unchanged. Strict R@10 with question-based soft filters
+**0.805 → 0.865** (+13 / −1 questions, sign test p = 0.002), no filter 0.675 → 0.830, no group of ≥ 15 questions
+down. Header only (b1) 0.860; table descriptors (c) 0.750, concall exchanges + one slide per chunk (d) 0.790,
+small-to-big (e) 0.800 — not adopted. The header and the filters fix the same problem (look-alike pages from
+other years or the other statement set): with b2 the soft filter adds 0.035 instead of 0.13. Details, all runs
+and backups: [`round2/README.md`](round2/README.md); tables: [`round2/results.md`](round2/results.md).
+
 ## Round 1 — Voyage 4 Large (2026-10-19)
 
 Dense search with `voyage-4-large` at 2048 dimensions (`cap-slice-retrieval-dense`), bare chunk text, same
