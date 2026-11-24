@@ -1,0 +1,11 @@
+{
+ "run": "review/retrieval/round4/dense-b2-question-soft-top100.jsonl",
+ "union": "review/retrieval/round4/bm25-question-soft-top100.jsonl",
+ "depth": 100,
+ "model": "rerank-3",
+ "reranker_sees": "embed_text of corpus b2",
+ "questions": 200,
+ "tokens_this_run": 4583838,
+ "usd_this_run": 0.2292,
+ "date": "2026-11-24"
+}
