@@ -48,6 +48,7 @@ class Block:
     lines: list[str]
     page: int
     end_page: int = 0
+    level: int = 0  # headings: number of # marks the parser gave it
 
     @property
     def text(self) -> str:
@@ -66,6 +67,9 @@ class StructuredChunk:
     page_start: int
     page_end: int
     notes: list[str] = field(default_factory=list)
+    # Context kept for round-2 variants (docs/plan.md); not part of `text`, so the baseline is unchanged:
+    parent: str = ""  # latest top-level (#) heading within PARENT_PAGES pages, e.g. a running page title
+    scope: str = ""   # "standalone" / "consolidated" from a heading naming a statement set, within PARENT_PAGES
 
 
 def _normalise(line: str) -> str:
@@ -137,7 +141,8 @@ def _blocks(pages: list[ParsedPage]) -> list[Block]:
             s = line.strip()
             kind = "table" if s.startswith("|") else "heading" if s.startswith("#") else "text"
             if kind == "heading":
-                page_blocks.append(Block("heading", [s.lstrip("#").strip()], page.number))
+                page_blocks.append(Block("heading", [s.lstrip("#").strip()], page.number,
+                                         level=len(s) - len(s.lstrip("#"))))
             elif page_blocks and page_blocks[-1].kind == kind and page_blocks[-1].lines:
                 page_blocks[-1].lines.append(s)
             else:
@@ -257,8 +262,16 @@ def _units_line(b: Block, max_words: int = 25) -> str | None:
     return next((l for l in reversed(b.lines) if UNIT_HINT.search(l) and len(l.split()) <= max_words), None)
 
 
+PARENT_PAGES = 2       # a top-level heading labels chunks up to this many pages after it was last seen
+PARENT_WORDS = 12      # longer "#" lines are mis-marked sentences, not titles
+SCOPE = re.compile(r"(?i)\b(standalone|consolidated)\b.{0,40}\b(financial (statements|results)|balance sheet|"
+                   r"statement of (profit|cash|changes)|cash flow)")
+
+
 def chunk_structured(pages: list[ParsedPage]) -> list[StructuredChunk]:
     chunks: list[StructuredChunk] = []
+    top, top_page, scope, scope_page = "", 0, "", 0   # round-2 context only; never changes text
+    buf_ctx = ("", "")
     section = ""
     run: list[str] = []    # consecutive headings with no content between them
     section_page = 0
@@ -271,10 +284,15 @@ def chunk_structured(pages: list[ParsedPage]) -> list[StructuredChunk]:
     units_page = 0
 
     def emit(kind: str, text: str, first: int, last: int, notes: list[str] | None = None,
-             sec: str | None = None) -> None:
+             sec: str | None = None, ctx: tuple[str, str] | None = None) -> None:
         sec = section if sec is None else sec
         body = (f"## {sec}\n" if sec else "") + text.strip()
-        chunks.append(StructuredChunk(len(chunks), kind, body, sec, first, last, notes or []))
+        parent, sc = ctx if ctx is not None else _ctx()
+        chunks.append(StructuredChunk(len(chunks), kind, body, sec, first, last, notes or [], parent, sc))
+
+    def _ctx() -> tuple[str, str]:
+        return ((top if top and page - top_page <= PARENT_PAGES else ""),
+                (scope if scope and page - scope_page <= PARENT_PAGES else ""))
 
     def flush_text() -> None:
         nonlocal buf, carry
@@ -286,16 +304,17 @@ def chunk_structured(pages: list[ParsedPage]) -> list[StructuredChunk]:
         # (fix S21: 451 chunks had page_end 0 and covered no page at all).
         emit("text", (carry + "\n\n" if carry else "") + text,
              buf[0].page, max(x.end_page or x.page for x in buf), ["starts with overlap"] if carry else [],
-             buf_section)
+             buf_section, buf_ctx)
         carry = _sentence_tail(text, OVERLAP_WORDS)
         buf = []
 
     def add_text(b: Block) -> None:
-        nonlocal buf_section
+        nonlocal buf_section, buf_ctx
         if buf and sum(x.words() for x in buf) + b.words() > TEXT_WORDS:
             flush_text()
         if not buf:
             buf_section = section
+            buf_ctx = _ctx()
         buf.append(b)
 
     blocks = _blocks(pages)
@@ -308,6 +327,10 @@ def chunk_structured(pages: list[ParsedPage]) -> list[StructuredChunk]:
             page = b.page
         if b.kind == "heading":
             h = b.lines[0]
+            if SCOPE.search(h):
+                scope, scope_page = SCOPE.search(h).group(1).lower(), b.page
+            if b.level == 1 and len(h.split()) <= PARENT_WORDS:
+                top, top_page = h, b.page
             if sum(x.words() for x in buf) >= 50:
                 flush_text()
                 carry = ""
@@ -405,7 +428,8 @@ def _merge_small(chunks: list[StructuredChunk]) -> list[StructuredChunk]:
                 body = c.text.split("\n", 1)[1] if same else c.text
                 # The merged chunk starts with the pending one, so it keeps that section.
                 c = StructuredChunk(0, "text", pending.text + "\n\n" + body, pending.section or c.section,
-                                    pending.page_start, c.page_end, pending.notes + c.notes)
+                                    pending.page_start, c.page_end, pending.notes + c.notes,
+                                    pending.parent, pending.scope)
             else:
                 out.append(pending)
             pending = None
