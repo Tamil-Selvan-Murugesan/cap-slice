@@ -1,0 +1,51 @@
+# Retrieval score: `dense-voyage-4-large-2048__r2-d-exact.jsonl`
+
+200 questions; missing from run: 0. Strict = answer pages checked on the image; lenient adds machine-found pages that print the answer's numbers. doc@10 = the right document anywhere in the top 10.
+
+| group | n | strict_R@1 | strict_R@5 | strict_R@10 | strict_R@20 | strict_MRR@10 | lenient_R@10 | doc@10 |
+|---|---|---|---|---|---|---|---|---|
+| all | 200 | 0.28 | 0.56 | 0.66 | 0.71 | 0.40 | 0.70 | 0.84 |
+| company:APARINDS | 64 | 0.19 | 0.52 | 0.66 | 0.75 | 0.34 | 0.67 | 0.80 |
+| company:HEROMOTOCO | 54 | 0.33 | 0.61 | 0.70 | 0.70 | 0.45 | 0.76 | 0.96 |
+| company:E2E | 43 | 0.26 | 0.49 | 0.58 | 0.67 | 0.36 | 0.63 | 0.84 |
+| company:ESCONET | 21 | 0.33 | 0.48 | 0.57 | 0.62 | 0.39 | 0.67 | 0.62 |
+| company:C2C | 18 | 0.44 | 0.78 | 0.83 | 0.83 | 0.57 | 0.83 | 0.94 |
+| doctype:annual_reports | 111 | 0.30 | 0.58 | 0.68 | 0.71 | 0.42 | 0.74 | 0.89 |
+| doctype:investor_presentations | 47 | 0.23 | 0.43 | 0.57 | 0.66 | 0.32 | 0.60 | 0.74 |
+| doctype:concall_transcripts | 38 | 0.24 | 0.61 | 0.68 | 0.76 | 0.39 | 0.68 | 0.82 |
+| doctype:periodic_results | 4 | 0.75 | 1.00 | 1.00 | 1.00 | 0.81 | 1.00 | 1.00 |
+| evidence:table | 63 | 0.30 | 0.59 | 0.67 | 0.73 | 0.43 | 0.76 | 0.83 |
+| evidence:concall | 33 | 0.27 | 0.70 | 0.76 | 0.85 | 0.45 | 0.76 | 0.88 |
+| evidence:prose | 33 | 0.21 | 0.52 | 0.61 | 0.67 | 0.35 | 0.61 | 0.85 |
+| evidence:statement | 25 | 0.32 | 0.48 | 0.72 | 0.72 | 0.41 | 0.76 | 0.88 |
+| evidence:chart | 15 | 0.33 | 0.67 | 0.80 | 0.80 | 0.44 | 0.87 | 0.87 |
+| evidence:multi | 15 | 0.00 | 0.07 | 0.13 | 0.20 | 0.03 | 0.13 | 0.67 |
+| evidence:scan | 10 | 0.60 | 0.60 | 0.80 | 0.90 | 0.63 | 0.80 | 1.00 |
+| evidence:kpi | 6 | 0.33 | 0.83 | 0.83 | 0.83 | 0.51 | 0.83 | 0.83 |
+| hard:decoy_years | 63 | 0.32 | 0.54 | 0.70 | 0.73 | 0.43 | 0.78 | 0.87 |
+| hard:standalone_vs_consolidated | 22 | 0.23 | 0.36 | 0.55 | 0.55 | 0.30 | 0.64 | 0.86 |
+| hard:cross_doc | 17 | 0.00 | 0.12 | 0.29 | 0.41 | 0.07 | 0.29 | 0.71 |
+| hard:spoken_numbers | 16 | 0.19 | 0.62 | 0.75 | 0.81 | 0.38 | 0.75 | 0.88 |
+| hard:chart_labels | 14 | 0.29 | 0.64 | 0.79 | 0.79 | 0.40 | 0.86 | 0.86 |
+| hard:indian_grouping | 14 | 0.29 | 0.79 | 0.79 | 0.86 | 0.48 | 0.93 | 0.93 |
+| hard:multi_hop | 14 | 0.00 | 0.07 | 0.14 | 0.21 | 0.03 | 0.14 | 0.71 |
+| hard:slide_table | 13 | 0.23 | 0.31 | 0.46 | 0.54 | 0.27 | 0.54 | 0.54 |
+| hard:lakhs_unit | 11 | 0.45 | 0.91 | 0.91 | 0.91 | 0.62 | 0.91 | 0.91 |
+| hard:footnote | 10 | 0.20 | 0.60 | 0.60 | 0.70 | 0.35 | 0.60 | 0.90 |
+| hard:image_only_page | 10 | 0.60 | 0.60 | 0.80 | 0.90 | 0.63 | 0.80 | 1.00 |
+| hard:no_numbers | 10 | 0.40 | 0.60 | 0.60 | 0.70 | 0.50 | 0.60 | 0.80 |
+| hard:period_format | 10 | 0.20 | 0.40 | 0.60 | 0.70 | 0.31 | 0.60 | 0.70 |
+| style:paraphrase | 140 | 0.29 | 0.59 | 0.71 | 0.77 | 0.42 | 0.75 | 0.85 |
+| style:exact | 25 | 0.36 | 0.60 | 0.64 | 0.68 | 0.46 | 0.72 | 0.88 |
+| style:vague | 20 | 0.35 | 0.60 | 0.75 | 0.75 | 0.49 | 0.75 | 0.90 |
+| style:analytical | 15 | 0.00 | 0.07 | 0.13 | 0.20 | 0.03 | 0.13 | 0.67 |
+
+## Paired comparison vs `dense-voyage-4-large-2048-exact.jsonl` (strict Recall@10)
+
+Only this run finds: 8 (R001, R025, R050, R053, R090, R105, R161, R164)  
+Only the other finds: 11 (R027, R054, R058, R059, R120, R133, R138, R150, R151, R152, R160)  
+Ties: 181; exact sign test p = 0.648
+
+## Not found in the top 10 (strict): 68
+
+R004, R006, R009, R010, R013, R021, R022, R023, R027, R028, R029, R038, R042, R044, R054, R055, R058, R059, R061, R062, R063, R064, R068, R071, R073, R075, R076, R078, R079, R083, R088, R097, R098, R107, R115, R116, R117, R118, R120, R122, R127, R130, R133, R135, R136, R137, R138, R144, R145, R146, R150, R151, R152, R156, R159, R160, R163, R165, R166, R170, R171, R172, R173, R179, R181, R198, R199, R200

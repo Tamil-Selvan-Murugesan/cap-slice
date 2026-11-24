@@ -24,6 +24,12 @@ search The 200 questions (input_type "query", cached), top 50 per question -> ru
        SOFT_BOOST per matching filter field (the same boost as BM25, fixed before the first run).
        HNSW search with hnsw_ef 128; --exact searches exhaustively (to measure what HNSW loses).
 
+--corpus V   round 2 (docs/plan.md): use parsed_advanced/_chunks/r2-<V>.jsonl from cap-slice-chunk-variants.
+             Embeds each record's `embed_text`, returns its `text`; vectors in _vectors/<model>-<dim>__r2-<V>/,
+             collection r2__<model>-<dim>__<V>; searches return each `parent` once (small-to-big returns the
+             parent chunk of the best piece) and write to review/retrieval/round2/. Question vectors are
+             shared with round 1 (same model, same questions).
+
 --dry-run N  embed / load / search only the first N chunks (and the first 3 questions) into a separate
              vectors folder and a `dryrun__` collection: checks the whole path for a few cents.
 
@@ -138,6 +144,7 @@ def embedder(provider: str, model: str, dim: int, need_key: bool = True):
 
 
 DRY_RUN = 0  # set from --dry-run
+CORPUS = ""  # set from --corpus (round 2 variant)
 
 
 def load_chunks() -> list[dict]:
@@ -147,7 +154,16 @@ def load_chunks() -> list[dict]:
 
 def tag(model: str, dim: int) -> str:
     """Folder / collection tag: nvidia/Nemotron-3-Embed-8B-BF16 -> nemotron-3-embed-8b-bf16-2048."""
-    return f"{model.split('/')[-1].lower()}-{dim}" + (f"-dryrun{DRY_RUN}" if DRY_RUN else "")
+    return (f"{model.split('/')[-1].lower()}-{dim}" + (f"__r2-{CORPUS}" if CORPUS else "")
+            + (f"-dryrun{DRY_RUN}" if DRY_RUN else ""))
+
+
+def chunker_version() -> str:
+    return CHUNKER_VERSION + (f"+r2-{CORPUS}" if CORPUS else "")
+
+
+def embed_texts(chunks: list[dict]) -> list[str]:
+    return [c.get("embed_text", c["text"]) for c in chunks]
 
 
 def client():
@@ -169,7 +185,7 @@ def batches(ntok: list[int], max_texts: int = MAX_TEXTS, max_tokens: int = MAX_T
 def cmd_count(args) -> int:
     chunks = load_chunks()
     emb = embedder(args.provider, args.model, args.dim, need_key=False)
-    ntok = emb.count([c["text"] for c in chunks])
+    ntok = emb.count(embed_texts(chunks))
     total = sum(ntok)
     price = PRICES.get(args.model)
     print(f"{len(chunks):,} chunks, {total:,} tokens (max {max(ntok):,}), "
@@ -180,7 +196,7 @@ def cmd_count(args) -> int:
 
 def cmd_embed(args) -> int:
     chunks = load_chunks()
-    texts = [c["text"] for c in chunks]
+    texts = embed_texts(chunks)
     emb = embedder(args.provider, args.model, args.dim)
     out = VECTORS / tag(args.model, args.dim)
     out.mkdir(parents=True, exist_ok=True)
@@ -192,7 +208,7 @@ def cmd_embed(args) -> int:
              if args.provider == "openai" else {})
     manifest.write_text(json.dumps({"model": args.model, "dim": args.dim, "provider": args.provider, **extra,
                                     "corpus": str(CHUNKS.relative_to(REPO_ROOT)), "corpus_sha256": corpus_hash,
-                                    "n_chunks": len(chunks), "chunker_version": CHUNKER_VERSION}, indent=1))
+                                    "n_chunks": len(chunks), "chunker_version": chunker_version()}, indent=1))
     plan = batches(emb.count(texts), emb.max_texts, emb.max_tokens)
     log = out / "log.jsonl"
     todo = [(k, a, b) for k, (a, b) in enumerate(plan) if not (out / f"{a:06d}-{b:06d}.npy").exists()]
@@ -250,13 +266,16 @@ def payloads(chunks: list[dict], model: str) -> list[dict]:
         pages = range(c["page_start"], max(c["page_start"], c["page_end"]) + 1)
         out.append({**docs[c["doc"]], "chunk_index": c["chunk"], "page_start": c["page_start"],
                     "page_end": c["page_end"], "chunk_kind": c["kind"], "section": c["section"], "text": c["text"],
-                    "parser": PARSER, "chunker_version": CHUNKER_VERSION, "embedding_model": model,
+                    "parent": c.get("parent", c["chunk"]), "parser": PARSER, "chunker_version": chunker_version(), "embedding_model": model,
                     "image_only_page": all(low.get((c["doc"], p), False) for p in pages), "generated": False})
     return out
 
 
 def collection_name(model: str, dim: int) -> str:
-    return ("dryrun__" if DRY_RUN else "r1__") + f"{model.split('/')[-1].lower()}-{dim}__baseline"
+    base = f"{model.split('/')[-1].lower()}-{dim}"
+    if CORPUS:
+        return ("dryrun__" if DRY_RUN else "r2__") + f"{base}__{CORPUS}"
+    return ("dryrun__" if DRY_RUN else "r1__") + f"{base}__baseline"
 
 
 def cmd_load(args) -> int:
@@ -289,7 +308,9 @@ def cmd_load(args) -> int:
 
 
 def query_vectors(args, qs: list[dict]) -> np.ndarray:
-    path = VECTORS / tag(args.model, args.dim) / "queries.json"
+    # Question vectors depend only on model and dim: shared by every corpus (and by dry runs).
+    path = VECTORS / f"{args.model.split('/')[-1].lower()}-{args.dim}" / "queries.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
     cache = json.loads(path.read_text()) if path.exists() else {}
     missing = [q for q in qs if cache.get(q["qid"], {}).get("question") != q["question"]]
     if missing:
@@ -330,7 +351,8 @@ def cmd_search(args) -> int:
               "question_next": ("symbol", "year", "doc_type"),
               "answer_key": ("symbol", "year", "doc_type")}[args.filter]
     nxt = args.filter == "question_next"
-    keep = ["doc_id", "path", "chunk_index", "page_start", "page_end"]
+    keep = ["doc_id", "path", "chunk_index", "page_start", "page_end", "parent"]
+    fetch = SOFT_POOL if CORPUS == "e" else args.top  # small-to-big: enough pieces for args.top parents
     lines = []
     for q, v in zip(qs, qv):
         f = (answer_key_filter(q, meta) if args.filter == "answer_key" else read(q["question"])) if fields else {}
@@ -341,20 +363,27 @@ def cmd_search(args) -> int:
                       for h in hits]
         else:
             flt = qdrant_filter(f, fields, nxt) if fields else None
-            hits = qc.query_points(name, query=v.tolist(), query_filter=flt, limit=args.top,
+            hits = qc.query_points(name, query=v.tolist(), query_filter=flt, limit=fetch,
                                    search_params=params, with_payload=keep).points
             scored = [(h.score, h) for h in hits]
         scored.sort(key=lambda x: -x[0])
+        seen, best = set(), []  # each returned unit (parent chunk) once, at its best-scoring piece
+        for s, h in scored:
+            key = (h.payload["path"], h.payload.get("parent", h.payload["chunk_index"]))
+            if key not in seen:
+                seen.add(key)
+                best.append((s, h))
         lines.append(json.dumps({"qid": q["qid"], "results": [
-            {"doc": h.payload["path"], "chunk": h.payload["chunk_index"], "page_start": h.payload["page_start"],
-             "page_end": h.payload["page_end"], "score": round(s, 5)} for s, h in scored[:args.top]]}))
+            {"doc": h.payload["path"], "chunk": h.payload.get("parent", h.payload["chunk_index"]),
+             "page_start": h.payload["page_start"], "page_end": h.payload["page_end"], "score": round(s, 5)}
+            for s, h in best[:args.top]]}))
     qc.close()
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text("\n".join(lines) + "\n")
     args.out.with_suffix(".meta.json").write_text(json.dumps(
         {"retriever": "dense", "provider": args.provider, "model": args.model, "dim": args.dim,
          "collection": name, "qdrant": "server 1.19.1", "search": "exact" if args.exact else f"hnsw_ef={HNSW_EF}",
-         "hnsw": {"m": HNSW_M, "ef_construct": HNSW_EF_CONSTRUCT}, "corpus": str(CHUNKS.relative_to(REPO_ROOT)), "chunker_version": CHUNKER_VERSION,
+         "hnsw": {"m": HNSW_M, "ef_construct": HNSW_EF_CONSTRUCT}, "corpus": str(CHUNKS.relative_to(REPO_ROOT)), "chunker_version": chunker_version(),
          "filter": args.filter, "soft": args.soft, "soft_boost": SOFT_BOOST if args.soft else None,
          "soft_pool": SOFT_POOL if args.soft else None, "top": args.top}, indent=1))
     print(f"wrote {args.out}")
@@ -378,15 +407,19 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--out", type=Path)
     ap.add_argument("--exact", action="store_true", help="exhaustive search instead of HNSW")
     ap.add_argument("--dry-run", type=int, default=0, metavar="N")
+    ap.add_argument("--corpus", default="", help="round-2 variant: use parsed_advanced/_chunks/r2-<corpus>.jsonl")
     args = ap.parse_args(argv)
-    global DRY_RUN
-    DRY_RUN = args.dry_run
+    global DRY_RUN, CORPUS, CHUNKS
+    DRY_RUN, CORPUS = args.dry_run, args.corpus
+    if CORPUS:
+        CHUNKS = CHUNKS.parent / f"r2-{CORPUS}.jsonl"
     PROVIDER_ARGS.update(endpoint=args.endpoint, key_env=args.key_env, doc_prefix=args.doc_prefix,
                          query_prefix=args.query_prefix, workers=args.workers)
     if args.command == "search" and not args.out:
         suffix = "" if args.filter == "none" else f"-{args.filter}" + ("-soft" if args.soft else "")
         suffix += "-exact" if args.exact else ""
-        args.out = REPO_ROOT / "review" / "retrieval" / f"dense-{tag(args.model, args.dim)}{suffix}.jsonl"
+        sub = ("round2",) if CORPUS else ()
+        args.out = REPO_ROOT.joinpath("review", "retrieval", *sub, f"dense-{tag(args.model, args.dim)}{suffix}.jsonl")
     return {"count": cmd_count, "embed": cmd_embed, "load": cmd_load, "search": cmd_search}[args.command](args)
 
 
