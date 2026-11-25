@@ -95,12 +95,13 @@ def main(argv=None):
     ap.add_argument("--tag", default="", help="name part for the output (default: the run's name)")
     ap.add_argument("--limit", type=int, default=0, help="first N questions only (dry run)")
     ap.add_argument("--out-dir", type=Path, default=OUT)
+    ap.add_argument("--questions", type=Path, help="qid,question CSV (default: the 200-question set)")
     args = ap.parse_args(argv)
 
     import voyageai
     client = voyageai.Client(max_retries=5)
     ntok = lambda ts: [len(t) for t in client.tokenize(ts, model="voyage-4-large")]  # noqa: E731  close enough
-    questions = {r["qid"]: r["question"] for r in csv.DictReader(QUESTIONS.open())}
+    questions = {r["qid"]: r["question"] for r in csv.DictReader((args.questions or QUESTIONS).open())}
     texts = load_texts(args.corpus)
     runs = [read_run(args.run)] + ([read_run(args.union)] if args.union else [])
     cache = Cache(CACHE / f"{args.model}__{args.corpus or 'baseline'}.jsonl")

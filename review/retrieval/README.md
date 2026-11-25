@@ -1,5 +1,13 @@
 # Retrieval runs
 
+## Query expansion (2026-11-25)
+
+Claude Sonnet 5.5 splits multi-fact questions into sub-queries; each runs the production pipeline; the lists are
+merged **round-robin** (adopted provisionally): R@10 0.915 → **0.93** (+3 / −0), multi-page questions with all pages
+in the top 10 5 → 8 of 14. Reranking the union against the original question undoes the gain (the reranker prefers
+pages about the whole question). [`expand/README.md`](expand/README.md). S22 (concall chunks as turns):
+[`s22/README.md`](s22/README.md).
+
 ## Round 4 — reranker (2026-11-24)
 
 **Voyage rerank-3 on the top 50 adopted.** After b2 dense search with question-based soft filters: strict R@10

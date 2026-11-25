@@ -386,7 +386,10 @@ def cmd_search(args) -> int:
 
     from cap_slice.query_reader import answer_key_filter, doc_meta, keeps, read
     from cap_slice.retrieval_score import load_questions
-    qs = load_questions()[:3] if DRY_RUN else load_questions()
+    if args.questions:  # e.g. query-expansion sub-queries: qid,question
+        qs = list(csv.DictReader(args.questions.open()))
+    else:
+        qs = load_questions()[:3] if DRY_RUN else load_questions()
     qv = query_vectors(args, qs)
     meta = doc_meta()
     qc = client()
@@ -452,6 +455,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--out", type=Path)
     ap.add_argument("--exact", action="store_true", help="exhaustive search instead of HNSW")
     ap.add_argument("--dry-run", type=int, default=0, metavar="N")
+    ap.add_argument("--questions", type=Path, help="search: a qid,question CSV instead of the 200-question set")
     ap.add_argument("--reuse", default="", metavar="TAG",
                     help="embed: copy vectors of unchanged chunks from _vectors/TAG, embed only the rest")
     ap.add_argument("--corpus", default="", help="round-2 variant: use parsed_advanced/_chunks/r2-<corpus>.jsonl")
