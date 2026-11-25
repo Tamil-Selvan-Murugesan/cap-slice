@@ -1,0 +1,11 @@
+{
+ "run": "review/retrieval/expand/dense-b2s-subqueries-question-soft-top100.jsonl",
+ "union": null,
+ "depth": 50,
+ "model": "rerank-3",
+ "reranker_sees": "embed_text of corpus b2s",
+ "questions": 77,
+ "tokens_this_run": 1416631,
+ "usd_this_run": 0.0708,
+ "date": "2026-11-25"
+}
