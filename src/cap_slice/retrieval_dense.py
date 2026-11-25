@@ -194,6 +194,49 @@ def cmd_count(args) -> int:
     return 0
 
 
+def embed_reusing(args, chunks, texts, emb, out) -> int:
+    """--reuse TAG: copy the vector of every chunk whose embedded text is unchanged from run TAG (same model and
+    dim) and embed only the rest; written as one shard covering the whole corpus."""
+    old_dir = VECTORS / args.reuse
+    old_m = json.loads((old_dir / "manifest.json").read_text())
+    if (old_m["model"], old_m["dim"]) != (args.model, args.dim):
+        raise SystemExit(f"{old_dir} is {old_m['model']} {old_m['dim']}, not {args.model} {args.dim}")
+    old_chunks = [json.loads(line) for line in (REPO_ROOT / old_m["corpus"]).open()]
+    shards = sorted(old_dir.glob("[0-9]*-[0-9]*.npy"))
+    old_vecs = np.concatenate([np.load(x) for x in shards])
+    assert len(old_vecs) == len(old_chunks), (len(old_vecs), len(old_chunks))
+    index = {t: i for i, t in enumerate(embed_texts(old_chunks))}
+    vecs = np.zeros((len(chunks), args.dim), dtype=np.float32)
+    missing = []
+    for i, t in enumerate(texts):
+        if t in index:
+            vecs[i] = old_vecs[index[t]]
+        else:
+            missing.append(i)
+    print(f"reused {len(chunks) - len(missing):,} vectors from {args.reuse}; embedding {len(missing):,} new chunks")
+    plan = batches(emb.count([texts[i] for i in missing]), emb.max_texts, emb.max_tokens)
+    log, total = out / "log.jsonl", 0
+    for k, (a, b) in enumerate(plan, 1):
+        ids = missing[a:b]
+        t = time.time()
+        v, used = emb.embed([texts[i] for i in ids], "document")
+        vecs[ids] = v
+        total += used
+        with log.open("a") as f:
+            f.write(json.dumps({"batch": k, "texts": len(ids), "tokens": used, "reused_from": args.reuse,
+                                "seconds": round(time.time() - t, 2), "at": time.strftime("%Y-%m-%dT%H:%M:%S")}) + "\n")
+        print(f"[{k}/{len(plan)}] {len(ids)} chunks, {used:,} tokens, {time.time() - t:.1f}s", flush=True)
+    shard = out / f"{0:06d}-{len(chunks):06d}.npy"
+    np.save(shard.with_suffix(".tmp.npy"), vecs)
+    shard.with_suffix(".tmp.npy").rename(shard)
+    m = json.loads((out / "manifest.json").read_text())
+    m.update({"reused_from": args.reuse, "reused_vectors": len(chunks) - len(missing), "embedded_vectors": len(missing),
+              "tokens": total})
+    (out / "manifest.json").write_text(json.dumps(m, indent=1))
+    print(f"wrote {shard.relative_to(REPO_ROOT)}; {total:,} tokens")
+    return 0
+
+
 def cmd_embed(args) -> int:
     chunks = load_chunks()
     texts = embed_texts(chunks)
@@ -209,6 +252,8 @@ def cmd_embed(args) -> int:
     manifest.write_text(json.dumps({"model": args.model, "dim": args.dim, "provider": args.provider, **extra,
                                     "corpus": str(CHUNKS.relative_to(REPO_ROOT)), "corpus_sha256": corpus_hash,
                                     "n_chunks": len(chunks), "chunker_version": chunker_version()}, indent=1))
+    if args.reuse:
+        return embed_reusing(args, chunks, texts, emb, out)
     plan = batches(emb.count(texts), emb.max_texts, emb.max_tokens)
     log = out / "log.jsonl"
     todo = [(k, a, b) for k, (a, b) in enumerate(plan) if not (out / f"{a:06d}-{b:06d}.npy").exists()]
@@ -407,6 +452,8 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--out", type=Path)
     ap.add_argument("--exact", action="store_true", help="exhaustive search instead of HNSW")
     ap.add_argument("--dry-run", type=int, default=0, metavar="N")
+    ap.add_argument("--reuse", default="", metavar="TAG",
+                    help="embed: copy vectors of unchanged chunks from _vectors/TAG, embed only the rest")
     ap.add_argument("--corpus", default="", help="round-2 variant: use parsed_advanced/_chunks/r2-<corpus>.jsonl")
     args = ap.parse_args(argv)
     global DRY_RUN, CORPUS, CHUNKS

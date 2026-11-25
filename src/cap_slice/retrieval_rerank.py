@@ -25,6 +25,7 @@ QUESTIONS = REPO_ROOT / "data" / "golden" / "retrieval_questions.csv"
 CHUNKS = REPO_ROOT / "parsed_advanced" / "_chunks"
 CACHE = REPO_ROOT / "parsed_advanced" / "_rerank"
 OUT = REPO_ROOT / "review" / "retrieval" / "round4"
+
 PRICES = {"rerank-3": 0.05}  # USD per 1M tokens, docs.voyageai.com/docs/pricing (checked 2026-11-24; 200M free)
 MAX_REQUEST_TOKENS = 500_000  # API limit 600K: query tokens x documents + document tokens
 
@@ -93,6 +94,7 @@ def main(argv=None):
     ap.add_argument("--corpus", default="b2", help="round-2 corpus whose embed_text the reranker sees ('' = baseline)")
     ap.add_argument("--tag", default="", help="name part for the output (default: the run's name)")
     ap.add_argument("--limit", type=int, default=0, help="first N questions only (dry run)")
+    ap.add_argument("--out-dir", type=Path, default=OUT)
     args = ap.parse_args(argv)
 
     import voyageai
@@ -120,10 +122,10 @@ def main(argv=None):
         if n % 20 == 0 or n == len(qids):
             print(f"[{n}/{len(qids)}] {used:,} tokens this run, {time.time() - t0:.0f}s", flush=True)
 
-    OUT.mkdir(parents=True, exist_ok=True)
+    args.out_dir.mkdir(parents=True, exist_ok=True)
     base = args.tag or args.run.stem
     for d in args.depth:
-        out = OUT / f"{base}-rerank-{args.model}-d{d}{'-dryrun' if args.limit else ''}.jsonl"
+        out = args.out_dir / f"{base}-rerank-{args.model}-d{d}{'-dryrun' if args.limit else ''}.jsonl"
         with out.open("w") as f:
             for qid in qids:
                 cands = []

@@ -124,7 +124,48 @@ def _is_boilerplate(line: str, drop: set[str]) -> bool:
     return len("".join(_key(f) for f in rest)) < 5
 
 
-def _blocks(pages: list[ParsedPage]) -> list[Block]:
+_SPEAKER_NAME = re.compile(r"^[A-Z][A-Za-z.'’\- ]{1,48}?\s*$")  # 'Management :' too
+_NOT_SPEAKER = re.compile(r"(?i)^(note|notes|disclaimer|date|time|sub|subject|ref|"  # 'Management:' is a speaker
+                          r"particulars|total|source|registered office|cin|website|email|phone|tel|fax)\b")
+
+
+def _speaker_name(cell: str) -> str | None:
+    """'Nish Kakran:' -> 'Nish Kakran' if it looks like a speaker label (<= 6 words, no digits)."""
+    c = cell.strip()
+    if not c.endswith((":", "：")):
+        return None
+    name = c.rstrip(":：").strip()
+    if not name or len(name.split()) > 6 or re.search(r"\d", name) or _NOT_SPEAKER.match(name) \
+            or not _SPEAKER_NAME.match(name):
+        return None
+    return name
+
+
+def _transcript_line(s: str) -> str | None:
+    """S22: MinerU renders many concall transcripts as two-column speaker tables ('| Name: | speech |') and marks
+    some speaker labels as headings ('## Name:'). Turn those back into plain turns ('Name: speech'); continuation
+    rows ('| | more speech |') become text; separator rows are dropped (None). Other lines are returned as is."""
+    if s.startswith("|"):
+        if SEPARATOR.match(s):
+            return None
+        cs = _cells(s)
+        if len(cs) >= 2 and _speaker_name(cs[0]):
+            return f"{_speaker_name(cs[0])}: " + " ".join(x for x in cs[1:] if x)
+        if len(cs) >= 2 and not cs[0]:
+            return " ".join(x for x in cs[1:] if x)
+        return s
+    if s.startswith("#"):
+        h = s.lstrip("#").strip()
+        name = _speaker_name(h)
+        if name is None and ":" in h:  # '## Name: speech' on one line
+            head, _, rest = h.partition(":")
+            if _speaker_name(head + ":"):
+                return f"{_speaker_name(head + ':')}: {rest.strip()}"
+        return f"{name}:" if name else s
+    return s
+
+
+def _blocks(pages: list[ParsedPage], transcript: bool = False) -> list[Block]:
     drop = _boilerplate(pages)
     blocks: list[Block] = []
     for page in pages:
@@ -139,6 +180,10 @@ def _blocks(pages: list[ParsedPage]) -> list[Block]:
             if (line in edges and _is_boilerplate(line, drop)) or re.fullmatch(r"\s*\d{1,4}\s*", line):
                 continue
             s = line.strip()
+            if transcript:
+                s = _transcript_line(s)
+                if not s or not s.strip(" |"):
+                    continue
             kind = "table" if s.startswith("|") else "heading" if s.startswith("#") else "text"
             if kind == "heading":
                 page_blocks.append(Block("heading", [s.lstrip("#").strip()], page.number,
@@ -268,7 +313,8 @@ SCOPE = re.compile(r"(?i)\b(standalone|consolidated)\b.{0,40}\b(financial (state
                    r"statement of (profit|cash|changes)|cash flow)")
 
 
-def chunk_structured(pages: list[ParsedPage]) -> list[StructuredChunk]:
+def chunk_structured(pages: list[ParsedPage], transcript: bool = False) -> list[StructuredChunk]:
+    """transcript=True: concall transcripts — speaker tables and speaker headings become plain turns (fix S22)."""
     chunks: list[StructuredChunk] = []
     top, top_page, scope, scope_page = "", 0, "", 0   # round-2 context only; never changes text
     buf_ctx = ("", "")
@@ -317,7 +363,7 @@ def chunk_structured(pages: list[ParsedPage]) -> list[StructuredChunk]:
             buf_ctx = _ctx()
         buf.append(b)
 
-    blocks = _blocks(pages)
+    blocks = _blocks(pages, transcript)
     for i, b in enumerate(blocks):
         if b.page != page:
             # New page: a heading that only had a line or two under it on its own page (a

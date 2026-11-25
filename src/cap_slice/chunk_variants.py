@@ -42,7 +42,7 @@ from cap_slice.downloader import REPO_ROOT
 CACHE = REPO_ROOT / "parsed_advanced"
 PARSER = "mineru"
 CHUNKS = CACHE / "_chunks"
-VARIANTS = ("b1", "b2", "c", "d", "e")
+VARIANTS = ("b1", "b2", "c", "d", "e", "b2s")  # b2s: b2 on the S22-fixed chunker (2026-11-25)
 
 TEXT_WORDS = 400       # same prose target as the baseline chunker
 EXCHANGE_WORDS = 500   # longer concall exchanges are split at speaker turns
@@ -90,6 +90,27 @@ def base_chunks() -> list[dict]:
     keys = ("doc", "chunk", "kind", "section", "page_start", "page_end", "text")
     if len(frozen) != len(rows) or any({k: a[k] for k in keys} != b for a, b in zip(rows, frozen)):
         raise SystemExit("rebuilt baseline differs from parsed_advanced/_chunks/mineru.jsonl")
+    _write(out, rows)
+    return rows
+
+
+def base_chunks_s22() -> list[dict]:
+    """Baseline with the S22 fix: concall transcripts chunked in transcript mode (speaker tables -> turns).
+    Every other document must come out exactly as in base_chunks() (checked)."""
+    out = CHUNKS / "r2-ctx-s22.jsonl"
+    if out.exists():
+        return [json.loads(l) for l in out.open()]
+    from cap_slice.structured_chunk import chunk_structured
+    old = base_chunks()
+    rows = []
+    for doc, pages in documents():
+        for c in chunk_structured(pages, transcript="/concall_transcripts/" in doc):
+            rows.append({"doc": doc, "chunk": c.index, "kind": c.kind, "section": c.section,
+                         "page_start": c.page_start, "page_end": c.page_end, "text": c.text,
+                         "parent_heading": c.parent, "scope": c.scope})
+    same = lambda rs: [r for r in rs if "/concall_transcripts/" not in r["doc"]]  # noqa: E731
+    if same(rows) != same(old):
+        raise SystemExit("S22 rebuild changed documents other than concall transcripts")
     _write(out, rows)
     return rows
 
@@ -430,10 +451,10 @@ def variant_e(chunks: list[dict]) -> list[dict]:
 # ---------------------------------------------------------------- CLI
 
 def build(variant: str) -> Path:
-    base = base_chunks()
+    base = base_chunks_s22() if variant == "b2s" else base_chunks()
     stats = {}
-    if variant in ("b1", "b2"):
-        rows = variant_b(base, path=variant == "b2")
+    if variant in ("b1", "b2", "b2s"):
+        rows = variant_b(base, path=variant != "b1")
     elif variant == "c":
         rows = variant_c(base)
     elif variant == "d":
