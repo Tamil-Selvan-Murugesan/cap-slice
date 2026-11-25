@@ -32,7 +32,7 @@ flowchart TB
 
     subgraph CHUNK["3 · Chunking"]
         SC["structured_chunk.py<br/>tag chunker-baseline-2026-10-18<br/>+ chunk_variants.py: b2 header (round 2)"]
-        CORP[("_chunks/r2-b2.jsonl<br/>40,593 chunks, header embedded")]
+        CORP[("_chunks/r2-b2s.jsonl<br/>39,688 chunks, header embedded")]
         CLEAN --> SC --> CORP
     end
 
@@ -104,7 +104,7 @@ Solid arrows = data flow; dotted arrows = what each evaluation tool reads.
 | 1 | Downloader | `downloader.py` (`cap-slice-download`) | done | Sequential, throttled; unpacks NSE ZIPs |
 | 2 | Parser | MinerU 2.5-Pro advanced → `parsed_advanced/` | done | Chosen 2026-10-17 (`docs/parser-decision-2026-10-17.md`); Paddle kept as challenger |
 | 2 | Clean-up | `page_clean.py` | done | Same for every parser; held fixed in the experiments |
-| 3 | Chunker | `structured_chunk.py`, tag `chunker-baseline-2026-10-18`; round-2 variants in `chunk_variants.py` (`cap-slice-chunk-variants`) | done | **Round 2 (2026-11-24): b2 adopted** — context header + statement scope + heading path embedded, chunk text returned unchanged (`parsed_advanced/_chunks/r2-b2.jsonl`) |
+| 3 | Chunker | `structured_chunk.py`, tag `chunker-baseline-2026-10-18`; round-2 variants in `chunk_variants.py` (`cap-slice-chunk-variants`) | done | **Round 2 (2026-11-24): b2 adopted** — context header + statement scope + heading path embedded, chunk text returned unchanged. **S22 (2026-11-25): concall transcripts chunked as turns** (`transcript=True`) → corpus `parsed_advanced/_chunks/r2-b2s.jsonl` |
 | 4 | Period normaliser | `periods.py`, `data/period_overrides.csv` | done | Label / event-month rule / checked override; `review/periods/` |
 | 4 | Payload schema | `docs/plan.md` § Vector store and metadata | done | Written into every point by `retrieval_dense.py load` |
 | 5 | Keyword index | `retrieval_bm25.py` | done | Baseline and the keyword half of round 4 |
