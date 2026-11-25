@@ -27,6 +27,12 @@
 | style:paraphrase | 47 | 0.53 | 0.94 | 0.94 | 0.94 | 0.70 | 0.94 | 0.96 |
 | style:exact | 3 | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 |
 
+## Standard IR metrics (strict, top 10; definitions in review/retrieval/METRICS.md)
+
+| fact_recall@5 | fact_recall@10 | P@5 | P@10 | ctx_precision@10 | MAP@10 | nDCG@10 |
+|---|---|---|---|---|---|---|
+| 0.950 | 0.950 | 0.492 | 0.318 | 0.793 | 0.845 | 0.878 |
+
 ## Paired comparison vs `dense-b2s-question-soft-top100-rerank-rerank-3-d50.jsonl` (strict Recall@10)
 
 Only this run finds: 2 (F022, F030)  

@@ -1,0 +1,13 @@
+{
+ "run": "review/retrieval/expand/expand-B-roundrobin.jsonl",
+ "set": "main",
+ "questions": 200,
+ "k": 10,
+ "model": "claude-sonnet-5-5",
+ "prompt": "6a7a430c56ea",
+ "llm_context_recall@10": 0.9583,
+ "llm_context_precision@10": 0.8421,
+ "fully_supported": 0.915,
+ "tokens_in": 1348025,
+ "tokens_out": 37017
+}

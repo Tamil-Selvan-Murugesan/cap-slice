@@ -36,6 +36,7 @@ cap-slice-retrieval-hybrid = "cap_slice.retrieval_hybrid:main"
 cap-slice-chunk-variants = "cap_slice.chunk_variants:main"
 cap-slice-retrieval-rerank = "cap_slice.retrieval_rerank:main"
 cap-slice-query-expand = "cap_slice.query_expand:main"
+cap-slice-context-judge = "cap_slice.context_judge:main"
 
 [build-system]
 requires = ["uv_build>=0.12.5,<0.13.0"]

@@ -34,7 +34,7 @@ Cost: 142K input + 18K output tokens ≈ $0.46 for 200 questions (~$0.002 per qu
 |---|---|---|---|---|---|---|---|---|
 | production (b2s + rerank-3 top 50) | 0.620 | 0.860 | 0.915 | 0.940 | 0.730 | 0.92 | 5 | — |
 | A: union, reranked against the original | 0.620 | 0.860 | 0.915 | 0.940 | 0.730 | 0.92 | 5 | +0 / −0 |
-| **B: round-robin** | 0.620 | **0.880** | **0.930** | 0.945 | **0.733** | **0.94** | **8** | **+3 / −0** |
+| **B: round-robin** | 0.620 | **0.875** | **0.930** | 0.945 | **0.733** | **0.94** | **8** | **+3 / −0** |
 | C: RRF | 0.605 | 0.870 | 0.930 | 0.945 | 0.723 | 0.93 | 8 | +3 / −1 |
 
 B wins R062 (rank 28 → 5), R117 (11 → 6), R200 (17 → 8). Of the 23 single-page questions flagged multi, three move

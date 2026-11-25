@@ -1,0 +1,13 @@
+{
+ "run": "review/retrieval/fresh/expand-B-roundrobin.jsonl",
+ "set": "fresh",
+ "questions": 50,
+ "k": 10,
+ "model": "claude-sonnet-5-5",
+ "prompt": "6a7a430c56ea",
+ "llm_context_recall@10": 0.94,
+ "llm_context_precision@10": 0.8777,
+ "fully_supported": 0.92,
+ "tokens_in": 309182,
+ "tokens_out": 7189
+}

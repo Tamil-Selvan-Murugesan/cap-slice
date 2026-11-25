@@ -27,6 +27,12 @@
 | style:paraphrase | 47 | 0.38 | 0.68 | 0.77 | 0.85 | 0.51 | 0.77 | 0.87 |
 | style:exact | 3 | 0.33 | 0.33 | 0.33 | 1.00 | 0.33 | 0.33 | 0.33 |
 
+## Standard IR metrics (strict, top 10; definitions in review/retrieval/METRICS.md)
+
+| fact_recall@5 | fact_recall@10 | P@5 | P@10 | ctx_precision@10 | MAP@10 | nDCG@10 |
+|---|---|---|---|---|---|---|
+| 0.710 | 0.780 | 0.336 | 0.246 | 0.544 | 0.587 | 0.643 |
+
 ## Not found in the top 10 (strict): 13
 
 F003, F004, F008, F009, F014, F015, F016, F022, F024, F029, F030, F031, F033

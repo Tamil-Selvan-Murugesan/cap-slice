@@ -21,6 +21,10 @@ Two answer keys (data/golden/README.md):
   lenient  strict + retrieval_answer_pages_auto.csv — pages whose text layer prints the answer's
            distinctive numbers, not individually checked (6 of 8 correct in a spot check)
 
+Standard IR metrics as well (strict key, top 10; see review/retrieval/METRICS.md for definitions): fact
+recall@k, chunk precision@k, RAGAS-style context precision@10, MAP@10 and nDCG@10. "R@k" here is what
+other tools call hit rate / success@k.
+
 Reports Recall@1/5/10/20/50 and MRR@10 overall and per group (evidence, style, company, document
 type, hard-case tags with >= 10 questions), plus doc@10: the right document anywhere in the top 10
 (tells "wrong document" from "right document, wrong page"). Writes <run>.score.json and
@@ -97,6 +101,45 @@ def groups(q: dict) -> list[str]:
     return g + [f"hard:{t}" for t in q["hard"].split(";") if t]
 
 
+def ir_metrics(results: list[dict], facts: list[set[tuple[str, int]]], k: int = 10) -> dict:
+    """Rank metrics over the top k with page-level gold (strict).
+
+    A retrieved chunk is *relevant* if it covers any answer page of the question (used for precision and
+    RAGAS context precision, which count every relevant chunk). For recall, MAP and nDCG the relevant items
+    are the question's facts: a chunk earns a gain only for facts no earlier chunk covered (a fact printed
+    in five decks counts once), and the ideal ranking puts one page per fact at the top.
+    """
+    gold = set().union(*facts)
+    covered, rel, novel, n_cov = set(), [], [], []
+    for r in results[:k]:
+        on = lambda d, p: d == r["doc"] and r["page_start"] <= p <= r["page_end"]  # noqa: E731
+        hit = {i for i, f in enumerate(facts) if any(on(d, p) for d, p in f)}
+        rel.append(any(on(d, p) for d, p in gold))
+        novel.append(len(hit - covered))
+        covered |= hit
+        n_cov.append(len(covered))
+    n_rel, R = sum(rel), len(facts)
+    cov = lambda j: n_cov[min(j, len(n_cov)) - 1] if n_cov else 0  # noqa: E731
+    out = {f"fact_recall@{j}": cov(j) / R for j in (5, 10)}
+    out.update({f"P@{j}": sum(rel[:j]) / j for j in (5, 10)})
+    out["ctx_precision@10"] = (sum(sum(rel[:i + 1]) / (i + 1) for i in range(len(rel)) if rel[i]) / n_rel
+                               if n_rel else 0.0)
+    seen = 0
+    ap = 0.0
+    for i, g in enumerate(novel):
+        if g:
+            seen += g
+            ap += g * seen / (i + 1)
+    out["MAP@10"] = ap / R
+    dcg = sum(g / math.log2(i + 2) for i, g in enumerate(novel))
+    idcg = sum(1 / math.log2(i + 2) for i in range(min(R, k)))
+    out["nDCG@10"] = dcg / idcg
+    return out
+
+
+IR_KEYS = ("fact_recall@5", "fact_recall@10", "P@5", "P@10", "ctx_precision@10", "MAP@10", "nDCG@10")
+
+
 def score(run: dict[str, list[dict]], qs: list[dict]) -> dict:
     per_q = []
     for q in qs:
@@ -106,6 +149,7 @@ def score(run: dict[str, list[dict]], qs: list[dict]) -> dict:
             row[key] = found_rank(res, q["facts"][key])
         docs = {d for d, _ in q["gold"]["strict"]}
         row["doc10"] = any(r["doc"] in docs for r in res[:10])
+        row["ir"] = ir_metrics(res, q["facts"]["strict"])
         per_q.append(row)
 
     def metrics(rows: list[dict]) -> dict:
@@ -116,6 +160,8 @@ def score(run: dict[str, list[dict]], qs: list[dict]) -> dict:
                 m[f"{key}_R@{k}"] = sum(r[key] is not None and r[key] <= k for r in rows) / n
             m[f"{key}_MRR@10"] = sum(1 / r[key] for r in rows if r[key] and r[key] <= 10) / n
         m["doc@10"] = sum(r["doc10"] for r in rows) / n
+        for key in IR_KEYS:
+            m[key] = sum(r["ir"][key] for r in rows) / n
         return m
 
     by_group = collections.defaultdict(list)
@@ -160,6 +206,10 @@ def markdown(name: str, s: dict, cmp: dict | None, other: str | None) -> str:
         m = s["groups"][g]
         cells = [str(m["n"])] + [f"{m[c]:.2f}" for c in cols[1:]]
         lines.append(f"| {g} | " + " | ".join(cells) + " |")
+    a = s["groups"]["all"]
+    lines += ["", "## Standard IR metrics (strict, top 10; definitions in review/retrieval/METRICS.md)", "",
+              "| " + " | ".join(IR_KEYS) + " |", "|" + "---|" * len(IR_KEYS),
+              "| " + " | ".join(f"{a[k]:.3f}" for k in IR_KEYS) + " |"]
     if cmp:
         lines += ["", f"## Paired comparison vs `{other}` (strict Recall@{cmp['k']})", "",
                   f"Only this run finds: {len(cmp['a_only'])} ({', '.join(cmp['a_only']) or '-'})  ",

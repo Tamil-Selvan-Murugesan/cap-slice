@@ -40,6 +40,12 @@
 | style:vague | 20 | 0.55 | 0.90 | 0.95 | 1.00 | 0.72 | 0.95 | 1.00 |
 | style:analytical | 15 | 0.00 | 0.27 | 0.40 | 0.53 | 0.12 | 0.40 | 1.00 |
 
+## Standard IR metrics (strict, top 10; definitions in review/retrieval/METRICS.md)
+
+| fact_recall@5 | fact_recall@10 | P@5 | P@10 | ctx_precision@10 | MAP@10 | nDCG@10 |
+|---|---|---|---|---|---|---|
+| 0.887 | 0.935 | 0.252 | 0.168 | 0.683 | 0.748 | 0.797 |
+
 ## Paired comparison vs `dense-b2-question-soft-top100-rerank-rerank-3-d50.jsonl` (strict Recall@10)
 
 Only this run finds: 0 (-)  
