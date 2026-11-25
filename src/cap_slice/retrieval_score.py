@@ -12,6 +12,10 @@ A result "hits" a gold page when it is the same document and its page range cove
 Questions with match=any (most) are answered by any one gold page; match=all (multi-page questions)
 need every gold page, and count as found at the rank where the last one appears.
 
+--set fresh scores the fresh set (data/golden/fresh_questions.csv) instead: each question lists its facts
+(groups separated by ";"), each with every page that prints it ("|"). A question counts as found at the
+rank where every fact has at least one of its pages; strict only (all pages checked on the image).
+
 Two answer keys (data/golden/README.md):
   strict   primary_page + answer_pages — every page checked on the page image
   lenient  strict + retrieval_answer_pages_auto.csv — pages whose text layer prints the answer's
@@ -53,6 +57,17 @@ def load_questions() -> list[dict]:
         strict = {(q["primary_doc"], int(q["primary_page"]))}
         strict |= {_page(x) for x in q["answer_pages"].split(";") if x}
         q["gold"] = {"strict": strict, "lenient": strict | auto[q["qid"]]}
+        q["facts"] = {k: [v] if q["match"] == "any" else [{p} for p in v] for k, v in q["gold"].items()}
+    return qs
+
+
+def load_fresh_questions() -> list[dict]:
+    qs = list(csv.DictReader((GOLDEN / "fresh_questions.csv").open()))
+    for q in qs:
+        q["primary_doc"] = _page(q["facts"].split(";")[0].split("|")[0])[0]  # for the doctype group
+        facts = [{_page(x) for x in g.split("|")} for g in q["facts"].split(";")]
+        q["facts"] = {"strict": facts, "lenient": facts}
+        q["gold"] = {"strict": set().union(*facts)}
     return qs
 
 
@@ -65,15 +80,12 @@ def load_run(path: Path) -> dict[str, list[dict]]:
     return run
 
 
-def found_rank(results: list[dict], gold: set[tuple[str, int]], match: str) -> int | None:
-    """1-based rank at which the question counts as answered, or None."""
-    need = set(gold)
+def found_rank(results: list[dict], facts: list[set[tuple[str, int]]]) -> int | None:
+    """1-based rank at which every fact has at least one of its pages covered, or None."""
+    need = set(range(len(facts)))
     for rank, res in enumerate(results, 1):
-        covered = {(d, p) for d, p in gold
-                   if d == res["doc"] and res["page_start"] <= p <= res["page_end"]}
-        if covered and match == "any":
-            return rank
-        need -= covered
+        need = {i for i in need if not any(d == res["doc"] and res["page_start"] <= p <= res["page_end"]
+                                          for d, p in facts[i])}
         if not need:
             return rank
     return None
@@ -91,7 +103,7 @@ def score(run: dict[str, list[dict]], qs: list[dict]) -> dict:
         res = run.get(q["qid"], [])
         row = {"qid": q["qid"], "groups": groups(q), "in_run": q["qid"] in run}
         for key in ("strict", "lenient"):
-            row[key] = found_rank(res, q["gold"][key], q["match"])
+            row[key] = found_rank(res, q["facts"][key])
         docs = {d for d, _ in q["gold"]["strict"]}
         row["doc10"] = any(r["doc"] in docs for r in res[:10])
         per_q.append(row)
@@ -162,8 +174,10 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("run", type=Path)
     ap.add_argument("--compare", type=Path, help="second run for a paired comparison")
+    ap.add_argument("--set", choices=["main", "fresh"], default="main",
+                    help="question set: the 200 questions (main) or the fresh set")
     args = ap.parse_args(argv)
-    qs = load_questions()
+    qs = load_questions() if args.set == "main" else load_fresh_questions()
     s = score(load_run(args.run), qs)
     cmp = compare(s, score(load_run(args.compare), qs)) if args.compare else None
     out = args.run.with_suffix("")

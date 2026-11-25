@@ -1,5 +1,9 @@
 # Multi-query expansion (2026-11-25)
 
+**Update 2026-11-25: confirmed on the fresh question set** (`review/retrieval/fresh/`): 50 unseen questions, every
+page per fact keyed; B finds 13 of 14 multi-page questions vs 11, R@10 0.90 → 0.94 (+2 / −0). Pooled +5 / −0.
+B is adopted.
+
 **Result: round-robin merge (B) adopted provisionally.** Multi-page questions answered with all pages in the top 10:
 **5 → 8 of 14**; strict R@10 **0.915 → 0.93** (+3 / −0, sign test p = 0.25), R@1 unchanged (0.62), no group of ≥ 15
 questions drops. Three wins is too few to be sure; the fresh question set (more multi-page questions) decides.

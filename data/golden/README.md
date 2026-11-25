@@ -125,3 +125,34 @@ same slide in several decks, the results PDF and the annual report). Two levels:
   no automatic candidates, so their strict list may miss pages that also answer them.
 
 Report retrieval scores at both levels; the truth lies between them.
+
+## Fresh retrieval questions
+
+`fresh_questions.csv` (2026-11-25): 50 new questions on pages no earlier set used. Written to test multi-query
+expansion and the chart/KPI strata, and to check the 200-question results on unseen questions. Retrieval only.
+Every answer and every listed page was read off a rendered page image, never from a parser.
+
+**How the pages were chosen.** `tools/golden/fresh_candidates.py draw` uses the same pools as the 200 questions
+with a new seed (20261125) and wider exclusions: v1 documents, v2/v3 fact pages, and every page of the 200
+questions (strict answer pages and the machine-found lenient pages), 445 pages in all. Questions were written
+from the first suitable pages in seeded order. Multi-page questions start from a drawn page and add the same
+metric from a filing several years away (or pair two checked facts from different documents: a chart and a call).
+Unsuitable or coincidental pages are listed with reasons in `fresh_skipped.csv`.
+
+**Every page per fact.** The `facts` column lists, for each fact the answer needs, every page that prints it:
+facts are separated by `;` (all needed), pages of one fact by `|` (any one). Alternative pages were found by
+searching the text layers for the value, then each one was checked on a crop of the page image; coincidental
+matches (the same number meaning something else) are left out. A question counts as found at the rank where
+every fact has one of its pages (`cap-slice-retrieval-score --set fresh RUN`). This fixes the 200-question key's
+gap for multi-page questions, where a fact found in its own year's filing could be keyed only to a later
+filing's comparative column.
+
+| | Count |
+|---|---|
+| By evidence | chart 14, kpi 4, multi_page 14, concall 8, prose 4, statement 3, table 2, scan 1 |
+| By company | APAR 17, E2E 14, Esconet 9, Hero 6, C2C 4 |
+
+Fewer than the 60–80 planned: the chart pool ran thin in seeded order (most slide draws were tables), and
+leadership or boilerplate pages repeated across dozens of documents were skipped as unfair single answers.
+Four questions also list an alternative page that the 200 questions used (F008, F020, F026, F047); their anchor
+pages are unseen.

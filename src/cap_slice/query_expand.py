@@ -4,6 +4,9 @@
     uv run cap-slice-query-expand questions       # sub-queries as a question file for the dense search / reranker
     uv run cap-slice-query-expand merge           # merged runs A / B / C -> review/retrieval/expand/
 
+    --questions CSV --out-dir DIR (before the command) run the same steps on another question set, e.g. the
+    fresh set: plans, sub-queries and merged runs then live in DIR.
+
 Each question goes to Claude Sonnet 5.5 once. If one search can answer it, nothing changes: the production run is
 used as is. Otherwise its 2-4 self-contained sub-queries (one fact each, naming company, period and scope) each run
 through the production pipeline (question-reader soft filter -> dense top 100 -> rerank-3 top 50 against the
@@ -67,6 +70,12 @@ PROMPT_HASH = hashlib.sha256((SYSTEM + json.dumps(SCHEMA, sort_keys=True) + MODE
 
 def questions() -> list[dict]:
     return list(csv.DictReader(QUESTIONS.open()))
+
+
+def set_paths(questions_csv: Path, out_dir: Path) -> None:
+    global QUESTIONS, OUT, PLANS, SUBQ
+    QUESTIONS, OUT = questions_csv.resolve(), out_dir.resolve()
+    PLANS, SUBQ = OUT / "plans.jsonl", OUT / "subqueries.csv"
 
 
 def load_plans() -> dict[str, dict]:
@@ -176,6 +185,8 @@ def cmd_merge(args) -> int:
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--questions", type=Path, default=QUESTIONS, help="qid,question CSV (default: the 200 questions)")
+    ap.add_argument("--out-dir", type=Path, default=OUT, help="plans, sub-queries and merged runs")
     sub = ap.add_subparsers(dest="cmd", required=True)
     p = sub.add_parser("plan")
     p.add_argument("--limit", type=int, default=0)
@@ -183,8 +194,11 @@ def main(argv=None) -> int:
     m = sub.add_parser("merge")
     m.add_argument("--production", type=Path,
                    default=REPO_ROOT / "review/retrieval/s22/dense-b2s-question-soft-top100-rerank-rerank-3-d50.jsonl")
-    m.add_argument("--sub", type=Path, default=OUT / "dense-b2s-subqueries-question-soft-top100-rerank-rerank-3-d50.jsonl")
+    m.add_argument("--sub", type=Path, help="reranked sub-query run (default: in --out-dir)")
     args = ap.parse_args(argv)
+    set_paths(args.questions, args.out_dir)
+    if args.cmd == "merge" and args.sub is None:
+        args.sub = OUT / "dense-b2s-subqueries-question-soft-top100-rerank-rerank-3-d50.jsonl"
     return {"plan": cmd_plan, "questions": cmd_questions, "merge": cmd_merge}[args.cmd](args)
 
 

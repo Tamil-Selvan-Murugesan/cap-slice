@@ -1,0 +1,26 @@
+page,reason
+data/APARINDS/annual_reports/FY2018-19.pdf#160,"statement candidate: accounting-policy text, no fact"
+data/APARINDS/annual_reports/FY2019-20.pdf#159,statement candidate: accounting-policy text
+data/APARINDS/annual_reports/FY2016-17.pdf#167,"statement candidate: hedging policy table, no figure"
+data/HEROMOTOCO/annual_reports/FY2021-22.pdf#258,statement candidate: accounting-policy text
+data/HEROMOTOCO/annual_reports/FY2018-19.pdf#210,statement candidate: policy text
+data/HEROMOTOCO/annual_reports/FY2014-15.pdf#184,rotated fixed-asset schedule - not used
+data/E2E/annual_reports/2022-07-29_FY2021-22.pdf#68,statement candidate: policy text
+data/E2E/annual_reports/2022-07-29_FY2021-22.pdf#76,coincidental text match
+data/E2E/annual_reports/2022-07-29_FY2021-22.pdf#1,scan candidate: cover page
+data/C2C/investor_presentations/2025-11-20_Nov-2025-a.pdf#2,scan candidate: cover page
+data/HEROMOTOCO/investor_presentations/Feb-2020.pdf#45,scan candidate: section divider
+data/E2E/investor_presentations/Oct-Nov-2024.pdf#7,scan candidate: leadership slide repeated in ~35 documents - not a fair single answer
+data/APARINDS/annual_reports/FY2018-19.pdf#44,coincidental match (shareholder table) for F024
+data/ESCONET/annual_reports/2026-08-25_FY2025-26.pdf#103,coincidental match (115.10) for F045
+data/ESCONET/annual_reports/2026-08-25_FY2025-26.pdf#104,coincidental match (115.10) for F045
+data/APARINDS/concall_transcripts/Nov-2020.pdf#7,"140,000 tons refers to FY21, not FY18 (F034)"
+data/APARINDS/concall_transcripts/Nov-2022.pdf#13,"140,000 tons refers to FY23, not FY18 (F034)"
+data/C2C/annual_reports/2026-09-08_FY2025-26.pdf#99,auditor says CSR 51.90 lakh outstanding - conflicts with F043 answer
+data/E2E/investor_presentations/Jul-2025.pdf#29,coincidental match
+data/HEROMOTOCO/annual_reports/FY2021-22.pdf#59,coincidental match
+data/ESCONET/periodic_results/2025-11-14_H1-FY26-half-yearly-SME.pdf#11,coincidental match
+data/ESCONET/annual_reports/2025-08-13_FY2024-25.pdf#114,coincidental match
+data/ESCONET/annual_reports/2024-08-05_FY2023-24.pdf#96,standalone 178.11 - decoy for consolidated F026
+data/HEROMOTOCO/annual_reports/FY2021-22.pdf#208,standalone warranties 135.08 - decoy for F023
+data/APARINDS/annual_reports/FY2016-17.pdf#129,consolidated P&L 176.57 - decoy for standalone F019
