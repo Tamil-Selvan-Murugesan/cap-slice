@@ -113,7 +113,7 @@ Solid arrows = data flow; dotted arrows = what each evaluation tool reads.
 | 6 | Question reader | `query_reader.py` | done | Rules only; an LLM reader is a possible later comparison |
 | 6 | Filters | `--filter` / `--soft` in `retrieval_bm25.py` | done | No filter · company · question-based (± next year) · answer key (upper bound) |
 | 6 | Hybrid search | `retrieval_hybrid.py` (`cap-slice-retrieval-hybrid`, RRF / DBSF) | tested, not adopted | 2026-10-19: worse than dense alone (0.77 vs 0.81 R@10); `review/retrieval/hybrid/` |
-| 6 | Query expansion | `query_expand.py` (`cap-slice-query-expand plan / questions / merge`), Claude Sonnet 5.5 | provisional | 2026-11-25: sub-queries for multi-fact questions, round-robin merge; multi-page 5 → 8 of 14 (`review/retrieval/expand/`) |
+| 6 | Query expansion | `query_expand.py` (`cap-slice-query-expand plan / questions / merge`), Claude Sonnet 5.5 | adopted | 2026-11-25: sub-queries for multi-fact questions, round-robin merge; multi-page 5 → 8 of 14 (`review/retrieval/expand/`); confirmed on the fresh set, 11 → 13 of 14, R@10 0.90 → 0.94 (`review/retrieval/fresh/`) |
 | 6 | Reranker | `retrieval_rerank.py` (`cap-slice-retrieval-rerank`), Voyage rerank-3 | done — top 50 adopted | Round 4 (2026-11-24): R@10 0.865 → 0.915; scores cached in `parsed_advanced/_rerank/`; open-weights reranker to compare later |
 | 6 | Answer step | — | planned | Must not quote `generated` content as printed figures |
 | 7 | Parse scorer | `score.py` / `compare_parsers.py` | done | Golden v1–v3, levels L1–L4 |

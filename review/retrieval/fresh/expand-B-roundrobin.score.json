@@ -1,0 +1,1735 @@
+{
+ "questions": 50,
+ "missing_from_run": [],
+ "groups": {
+  "all": {
+   "n": 50,
+   "strict_R@1": 0.56,
+   "strict_R@5": 0.94,
+   "strict_R@10": 0.94,
+   "strict_R@20": 0.94,
+   "strict_R@50": 0.94,
+   "strict_MRR@10": 0.72,
+   "lenient_R@1": 0.56,
+   "lenient_R@5": 0.94,
+   "lenient_R@10": 0.94,
+   "lenient_R@20": 0.94,
+   "lenient_R@50": 0.94,
+   "lenient_MRR@10": 0.72,
+   "doc@10": 0.96,
+   "fact_recall@5": 0.95,
+   "fact_recall@10": 0.95,
+   "P@5": 0.49200000000000005,
+   "P@10": 0.318,
+   "ctx_precision@10": 0.7927725340136054,
+   "MAP@10": 0.845,
+   "nDCG@10": 0.8778259367545478
+  },
+  "company:APARINDS": {
+   "n": 17,
+   "strict_R@1": 0.4117647058823529,
+   "strict_R@5": 0.8235294117647058,
+   "strict_R@10": 0.8235294117647058,
+   "strict_R@20": 0.8235294117647058,
+   "strict_R@50": 0.8235294117647058,
+   "strict_MRR@10": 0.5784313725490197,
+   "lenient_R@1": 0.4117647058823529,
+   "lenient_R@5": 0.8235294117647058,
+   "lenient_R@10": 0.8235294117647058,
+   "lenient_R@20": 0.8235294117647058,
+   "lenient_R@50": 0.8235294117647058,
+   "lenient_MRR@10": 0.5784313725490197,
+   "doc@10": 0.8823529411764706,
+   "fact_recall@5": 0.8529411764705882,
+   "fact_recall@10": 0.8529411764705882,
+   "P@5": 0.4470588235294118,
+   "P@10": 0.31176470588235294,
+   "ctx_precision@10": 0.707688408696812,
+   "MAP@10": 0.7107843137254901,
+   "nDCG@10": 0.7573533352887278
+  },
+  "company:C2C": {
+   "n": 4,
+   "strict_R@1": 1.0,
+   "strict_R@5": 1.0,
+   "strict_R@10": 1.0,
+   "strict_R@20": 1.0,
+   "strict_R@50": 1.0,
+   "strict_MRR@10": 1.0,
+   "lenient_R@1": 1.0,
+   "lenient_R@5": 1.0,
+   "lenient_R@10": 1.0,
+   "lenient_R@20": 1.0,
+   "lenient_R@50": 1.0,
+   "lenient_MRR@10": 1.0,
+   "doc@10": 1.0,
+   "fact_recall@5": 1.0,
+   "fact_recall@10": 1.0,
+   "P@5": 0.55,
+   "P@10": 0.3,
+   "ctx_precision@10": 0.9055555555555556,
+   "MAP@10": 1.0,
+   "nDCG@10": 1.0
+  },
+  "company:E2E": {
+   "n": 14,
+   "strict_R@1": 0.5714285714285714,
+   "strict_R@5": 1.0,
+   "strict_R@10": 1.0,
+   "strict_R@20": 1.0,
+   "strict_R@50": 1.0,
+   "strict_MRR@10": 0.7738095238095238,
+   "lenient_R@1": 0.5714285714285714,
+   "lenient_R@5": 1.0,
+   "lenient_R@10": 1.0,
+   "lenient_R@20": 1.0,
+   "lenient_R@50": 1.0,
+   "lenient_MRR@10": 0.7738095238095238,
+   "doc@10": 1.0,
+   "fact_recall@5": 1.0,
+   "fact_recall@10": 1.0,
+   "P@5": 0.4857142857142857,
+   "P@10": 0.32142857142857145,
+   "ctx_precision@10": 0.8177938735017817,
+   "MAP@10": 0.9166666666666667,
+   "nDCG@10": 0.9379235538265327
+  },
+  "company:ESCONET": {
+   "n": 9,
+   "strict_R@1": 0.5555555555555556,
+   "strict_R@5": 1.0,
+   "strict_R@10": 1.0,
+   "strict_R@20": 1.0,
+   "strict_R@50": 1.0,
+   "strict_MRR@10": 0.7037037037037037,
+   "lenient_R@1": 0.5555555555555556,
+   "lenient_R@5": 1.0,
+   "lenient_R@10": 1.0,
+   "lenient_R@20": 1.0,
+   "lenient_R@50": 1.0,
+   "lenient_MRR@10": 0.7037037037037037,
+   "doc@10": 1.0,
+   "fact_recall@5": 1.0,
+   "fact_recall@10": 1.0,
+   "P@5": 0.6222222222222222,
+   "P@10": 0.3888888888888889,
+   "ctx_precision@10": 0.8104144620811288,
+   "MAP@10": 0.8703703703703703,
+   "nDCG@10": 0.917158958964011
+  },
+  "company:HEROMOTOCO": {
+   "n": 6,
+   "strict_R@1": 0.6666666666666666,
+   "strict_R@5": 1.0,
+   "strict_R@10": 1.0,
+   "strict_R@20": 1.0,
+   "strict_R@50": 1.0,
+   "strict_MRR@10": 0.8333333333333334,
+   "lenient_R@1": 0.6666666666666666,
+   "lenient_R@5": 1.0,
+   "lenient_R@10": 1.0,
+   "lenient_R@20": 1.0,
+   "lenient_R@50": 1.0,
+   "lenient_MRR@10": 0.8333333333333334,
+   "doc@10": 1.0,
+   "fact_recall@5": 1.0,
+   "fact_recall@10": 1.0,
+   "P@5": 0.39999999999999997,
+   "P@10": 0.23333333333333336,
+   "ctx_precision@10": 0.8738095238095238,
+   "MAP@10": 0.9166666666666666,
+   "nDCG@10": 0.9384882922619097
+  },
+  "doctype:annual_reports": {
+   "n": 21,
+   "strict_R@1": 0.5238095238095238,
+   "strict_R@5": 1.0,
+   "strict_R@10": 1.0,
+   "strict_R@20": 1.0,
+   "strict_R@50": 1.0,
+   "strict_MRR@10": 0.7142857142857143,
+   "lenient_R@1": 0.5238095238095238,
+   "lenient_R@5": 1.0,
+   "lenient_R@10": 1.0,
+   "lenient_R@20": 1.0,
+   "lenient_R@50": 1.0,
+   "lenient_MRR@10": 0.7142857142857143,
+   "doc@10": 1.0,
+   "fact_recall@5": 1.0,
+   "fact_recall@10": 1.0,
+   "P@5": 0.6285714285714286,
+   "P@10": 0.41904761904761906,
+   "ctx_precision@10": 0.8293984855847101,
+   "MAP@10": 0.9047619047619048,
+   "nDCG@10": 0.9352992113290781
+  },
+  "doctype:concall_transcripts": {
+   "n": 9,
+   "strict_R@1": 0.7777777777777778,
+   "strict_R@5": 1.0,
+   "strict_R@10": 1.0,
+   "strict_R@20": 1.0,
+   "strict_R@50": 1.0,
+   "strict_MRR@10": 0.8888888888888888,
+   "lenient_R@1": 0.7777777777777778,
+   "lenient_R@5": 1.0,
+   "lenient_R@10": 1.0,
+   "lenient_R@20": 1.0,
+   "lenient_R@50": 1.0,
+   "lenient_MRR@10": 0.8888888888888888,
+   "doc@10": 1.0,
+   "fact_recall@5": 1.0,
+   "fact_recall@10": 1.0,
+   "P@5": 0.2222222222222222,
+   "P@10": 0.12222222222222223,
+   "ctx_precision@10": 0.9047619047619047,
+   "MAP@10": 0.9444444444444444,
+   "nDCG@10": 0.9589921948412731
+  },
+  "doctype:investor_presentations": {
+   "n": 19,
+   "strict_R@1": 0.47368421052631576,
+   "strict_R@5": 0.8421052631578947,
+   "strict_R@10": 0.8421052631578947,
+   "strict_R@20": 0.8421052631578947,
+   "strict_R@50": 0.8421052631578947,
+   "strict_MRR@10": 0.631578947368421,
+   "lenient_R@1": 0.47368421052631576,
+   "lenient_R@5": 0.8421052631578947,
+   "lenient_R@10": 0.8421052631578947,
+   "lenient_R@20": 0.8421052631578947,
+   "lenient_R@50": 0.8421052631578947,
+   "lenient_MRR@10": 0.631578947368421,
+   "doc@10": 0.8947368421052632,
+   "fact_recall@5": 0.868421052631579,
+   "fact_recall@10": 0.868421052631579,
+   "P@5": 0.46315789473684216,
+   "P@10": 0.3,
+   "ctx_precision@10": 0.6953544575725027,
+   "MAP@10": 0.7236842105263158,
+   "nDCG@10": 0.7694254550655416
+  },
+  "doctype:periodic_results": {
+   "n": 1,
+   "strict_R@1": 1.0,
+   "strict_R@5": 1.0,
+   "strict_R@10": 1.0,
+   "strict_R@20": 1.0,
+   "strict_R@50": 1.0,
+   "strict_MRR@10": 1.0,
+   "lenient_R@1": 1.0,
+   "lenient_R@5": 1.0,
+   "lenient_R@10": 1.0,
+   "lenient_R@20": 1.0,
+   "lenient_R@50": 1.0,
+   "lenient_MRR@10": 1.0,
+   "doc@10": 1.0,
+   "fact_recall@5": 1.0,
+   "fact_recall@10": 1.0,
+   "P@5": 0.6,
+   "P@10": 0.3,
+   "ctx_precision@10": 0.8666666666666667,
+   "MAP@10": 1.0,
+   "nDCG@10": 1.0
+  },
+  "evidence:chart": {
+   "n": 14,
+   "strict_R@1": 0.7142857142857143,
+   "strict_R@5": 0.8571428571428571,
+   "strict_R@10": 0.8571428571428571,
+   "strict_R@20": 0.8571428571428571,
+   "strict_R@50": 0.8571428571428571,
+   "strict_MRR@10": 0.7738095238095238,
+   "lenient_R@1": 0.7142857142857143,
+   "lenient_R@5": 0.8571428571428571,
+   "lenient_R@10": 0.8571428571428571,
+   "lenient_R@20": 0.8571428571428571,
+   "lenient_R@50": 0.8571428571428571,
+   "lenient_MRR@10": 0.7738095238095238,
+   "doc@10": 0.8571428571428571,
+   "fact_recall@5": 0.8571428571428571,
+   "fact_recall@10": 0.8571428571428571,
+   "P@5": 0.4428571428571429,
+   "P@10": 0.2785714285714286,
+   "ctx_precision@10": 0.6824404761904762,
+   "MAP@10": 0.7738095238095238,
+   "nDCG@10": 0.7950664109693898
+  },
+  "evidence:concall": {
+   "n": 8,
+   "strict_R@1": 0.875,
+   "strict_R@5": 1.0,
+   "strict_R@10": 1.0,
+   "strict_R@20": 1.0,
+   "strict_R@50": 1.0,
+   "strict_MRR@10": 0.9375,
+   "lenient_R@1": 0.875,
+   "lenient_R@5": 1.0,
+   "lenient_R@10": 1.0,
+   "lenient_R@20": 1.0,
+   "lenient_R@50": 1.0,
+   "lenient_MRR@10": 0.9375,
+   "doc@10": 1.0,
+   "fact_recall@5": 1.0,
+   "fact_recall@10": 1.0,
+   "P@5": 0.2,
+   "P@10": 0.1125,
+   "ctx_precision@10": 0.8928571428571428,
+   "MAP@10": 0.9375,
+   "nDCG@10": 0.9538662191964322
+  },
+  "evidence:kpi": {
+   "n": 4,
+   "strict_R@1": 0.5,
+   "strict_R@5": 1.0,
+   "strict_R@10": 1.0,
+   "strict_R@20": 1.0,
+   "strict_R@50": 1.0,
+   "strict_MRR@10": 0.75,
+   "lenient_R@1": 0.5,
+   "lenient_R@5": 1.0,
+   "lenient_R@10": 1.0,
+   "lenient_R@20": 1.0,
+   "lenient_R@50": 1.0,
+   "lenient_MRR@10": 0.75,
+   "doc@10": 1.0,
+   "fact_recall@5": 1.0,
+   "fact_recall@10": 1.0,
+   "P@5": 0.55,
+   "P@10": 0.3,
+   "ctx_precision@10": 0.7568948412698413,
+   "MAP@10": 0.75,
+   "nDCG@10": 0.8154648767857288
+  },
+  "evidence:multi_page": {
+   "n": 14,
+   "strict_R@1": 0.0,
+   "strict_R@5": 0.9285714285714286,
+   "strict_R@10": 0.9285714285714286,
+   "strict_R@20": 0.9285714285714286,
+   "strict_R@50": 0.9285714285714286,
+   "strict_MRR@10": 0.38095238095238093,
+   "lenient_R@1": 0.0,
+   "lenient_R@5": 0.9285714285714286,
+   "lenient_R@10": 0.9285714285714286,
+   "lenient_R@20": 0.9285714285714286,
+   "lenient_R@50": 0.9285714285714286,
+   "lenient_MRR@10": 0.38095238095238093,
+   "doc@10": 1.0,
+   "fact_recall@5": 0.9642857142857143,
+   "fact_recall@10": 0.9642857142857143,
+   "P@5": 0.6428571428571429,
+   "P@10": 0.4928571428571429,
+   "ctx_precision@10": 0.8279858074182054,
+   "MAP@10": 0.8273809523809523,
+   "nDCG@10": 0.8833984159601113
+  },
+  "evidence:prose": {
+   "n": 4,
+   "strict_R@1": 1.0,
+   "strict_R@5": 1.0,
+   "strict_R@10": 1.0,
+   "strict_R@20": 1.0,
+   "strict_R@50": 1.0,
+   "strict_MRR@10": 1.0,
+   "lenient_R@1": 1.0,
+   "lenient_R@5": 1.0,
+   "lenient_R@10": 1.0,
+   "lenient_R@20": 1.0,
+   "lenient_R@50": 1.0,
+   "lenient_MRR@10": 1.0,
+   "doc@10": 1.0,
+   "fact_recall@5": 1.0,
+   "fact_recall@10": 1.0,
+   "P@5": 0.6000000000000001,
+   "P@10": 0.35,
+   "ctx_precision@10": 0.875,
+   "MAP@10": 1.0,
+   "nDCG@10": 1.0
+  },
+  "evidence:scan": {
+   "n": 1,
+   "strict_R@1": 1.0,
+   "strict_R@5": 1.0,
+   "strict_R@10": 1.0,
+   "strict_R@20": 1.0,
+   "strict_R@50": 1.0,
+   "strict_MRR@10": 1.0,
+   "lenient_R@1": 1.0,
+   "lenient_R@5": 1.0,
+   "lenient_R@10": 1.0,
+   "lenient_R@20": 1.0,
+   "lenient_R@50": 1.0,
+   "lenient_MRR@10": 1.0,
+   "doc@10": 1.0,
+   "fact_recall@5": 1.0,
+   "fact_recall@10": 1.0,
+   "P@5": 0.6,
+   "P@10": 0.3,
+   "ctx_precision@10": 0.8666666666666667,
+   "MAP@10": 1.0,
+   "nDCG@10": 1.0
+  },
+  "evidence:statement": {
+   "n": 3,
+   "strict_R@1": 0.6666666666666666,
+   "strict_R@5": 1.0,
+   "strict_R@10": 1.0,
+   "strict_R@20": 1.0,
+   "strict_R@50": 1.0,
+   "strict_MRR@10": 0.7777777777777778,
+   "lenient_R@1": 0.6666666666666666,
+   "lenient_R@5": 1.0,
+   "lenient_R@10": 1.0,
+   "lenient_R@20": 1.0,
+   "lenient_R@50": 1.0,
+   "lenient_MRR@10": 0.7777777777777778,
+   "doc@10": 1.0,
+   "fact_recall@5": 1.0,
+   "fact_recall@10": 1.0,
+   "P@5": 0.6,
+   "P@10": 0.3,
+   "ctx_precision@10": 0.7333333333333333,
+   "MAP@10": 0.7777777777777778,
+   "nDCG@10": 0.8333333333333334
+  },
+  "evidence:table": {
+   "n": 2,
+   "strict_R@1": 1.0,
+   "strict_R@5": 1.0,
+   "strict_R@10": 1.0,
+   "strict_R@20": 1.0,
+   "strict_R@50": 1.0,
+   "strict_MRR@10": 1.0,
+   "lenient_R@1": 1.0,
+   "lenient_R@5": 1.0,
+   "lenient_R@10": 1.0,
+   "lenient_R@20": 1.0,
+   "lenient_R@50": 1.0,
+   "lenient_MRR@10": 1.0,
+   "doc@10": 1.0,
+   "fact_recall@5": 1.0,
+   "fact_recall@10": 1.0,
+   "P@5": 0.4,
+   "P@10": 0.2,
+   "ctx_precision@10": 0.8777777777777778,
+   "MAP@10": 1.0,
+   "nDCG@10": 1.0
+  },
+  "hard:chart_labels": {
+   "n": 18,
+   "strict_R@1": 0.5555555555555556,
+   "strict_R@5": 0.8333333333333334,
+   "strict_R@10": 0.8333333333333334,
+   "strict_R@20": 0.8333333333333334,
+   "strict_R@50": 0.8333333333333334,
+   "strict_MRR@10": 0.662037037037037,
+   "lenient_R@1": 0.5555555555555556,
+   "lenient_R@5": 0.8333333333333334,
+   "lenient_R@10": 0.8333333333333334,
+   "lenient_R@20": 0.8333333333333334,
+   "lenient_R@50": 0.8333333333333334,
+   "lenient_MRR@10": 0.662037037037037,
+   "doc@10": 0.8888888888888888,
+   "fact_recall@5": 0.8611111111111112,
+   "fact_recall@10": 0.8611111111111112,
+   "P@5": 0.48888888888888893,
+   "P@10": 0.31666666666666665,
+   "ctx_precision@10": 0.7279601284958428,
+   "MAP@10": 0.7592592592592592,
+   "nDCG@10": 0.795262148071791
+  },
+  "hard:decoy_years": {
+   "n": 14,
+   "strict_R@1": 0.7142857142857143,
+   "strict_R@5": 0.8571428571428571,
+   "strict_R@10": 0.8571428571428571,
+   "strict_R@20": 0.8571428571428571,
+   "strict_R@50": 0.8571428571428571,
+   "strict_MRR@10": 0.7619047619047619,
+   "lenient_R@1": 0.7142857142857143,
+   "lenient_R@5": 0.8571428571428571,
+   "lenient_R@10": 0.8571428571428571,
+   "lenient_R@20": 0.8571428571428571,
+   "lenient_R@50": 0.8571428571428571,
+   "lenient_MRR@10": 0.7619047619047619,
+   "doc@10": 0.8571428571428571,
+   "fact_recall@5": 0.8571428571428571,
+   "fact_recall@10": 0.8571428571428571,
+   "P@5": 0.4857142857142857,
+   "P@10": 0.3,
+   "ctx_precision@10": 0.6811763038548753,
+   "MAP@10": 0.7797619047619048,
+   "nDCG@10": 0.7995304574012335
+  },
+  "style:exact": {
+   "n": 3,
+   "strict_R@1": 1.0,
+   "strict_R@5": 1.0,
+   "strict_R@10": 1.0,
+   "strict_R@20": 1.0,
+   "strict_R@50": 1.0,
+   "strict_MRR@10": 1.0,
+   "lenient_R@1": 1.0,
+   "lenient_R@5": 1.0,
+   "lenient_R@10": 1.0,
+   "lenient_R@20": 1.0,
+   "lenient_R@50": 1.0,
+   "lenient_MRR@10": 1.0,
+   "doc@10": 1.0,
+   "fact_recall@5": 1.0,
+   "fact_recall@10": 1.0,
+   "P@5": 0.39999999999999997,
+   "P@10": 0.19999999999999998,
+   "ctx_precision@10": 0.9722222222222222,
+   "MAP@10": 1.0,
+   "nDCG@10": 1.0
+  },
+  "style:paraphrase": {
+   "n": 47,
+   "strict_R@1": 0.5319148936170213,
+   "strict_R@5": 0.9361702127659575,
+   "strict_R@10": 0.9361702127659575,
+   "strict_R@20": 0.9361702127659575,
+   "strict_R@50": 0.9361702127659575,
+   "strict_MRR@10": 0.7021276595744681,
+   "lenient_R@1": 0.5319148936170213,
+   "lenient_R@5": 0.9361702127659575,
+   "lenient_R@10": 0.9361702127659575,
+   "lenient_R@20": 0.9361702127659575,
+   "lenient_R@50": 0.9361702127659575,
+   "lenient_MRR@10": 0.7021276595744681,
+   "doc@10": 0.9574468085106383,
+   "fact_recall@5": 0.9468085106382979,
+   "fact_recall@10": 0.9468085106382979,
+   "P@5": 0.49787234042553197,
+   "P@10": 0.32553191489361705,
+   "ctx_precision@10": 0.7813182985960342,
+   "MAP@10": 0.8351063829787234,
+   "nDCG@10": 0.870027592292072
+  }
+ },
+ "per_question": [
+  {
+   "qid": "F001",
+   "groups": [
+    "all",
+    "evidence:kpi",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:investor_presentations",
+    "hard:decoy_quarters",
+    "hard:indian_grouping"
+   ],
+   "in_run": true,
+   "strict": 2,
+   "lenient": 2,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.6,
+    "P@10": 0.3,
+    "ctx_precision@10": 0.6388888888888888,
+    "MAP@10": 0.5,
+    "nDCG@10": 0.6309297535714575
+   }
+  },
+  {
+   "qid": "F002",
+   "groups": [
+    "all",
+    "evidence:chart",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:investor_presentations",
+    "hard:chart_labels",
+    "hard:unit_million"
+   ],
+   "in_run": true,
+   "strict": 3,
+   "lenient": 3,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.2,
+    "P@10": 0.2,
+    "ctx_precision@10": 0.29166666666666663,
+    "MAP@10": 0.3333333333333333,
+    "nDCG@10": 0.5
+   }
+  },
+  {
+   "qid": "F003",
+   "groups": [
+    "all",
+    "evidence:chart",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:investor_presentations",
+    "hard:chart_labels",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.8,
+    "P@10": 0.6,
+    "ctx_precision@10": 0.7958333333333334,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F004",
+   "groups": [
+    "all",
+    "evidence:chart",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:investor_presentations",
+    "hard:chart_labels",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.4,
+    "P@10": 0.4,
+    "ctx_precision@10": 0.7071428571428572,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F005",
+   "groups": [
+    "all",
+    "evidence:kpi",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:investor_presentations",
+    "hard:decoy_quarters",
+    "hard:guidance_changes_over_time"
+   ],
+   "in_run": true,
+   "strict": 2,
+   "lenient": 2,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.8,
+    "P@10": 0.4,
+    "ctx_precision@10": 0.6791666666666667,
+    "MAP@10": 0.5,
+    "nDCG@10": 0.6309297535714575
+   }
+  },
+  {
+   "qid": "F006",
+   "groups": [
+    "all",
+    "evidence:chart",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:investor_presentations",
+    "hard:chart_labels"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 1.0,
+    "P@10": 0.6,
+    "ctx_precision@10": 1.0,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F007",
+   "groups": [
+    "all",
+    "evidence:chart",
+    "style:paraphrase",
+    "company:C2C",
+    "doctype:investor_presentations",
+    "hard:chart_labels",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.6,
+    "P@10": 0.3,
+    "ctx_precision@10": 0.8055555555555555,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F008",
+   "groups": [
+    "all",
+    "evidence:chart",
+    "style:exact",
+    "company:E2E",
+    "doctype:investor_presentations",
+    "hard:chart_labels",
+    "hard:decoy_quarters",
+    "hard:indian_grouping"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.6,
+    "P@10": 0.3,
+    "ctx_precision@10": 0.9166666666666666,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F009",
+   "groups": [
+    "all",
+    "evidence:chart",
+    "style:paraphrase",
+    "company:ESCONET",
+    "doctype:investor_presentations",
+    "hard:chart_labels"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.4,
+    "P@10": 0.2,
+    "ctx_precision@10": 1.0,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F010",
+   "groups": [
+    "all",
+    "evidence:chart",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:investor_presentations",
+    "hard:chart_labels"
+   ],
+   "in_run": true,
+   "strict": 2,
+   "lenient": 2,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.4,
+    "P@10": 0.2,
+    "ctx_precision@10": 0.45,
+    "MAP@10": 0.5,
+    "nDCG@10": 0.6309297535714575
+   }
+  },
+  {
+   "qid": "F011",
+   "groups": [
+    "all",
+    "evidence:chart",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:chart_labels"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.2,
+    "P@10": 0.1,
+    "ctx_precision@10": 1.0,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F012",
+   "groups": [
+    "all",
+    "evidence:kpi",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.6,
+    "P@10": 0.4,
+    "ctx_precision@10": 0.7095238095238094,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F013",
+   "groups": [
+    "all",
+    "evidence:chart",
+    "style:paraphrase",
+    "company:ESCONET",
+    "doctype:annual_reports",
+    "hard:chart_labels",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 1.0,
+    "P@10": 0.6,
+    "ctx_precision@10": 0.9761904761904762,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F014",
+   "groups": [
+    "all",
+    "evidence:kpi",
+    "style:exact",
+    "company:APARINDS",
+    "doctype:investor_presentations"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.2,
+    "P@10": 0.1,
+    "ctx_precision@10": 1.0,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F015",
+   "groups": [
+    "all",
+    "evidence:chart",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:investor_presentations",
+    "hard:chart_labels",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": false,
+   "ir": {
+    "fact_recall@5": 0.0,
+    "fact_recall@10": 0.0,
+    "P@5": 0.0,
+    "P@10": 0.0,
+    "ctx_precision@10": 0.0,
+    "MAP@10": 0.0,
+    "nDCG@10": 0.0
+   }
+  },
+  {
+   "qid": "F016",
+   "groups": [
+    "all",
+    "evidence:chart",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:investor_presentations",
+    "hard:chart_labels",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": false,
+   "ir": {
+    "fact_recall@5": 0.0,
+    "fact_recall@10": 0.0,
+    "P@5": 0.0,
+    "P@10": 0.0,
+    "ctx_precision@10": 0.0,
+    "MAP@10": 0.0,
+    "nDCG@10": 0.0
+   }
+  },
+  {
+   "qid": "F017",
+   "groups": [
+    "all",
+    "evidence:chart",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:investor_presentations",
+    "hard:chart_labels"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.2,
+    "P@10": 0.2,
+    "ctx_precision@10": 0.6111111111111112,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F018",
+   "groups": [
+    "all",
+    "evidence:chart",
+    "style:exact",
+    "company:E2E",
+    "doctype:investor_presentations",
+    "hard:chart_labels",
+    "hard:decoy_quarters",
+    "hard:unit_million"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.4,
+    "P@10": 0.2,
+    "ctx_precision@10": 1.0,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F019",
+   "groups": [
+    "all",
+    "evidence:multi_page",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:standalone_vs_consolidated",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": 3,
+   "lenient": 3,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.6,
+    "P@10": 0.5,
+    "ctx_precision@10": 0.5866666666666667,
+    "MAP@10": 0.5833333333333333,
+    "nDCG@10": 0.6934264036172708
+   }
+  },
+  {
+   "qid": "F020",
+   "groups": [
+    "all",
+    "evidence:multi_page",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:annual_reports",
+    "hard:unit_change"
+   ],
+   "in_run": true,
+   "strict": 2,
+   "lenient": 2,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.6,
+    "P@10": 0.5,
+    "ctx_precision@10": 0.8761904761904763,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F021",
+   "groups": [
+    "all",
+    "evidence:multi_page",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:annual_reports",
+    "hard:unit_change"
+   ],
+   "in_run": true,
+   "strict": 2,
+   "lenient": 2,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 1.0,
+    "P@10": 0.8,
+    "ctx_precision@10": 0.9704861111111112,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F022",
+   "groups": [
+    "all",
+    "evidence:multi_page",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:annual_reports",
+    "hard:unit_change",
+    "hard:dense_table"
+   ],
+   "in_run": true,
+   "strict": 3,
+   "lenient": 3,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.6,
+    "P@10": 0.5,
+    "ctx_precision@10": 0.5977777777777777,
+    "MAP@10": 0.5833333333333333,
+    "nDCG@10": 0.6934264036172708
+   }
+  },
+  {
+   "qid": "F023",
+   "groups": [
+    "all",
+    "evidence:multi_page",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports",
+    "hard:standalone_vs_consolidated",
+    "hard:current_vs_noncurrent"
+   ],
+   "in_run": true,
+   "strict": 2,
+   "lenient": 2,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.6,
+    "P@10": 0.4,
+    "ctx_precision@10": 0.8928571428571428,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F024",
+   "groups": [
+    "all",
+    "evidence:multi_page",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:investor_presentations",
+    "hard:decoy_quarters"
+   ],
+   "in_run": true,
+   "strict": 3,
+   "lenient": 3,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.4,
+    "P@10": 0.3,
+    "ctx_precision@10": 0.6555555555555556,
+    "MAP@10": 0.8333333333333333,
+    "nDCG@10": 0.9197207891481876
+   }
+  },
+  {
+   "qid": "F025",
+   "groups": [
+    "all",
+    "evidence:multi_page",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:investor_presentations",
+    "hard:decoy_quarters"
+   ],
+   "in_run": true,
+   "strict": 2,
+   "lenient": 2,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.8,
+    "P@10": 0.6,
+    "ctx_precision@10": 0.9305555555555555,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F026",
+   "groups": [
+    "all",
+    "evidence:multi_page",
+    "style:paraphrase",
+    "company:ESCONET",
+    "doctype:annual_reports",
+    "hard:standalone_vs_consolidated"
+   ],
+   "in_run": true,
+   "strict": 4,
+   "lenient": 4,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.6,
+    "P@10": 0.6,
+    "ctx_precision@10": 0.7051587301587302,
+    "MAP@10": 0.75,
+    "nDCG@10": 0.8772153153380493
+   }
+  },
+  {
+   "qid": "F027",
+   "groups": [
+    "all",
+    "evidence:multi_page",
+    "style:paraphrase",
+    "company:ESCONET",
+    "doctype:annual_reports",
+    "hard:chart_labels"
+   ],
+   "in_run": true,
+   "strict": 2,
+   "lenient": 2,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.8,
+    "P@10": 0.5,
+    "ctx_precision@10": 0.9666666666666666,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F028",
+   "groups": [
+    "all",
+    "evidence:multi_page",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:investor_presentations",
+    "hard:chart_labels",
+    "hard:decoy_quarters"
+   ],
+   "in_run": true,
+   "strict": 3,
+   "lenient": 3,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.8,
+    "P@10": 0.7,
+    "ctx_precision@10": 0.7295918367346939,
+    "MAP@10": 0.5833333333333333,
+    "nDCG@10": 0.6934264036172708
+   }
+  },
+  {
+   "qid": "F029",
+   "groups": [
+    "all",
+    "evidence:multi_page",
+    "style:paraphrase",
+    "company:ESCONET",
+    "doctype:annual_reports",
+    "hard:chart_labels",
+    "hard:guidance"
+   ],
+   "in_run": true,
+   "strict": 4,
+   "lenient": 4,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.8,
+    "P@10": 0.5,
+    "ctx_precision@10": 0.8528571428571429,
+    "MAP@10": 0.75,
+    "nDCG@10": 0.8772153153380493
+   }
+  },
+  {
+   "qid": "F030",
+   "groups": [
+    "all",
+    "evidence:multi_page",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:concall_transcripts",
+    "hard:unit_change"
+   ],
+   "in_run": true,
+   "strict": 2,
+   "lenient": 2,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.4,
+    "P@10": 0.2,
+    "ctx_precision@10": 1.0,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F031",
+   "groups": [
+    "all",
+    "evidence:multi_page",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:investor_presentations",
+    "hard:chart_labels"
+   ],
+   "in_run": true,
+   "strict": null,
+   "lenient": null,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 0.5,
+    "fact_recall@10": 0.5,
+    "P@5": 0.2,
+    "P@10": 0.1,
+    "ctx_precision@10": 1.0,
+    "MAP@10": 0.5,
+    "nDCG@10": 0.6131471927654584
+   }
+  },
+  {
+   "qid": "F032",
+   "groups": [
+    "all",
+    "evidence:multi_page",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:annual_reports",
+    "hard:unit_change"
+   ],
+   "in_run": true,
+   "strict": 2,
+   "lenient": 2,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.8,
+    "P@10": 0.7,
+    "ctx_precision@10": 0.827437641723356,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F033",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:concall_transcripts"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.2,
+    "P@10": 0.1,
+    "ctx_precision@10": 1.0,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F034",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:concall_transcripts",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.2,
+    "P@10": 0.1,
+    "ctx_precision@10": 1.0,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F035",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:paraphrase",
+    "company:C2C",
+    "doctype:concall_transcripts"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.2,
+    "P@10": 0.1,
+    "ctx_precision@10": 1.0,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F036",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:concall_transcripts",
+    "hard:negative_answer"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.2,
+    "P@10": 0.1,
+    "ctx_precision@10": 1.0,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F037",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:concall_transcripts"
+   ],
+   "in_run": true,
+   "strict": 2,
+   "lenient": 2,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.2,
+    "P@10": 0.1,
+    "ctx_precision@10": 0.5,
+    "MAP@10": 0.5,
+    "nDCG@10": 0.6309297535714575
+   }
+  },
+  {
+   "qid": "F038",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:concall_transcripts"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.2,
+    "P@10": 0.1,
+    "ctx_precision@10": 1.0,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F039",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:concall_transcripts"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.2,
+    "P@10": 0.1,
+    "ctx_precision@10": 1.0,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F040",
+   "groups": [
+    "all",
+    "evidence:concall",
+    "style:paraphrase",
+    "company:ESCONET",
+    "doctype:concall_transcripts",
+    "hard:guidance"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.2,
+    "P@10": 0.2,
+    "ctx_precision@10": 0.6428571428571428,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F041",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:paraphrase",
+    "company:APARINDS",
+    "doctype:annual_reports"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.4,
+    "P@10": 0.2,
+    "ctx_precision@10": 1.0,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F042",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:annual_reports"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.4,
+    "P@10": 0.2,
+    "ctx_precision@10": 0.7,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F043",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:paraphrase",
+    "company:C2C",
+    "doctype:annual_reports",
+    "hard:conflicting_sources"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.8,
+    "P@10": 0.5,
+    "ctx_precision@10": 0.9,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F044",
+   "groups": [
+    "all",
+    "evidence:prose",
+    "style:paraphrase",
+    "company:HEROMOTOCO",
+    "doctype:annual_reports"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.8,
+    "P@10": 0.5,
+    "ctx_precision@10": 0.9,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F045",
+   "groups": [
+    "all",
+    "evidence:statement",
+    "style:paraphrase",
+    "company:ESCONET",
+    "doctype:annual_reports",
+    "hard:standalone_vs_consolidated",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.6,
+    "P@10": 0.3,
+    "ctx_precision@10": 0.8055555555555555,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F046",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:annual_reports",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.6,
+    "P@10": 0.3,
+    "ctx_precision@10": 0.7555555555555555,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F047",
+   "groups": [
+    "all",
+    "evidence:table",
+    "style:paraphrase",
+    "company:E2E",
+    "doctype:annual_reports",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.2,
+    "P@10": 0.1,
+    "ctx_precision@10": 1.0,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F048",
+   "groups": [
+    "all",
+    "evidence:scan",
+    "style:paraphrase",
+    "company:ESCONET",
+    "doctype:periodic_results",
+    "hard:scanned",
+    "hard:standalone_vs_consolidated"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.6,
+    "P@10": 0.3,
+    "ctx_precision@10": 0.8666666666666667,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F049",
+   "groups": [
+    "all",
+    "evidence:statement",
+    "style:paraphrase",
+    "company:C2C",
+    "doctype:annual_reports",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": 1,
+   "lenient": 1,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.6,
+    "P@10": 0.3,
+    "ctx_precision@10": 0.9166666666666666,
+    "MAP@10": 1.0,
+    "nDCG@10": 1.0
+   }
+  },
+  {
+   "qid": "F050",
+   "groups": [
+    "all",
+    "evidence:statement",
+    "style:paraphrase",
+    "company:ESCONET",
+    "doctype:annual_reports",
+    "hard:decoy_years"
+   ],
+   "in_run": true,
+   "strict": 3,
+   "lenient": 3,
+   "doc10": true,
+   "ir": {
+    "fact_recall@5": 1.0,
+    "fact_recall@10": 1.0,
+    "P@5": 0.6,
+    "P@10": 0.3,
+    "ctx_precision@10": 0.4777777777777778,
+    "MAP@10": 0.3333333333333333,
+    "nDCG@10": 0.5
+   }
+  }
+ ],
+ "compare": {
+  "k": 10,
+  "a_only": [
+   "F022",
+   "F030"
+  ],
+  "b_only": [],
+  "ties": 48,
+  "sign_test_p": 0.5
+ }
+}
