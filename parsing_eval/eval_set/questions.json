@@ -1,0 +1,687 @@
+{
+  "version": 2,
+  "created": "2026-10-03",
+  "description": "25 questions over the 10-document parser evaluation sample. Every answer was verified against the source page itself: the PDF text layer for born-digital pages, the rendered page image for scanned pages and charts. Page numbers are 1-based pages of the original PDF.",
+  "difficulty_levels": {
+    "easy": "The answer is plain text on the page. Any extraction that keeps the words is enough; no layout knowledge needed.",
+    "medium": "The answer is a cell of one table or chart: the parse must keep row label and column header (period) together with the value.",
+    "hard": "Needs context beyond the cell: which statement (standalone vs consolidated), unit, speaker attribution, chart value-to-period mapping, a page whose text layer is wrong, or combining two pages/documents."
+  },
+  "documents": {
+    "1": "Reliance Industries — Integrated Annual Report FY2025-26 (born-digital, 2-up spreads)",
+    "403": "Kaynes Technology — Annual Report FY2025-26 (born-digital)",
+    "219": "Reliance Industries — Reg. 30 disclosure: analyst-meet audio recording (born-digital; curated as financial_results)",
+    "719": "Aimtron Electronics — Audited standalone results FY26 (scanned, no text layer)",
+    "344": "Dixon Technologies — Q3 FY22 unaudited results (scan with old OCR text layer)",
+    "310": "Dixon Technologies — Intimation of credit ratings, Sep 2020 (scan with old OCR text layer)",
+    "220": "Reliance Industries — Q1 FY27 investor presentation (charts)",
+    "534": "Adisoft Technologies — H2 & FY26 investor presentation (charts)",
+    "218": "Reliance Industries — Q1 FY27 media & analyst call transcript (born-digital)",
+    "712": "Aimtron Electronics — H2 & FY26 earnings call transcript (born-digital, speaker | text layout)"
+  },
+  "questions": [
+    {
+      "id": "Q01",
+      "difficulty": "easy",
+      "doc_ids": [
+        219
+      ],
+      "question": "On what date was Reliance's analyst meet on the Q1 FY27 results held, and at what time did it conclude?",
+      "answer": "It was held on July 17, 2026 and concluded at 9:45 p.m. (IST).",
+      "evidence": [
+        {
+          "doc_id": 219,
+          "pdf_page": 1,
+          "location": "body paragraph 2"
+        }
+      ],
+      "requires": [
+        "text"
+      ],
+      "verified_from": "text_layer",
+      "must_contain": [
+        "July 17, 2026",
+        "9:45"
+      ]
+    },
+    {
+      "id": "Q02",
+      "difficulty": "easy",
+      "doc_ids": [
+        310
+      ],
+      "question": "Which agency's ratings does Dixon's September 2020 letter intimate, and how did the outlook on the long-term rating change?",
+      "answer": "ICRA Limited; the long-term outlook was changed from Stable to Positive (ratings reaffirmed).",
+      "evidence": [
+        {
+          "doc_id": 310,
+          "pdf_page": 1,
+          "location": "body paragraph 1"
+        }
+      ],
+      "requires": [
+        "text"
+      ],
+      "verified_from": "page_image",
+      "known_issues": "Scanned page with an old OCR text layer.",
+      "must_contain": [
+        "ICRA",
+        "Stable",
+        "Positive"
+      ]
+    },
+    {
+      "id": "Q03",
+      "difficulty": "easy",
+      "doc_ids": [
+        310
+      ],
+      "question": "Who signed Dixon's credit-rating intimation letter of 29 September 2020, and in what capacity?",
+      "answer": "Ashish Kumar, Group Company Secretary & Compliance Officer.",
+      "evidence": [
+        {
+          "doc_id": 310,
+          "pdf_page": 1,
+          "location": "signature block"
+        }
+      ],
+      "requires": [
+        "text"
+      ],
+      "verified_from": "page_image",
+      "known_issues": "pymupdf4llm and Docling both garbled the name next to the signature/stamp ('A mar').",
+      "must_contain": [
+        "Ashish Kumar"
+      ]
+    },
+    {
+      "id": "Q04",
+      "difficulty": "easy",
+      "doc_ids": [
+        719
+      ],
+      "question": "On what date did Aimtron's Board approve the audited standalone results for the year ended 31 March 2026?",
+      "answer": "27 April 2026 (after review by the Audit Committee).",
+      "evidence": [
+        {
+          "doc_id": 719,
+          "pdf_page": 2,
+          "location": "Notes on Standalone Financial Results, note 1"
+        }
+      ],
+      "requires": [
+        "text"
+      ],
+      "verified_from": "page_image",
+      "known_issues": "Scanned page, no text layer.",
+      "must_contain": [
+        "27th April, 2026"
+      ]
+    },
+    {
+      "id": "Q05",
+      "difficulty": "easy",
+      "doc_ids": [
+        218
+      ],
+      "question": "According to Reliance's Q1 FY27 call, how many connectivity subscribers does Jio have, and how many of them are 5G users?",
+      "answer": "533 million subscribers, of which 285 million are 5G users.",
+      "evidence": [
+        {
+          "doc_id": 218,
+          "pdf_page": 5,
+          "location": "Sh Anshuman Thakur (Jio Platforms) section"
+        }
+      ],
+      "requires": [
+        "text"
+      ],
+      "verified_from": "text_layer",
+      "must_contain": [
+        "533 million",
+        "285 million"
+      ]
+    },
+    {
+      "id": "Q06",
+      "difficulty": "easy",
+      "doc_ids": [
+        534
+      ],
+      "question": "How much did Adisoft raise in its IPO, and what were the proceeds used for?",
+      "answer": "₹74.1 Cr; used to fund the new facility, debt repayment and working capital.",
+      "evidence": [
+        {
+          "doc_id": 534,
+          "pdf_page": 28,
+          "location": "red callout box, 'Balance Sheet & Capital Structure' slide"
+        }
+      ],
+      "requires": [
+        "text"
+      ],
+      "verified_from": "page_image",
+      "must_contain": [
+        "74.1"
+      ]
+    },
+    {
+      "id": "Q07",
+      "difficulty": "medium",
+      "doc_ids": [
+        344
+      ],
+      "question": "What was Dixon's standalone revenue from operations for the quarter ended 31 December 2021?",
+      "answer": "₹2,08,951 lakhs.",
+      "answer_value": 208951,
+      "unit": "INR lakhs",
+      "evidence": [
+        {
+          "doc_id": 344,
+          "pdf_page": 3,
+          "location": "Statement of standalone results; row 'Revenue from operations', column Quarter Ended 31-Dec-21"
+        }
+      ],
+      "requires": [
+        "table_row",
+        "table_column"
+      ],
+      "verified_from": "page_image",
+      "must_contain": [
+        "2,08,951"
+      ]
+    },
+    {
+      "id": "Q08",
+      "difficulty": "medium",
+      "doc_ids": [
+        344
+      ],
+      "question": "What was Dixon's standalone total income for the nine months ended 31 December 2021?",
+      "answer": "₹5,81,695 lakhs.",
+      "answer_value": 581695,
+      "unit": "INR lakhs",
+      "evidence": [
+        {
+          "doc_id": 344,
+          "pdf_page": 3,
+          "location": "row 'Total Income (1+2)', column Nine Months Ended 31-Dec-21"
+        }
+      ],
+      "requires": [
+        "table_row",
+        "table_column"
+      ],
+      "verified_from": "page_image",
+      "known_issues": "The embedded OCR text layer reads 'S,81,695'; both parsers copied it.",
+      "must_contain": [
+        "5,81,695"
+      ]
+    },
+    {
+      "id": "Q09",
+      "difficulty": "medium",
+      "doc_ids": [
+        719
+      ],
+      "question": "What was Aimtron's standalone revenue from operations for the year ended 31 March 2026, and for the previous year?",
+      "answer": "₹25,713.41 lakhs for FY26 vs ₹15,830.73 lakhs for FY25.",
+      "answer_value": 25713.41,
+      "unit": "INR lakhs",
+      "evidence": [
+        {
+          "doc_id": 719,
+          "pdf_page": 2,
+          "location": "row 'Revenue from Operations', columns Year Ended 31st March 2026 / 2025"
+        }
+      ],
+      "requires": [
+        "table_row",
+        "table_column"
+      ],
+      "verified_from": "page_image",
+      "must_contain": [
+        "25713.41",
+        "15830.73"
+      ]
+    },
+    {
+      "id": "Q10",
+      "difficulty": "medium",
+      "doc_ids": [
+        719
+      ],
+      "question": "What were Aimtron's other current liabilities as on 31 March 2026 (standalone)?",
+      "answer": "₹6,110.35 lakhs (₹2,011.08 lakhs a year earlier).",
+      "answer_value": 6110.35,
+      "unit": "INR lakhs",
+      "evidence": [
+        {
+          "doc_id": 719,
+          "pdf_page": 3,
+          "location": "Statement of assets and liabilities; row '(c) Other current liabilities'"
+        }
+      ],
+      "requires": [
+        "table_row",
+        "table_column"
+      ],
+      "verified_from": "page_image",
+      "known_issues": "pymupdf4llm+RapidOCR produced '611035' (decimal lost).",
+      "must_contain": [
+        "6,110.35"
+      ]
+    },
+    {
+      "id": "Q11",
+      "difficulty": "medium",
+      "doc_ids": [
+        310
+      ],
+      "question": "What short-term rating did ICRA assign to Dixon as on 29 September 2020?",
+      "answer": "[ICRA]A1+ (reaffirmed). Commercial paper is also rated [ICRA]A1+.",
+      "evidence": [
+        {
+          "doc_id": 310,
+          "pdf_page": 1,
+          "location": "Instrument / Rating Action table, row 'Short Term'"
+        }
+      ],
+      "requires": [
+        "table_row"
+      ],
+      "verified_from": "page_image",
+      "known_issues": "Embedded OCR text reads 'Al+' (letter l); both parsers copied it.",
+      "must_contain": [
+        "A1+"
+      ]
+    },
+    {
+      "id": "Q12",
+      "difficulty": "medium",
+      "doc_ids": [
+        1
+      ],
+      "question": "What was Reliance's standalone revenue from operations for FY 2025-26, and how does it compare with FY 2024-25?",
+      "answer": "₹5,24,105 crore in FY 2025-26 vs ₹5,32,792 crore in FY 2024-25 (a decline).",
+      "answer_value": 524105,
+      "unit": "INR crore",
+      "evidence": [
+        {
+          "doc_id": 1,
+          "pdf_page": 98,
+          "location": "Standalone Statement of Profit and Loss; row 'Revenue from Operations' (note 26)"
+        }
+      ],
+      "requires": [
+        "table_row",
+        "table_column"
+      ],
+      "verified_from": "text_layer",
+      "must_contain": [
+        "5,24,105",
+        "5,32,792"
+      ]
+    },
+    {
+      "id": "Q13",
+      "difficulty": "medium",
+      "doc_ids": [
+        403
+      ],
+      "question": "What were Kaynes Technology's standalone trade receivables as at 31 March 2026 and 31 March 2025?",
+      "answer": "₹3,624.13 Mn (2026) and ₹4,969.96 Mn (2025).",
+      "answer_value": 3624.13,
+      "unit": "INR million",
+      "evidence": [
+        {
+          "doc_id": 403,
+          "pdf_page": 169,
+          "location": "Standalone Balance Sheet; Current assets > Financial assets > Trade receivables (note 8(a))"
+        }
+      ],
+      "requires": [
+        "table_row",
+        "table_column"
+      ],
+      "verified_from": "text_layer",
+      "must_contain": [
+        "3,624.13",
+        "4,969.96"
+      ]
+    },
+    {
+      "id": "Q14",
+      "difficulty": "medium",
+      "doc_ids": [
+        220
+      ],
+      "question": "What was Reliance's net debt at the end of June 2026, in rupees and in dollars?",
+      "answer": "₹1,22,914 crore, or $13.0 bn (vs ₹1,24,717 crore at Mar-26).",
+      "answer_value": 122914,
+      "unit": "INR crore",
+      "evidence": [
+        {
+          "doc_id": 220,
+          "pdf_page": 12,
+          "location": "'Strong Balance Sheet: Q1 FY27' table, row 'Net Debt', columns Jun-26 ₹ crore / $ Bn"
+        }
+      ],
+      "requires": [
+        "table_row",
+        "table_column"
+      ],
+      "verified_from": "page_image",
+      "must_contain": [
+        "1,22,914",
+        "13.0"
+      ]
+    },
+    {
+      "id": "Q15",
+      "difficulty": "medium",
+      "doc_ids": [
+        534
+      ],
+      "question": "What was Adisoft's consolidated return on equity (ROE) in FY24?",
+      "answer": "34.81%.",
+      "answer_value": 34.81,
+      "unit": "percent",
+      "evidence": [
+        {
+          "doc_id": 534,
+          "pdf_page": 31,
+          "location": "'Key Financial Ratios - Consolidated', ROE chart, FY24"
+        }
+      ],
+      "requires": [
+        "chart"
+      ],
+      "verified_from": "page_image",
+      "known_issues": "Value exists only inside the chart image.",
+      "must_contain": [
+        "34.81"
+      ]
+    },
+    {
+      "id": "Q16",
+      "difficulty": "medium",
+      "doc_ids": [
+        220
+      ],
+      "question": "What was RIL's share of KG D6 production in Q1 FY27, and the year-on-year change?",
+      "answer": "59.2 BCFe in Q1 FY27, down 7.4% YoY (from 63.9 BCFe in Q1 FY26).",
+      "answer_value": 59.2,
+      "unit": "BCFe",
+      "evidence": [
+        {
+          "doc_id": 220,
+          "pdf_page": 65,
+          "location": "'Operating Performance: Q1 FY27' table, row KGD6"
+        }
+      ],
+      "requires": [
+        "table_row",
+        "table_column"
+      ],
+      "verified_from": "page_image",
+      "must_contain": [
+        "59.2",
+        "7.4"
+      ]
+    },
+    {
+      "id": "Q17",
+      "difficulty": "hard",
+      "doc_ids": [
+        344
+      ],
+      "question": "What was Dixon's CONSOLIDATED net profit for the quarter ended 31 December 2021?",
+      "answer": "₹4,638 lakhs. (The standalone figure on page 3 is ₹3,533 lakhs — a wrong-statement trap.)",
+      "answer_value": 4638,
+      "unit": "INR lakhs",
+      "evidence": [
+        {
+          "doc_id": 344,
+          "pdf_page": 6,
+          "location": "Statement of consolidated results; row 8 'Net Profit for the period/year (6-7)', column Quarter Ended 31-Dec-21"
+        }
+      ],
+      "requires": [
+        "statement_context",
+        "table_row",
+        "table_column"
+      ],
+      "verified_from": "page_image",
+      "known_issues": "Standalone and consolidated pages have identical layouts; the consolidated title is garbled in the text layer ('DEAONTECHNGLOGIES').",
+      "must_contain": [
+        "4,638"
+      ]
+    },
+    {
+      "id": "Q18",
+      "difficulty": "hard",
+      "doc_ids": [
+        719
+      ],
+      "question": "What were Aimtron's standalone short-term borrowings as on 31 March 2026?",
+      "answer": "₹49.06 lakhs (₹64.06 lakhs a year earlier).",
+      "answer_value": 49.06,
+      "unit": "INR lakhs",
+      "evidence": [
+        {
+          "doc_id": 719,
+          "pdf_page": 3,
+          "location": "Current liabilities > '(a) Short term borrowings'"
+        }
+      ],
+      "requires": [
+        "table_row",
+        "section_context"
+      ],
+      "verified_from": "page_image",
+      "known_issues": "Docling attached 49.06 to the section header 'Current liabilities' instead of '(a) Short term borrowings'.",
+      "must_contain": [
+        "49.06"
+      ]
+    },
+    {
+      "id": "Q19",
+      "difficulty": "hard",
+      "doc_ids": [
+        719
+      ],
+      "question": "What was Aimtron's diluted EPS for the half year ended 31 March 2026, and for the full year FY26?",
+      "answer": "₹11.58 for the half year (H2 FY26) and ₹18.49 for the full year.",
+      "unit": "INR per share",
+      "evidence": [
+        {
+          "doc_id": 719,
+          "pdf_page": 2,
+          "location": "row 'Diluted (Rs.)'; columns Half Year Ended 31st March 2026 vs Year Ended 31st March 2026"
+        }
+      ],
+      "requires": [
+        "table_column_hierarchy"
+      ],
+      "verified_from": "page_image",
+      "known_issues": "Two-level column header (Half Year Ended / Year Ended) above identical dates.",
+      "must_contain": [
+        "11.58",
+        "18.49"
+      ]
+    },
+    {
+      "id": "Q20",
+      "difficulty": "hard",
+      "doc_ids": [
+        1
+      ],
+      "question": "What was Reliance's standalone basic earnings per share for FY 2025-26 and FY 2024-25, and what is the face value per share?",
+      "answer": "Basic EPS ₹32.40 (FY 2025-26) and ₹26.06 (FY 2024-25); face value ₹10 per share. (Diluted EPS is the same.)",
+      "answer_value": 32.4,
+      "unit": "INR per share",
+      "evidence": [
+        {
+          "doc_id": 1,
+          "pdf_page": 98,
+          "location": "Standalone Statement of Profit and Loss, 'Earnings per equity share of face value of ₹10 each' (note 32)"
+        }
+      ],
+      "requires": [
+        "table_row",
+        "unit_context"
+      ],
+      "verified_from": "text_layer",
+      "known_issues": "pymupdf4llm split the note number '32' into the value ('3|2<br>32.40'); the ₹ glyph extracts as 'H'/'K'.",
+      "must_contain": [
+        "32.40",
+        "26.06"
+      ]
+    },
+    {
+      "id": "Q21",
+      "difficulty": "hard",
+      "doc_ids": [
+        403
+      ],
+      "question": "What were Kaynes Technology's total equity and liabilities as at 31 March 2026 on a standalone and on a consolidated basis, and in what unit?",
+      "answer": "Standalone ₹54,786.82 Mn; consolidated ₹68,940.15 Mn (amounts in ₹ million).",
+      "unit": "INR million",
+      "evidence": [
+        {
+          "doc_id": 403,
+          "pdf_page": 170,
+          "location": "Standalone Balance Sheet (contd.), 'TOTAL EQUITY AND LIABILITIES (A+B+C)'"
+        },
+        {
+          "doc_id": 403,
+          "pdf_page": 238,
+          "location": "Consolidated Balance Sheet (contd.), 'TOTAL EQUITY AND LIABILITIES (A+B+C)'"
+        }
+      ],
+      "requires": [
+        "statement_context",
+        "unit_context",
+        "multi_page"
+      ],
+      "verified_from": "text_layer",
+      "known_issues": "Unit line '(All amounts are in ₹ Mn...)' extracts with the ₹ glyph as a backtick.",
+      "must_contain": [
+        "54,786.82",
+        "68,940.15"
+      ]
+    },
+    {
+      "id": "Q22",
+      "difficulty": "hard",
+      "doc_ids": [
+        220
+      ],
+      "question": "What was RJIL's EBITDA for the quarter ended March 2026, and its operating revenue for the quarter ended December 2025?",
+      "answer": "EBITDA ₹18,771 crore (Mar-26 quarter); operating revenue ₹32,751 crore (Dec-25 quarter).",
+      "unit": "INR crore",
+      "evidence": [
+        {
+          "doc_id": 220,
+          "pdf_page": 20,
+          "location": "'RJIL: Q1 FY27 Financials' — EBITDA chart bar Mar-26; Operating Revenue chart bar Dec-25"
+        }
+      ],
+      "requires": [
+        "chart"
+      ],
+      "verified_from": "page_image",
+      "known_issues": "pymupdf4llm emits an unordered list of chart numbers; Docling drops them.",
+      "must_contain": [
+        "18,771",
+        "32,751"
+      ]
+    },
+    {
+      "id": "Q23",
+      "difficulty": "hard",
+      "doc_ids": [
+        534
+      ],
+      "question": "How did Adisoft's consolidated total income and PAT margin change from FY23 to FY26?",
+      "answer": "Total income rose from ₹76.2 Cr to ₹169.3 Cr (~2x); PAT margin rose from 7.7% to 13.5%.",
+      "unit": "INR crore / percent",
+      "evidence": [
+        {
+          "doc_id": 534,
+          "pdf_page": 27,
+          "location": "'Multi-Year Financial Performance - Consolidated': Total Income chart and PAT Margin line"
+        }
+      ],
+      "requires": [
+        "chart",
+        "multi_value"
+      ],
+      "verified_from": "page_image",
+      "must_contain": [
+        "76.2",
+        "169.3",
+        "7.7",
+        "13.5"
+      ]
+    },
+    {
+      "id": "Q24",
+      "difficulty": "hard",
+      "doc_ids": [
+        712
+      ],
+      "question": "On Aimtron's FY26 call, who answered the question about the impact of PCB price increases and the DRAM shortage, and what did they say about the impact on profitability?",
+      "answer": "Mukesh Vasani. He said prices are largely locked and costs are passed on to customers; despite some semiconductor shortage there is no pricing impact on EBITDA or PAT at this point. (Question asked by Ashutosh Shukla.)",
+      "evidence": [
+        {
+          "doc_id": 712,
+          "pdf_page": 7,
+          "location": "Q&A, Ashutosh Shukla / Mukesh Vasani exchange"
+        }
+      ],
+      "requires": [
+        "speaker_attribution"
+      ],
+      "verified_from": "text_layer",
+      "known_issues": "Docling separated speaker names from their answers on this page.",
+      "must_contain": [
+        "Mukesh Vasani",
+        "PCB"
+      ]
+    },
+    {
+      "id": "Q25",
+      "difficulty": "hard",
+      "doc_ids": [
+        218,
+        220
+      ],
+      "question": "Which Reliance executive quoted the net debt figure on the Q1 FY27 call, what figure did he give, and is it consistent with the net debt in the investor presentation?",
+      "answer": "V Srikanth (CFO) said net debt was about ₹1,23,000 crore, slightly lower than March. This is consistent with the presentation's ₹1,22,914 crore at Jun-26 (vs ₹1,24,717 crore at Mar-26).",
+      "evidence": [
+        {
+          "doc_id": 218,
+          "pdf_page": 5,
+          "location": "Sh V Srikanth (Group Performance) section"
+        },
+        {
+          "doc_id": 220,
+          "pdf_page": 12,
+          "location": "'Strong Balance Sheet: Q1 FY27', Net Debt row"
+        }
+      ],
+      "requires": [
+        "speaker_attribution",
+        "cross_document"
+      ],
+      "verified_from": "text_layer + page_image",
+      "must_contain": [
+        "1,23,000",
+        "1,22,914"
+      ]
+    }
+  ],
+  "must_contain_note": "Strings the evidence pages' extracted text must contain for the answer to be recoverable. Matching ignores case, whitespace and thousands separators. Presence is necessary, not sufficient: it does not prove the value is attached to the right row/column (check that with the pack's per-page checks or a QA step)."
+}

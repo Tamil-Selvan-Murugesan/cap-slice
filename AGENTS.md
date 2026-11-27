@@ -54,6 +54,7 @@ Target: roughly 2015–2026 (or from listing date if later), eventually for ~3,0
 | `tools/qdrant/serve.sh` | Starts/stops a local Qdrant server (official v1.19.1 binary in `~/.local/opt/qdrant/`, storage `data/qdrant/`, 127.0.0.1 only) |
 | `src/cap_slice/score.py` (`cap-slice-score`) | Scores a parser's cache against golden v2 (default) or v1 (`--facts data/golden/parse_facts.csv --out review/v1`) → `review/<set>/<parser>.md` |
 | `docker/`, `tools/gpu/`, `docs/gpu-run.md` | Pinned GPU environments (`docker/requirements-*-{cu130,cu128}.txt`), Dockerfiles, RunPod setup (`setup_runpod.sh`: venvs, since pods can't run Docker), session scripts (`session.sh`: smoke / bench / full runs for all four parsers / `compare`), benchmark builder/report, `full_report.py` (exhaustive comparison of the full runs → `review/gpu/COMPARISON.md`), and the copy-paste runbook |
+| `vlm_bench/`, `parsing_eval/` | Sirisha's independent parser evaluation (from branch `main-sirisha`): OCR-VLM benchmark (PaddleOCR-VL, GLM-OCR, Unlimited-OCR, MinerU) and parsing evaluation sets; reference code with its own requirements, not part of the `cap-slice` package |
 | `parsed*/` | Batch caches (gitignored; synced with rsync) |
 | `data/qdrant/` | Qdrant storage (gitignored): the local server's data (`tools/qdrant/serve.sh`); re-create with `cap-slice-retrieval-dense load` |
 | `PROGRESS.md` | Living status + decision log |
