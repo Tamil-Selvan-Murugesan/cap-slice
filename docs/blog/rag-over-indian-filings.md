@@ -2,7 +2,7 @@
 
 We wanted to answer questions about Indian listed companies from their own filings: annual reports, quarterly results, earnings-call transcripts and investor decks. "What was APAR's standalone profit in FY2016-17?" "What did Hero MotoCorp say about EV margins in February 2024?" "How did E2E's capex change after it bought GPUs?" The goal is thousands of companies and more than ten million pages. Before building for that scale, we ran a five-company pilot to choose each part of the pipeline on evidence rather than on defaults.
 
-This post has two aims. The first is to show how we approached the problem from first principles: a frozen test set before any experiment, one variable per round, and every result checked question by question, applied to each layer in turn, from getting the documents to measuring retrieval. The second is to pass on what we learned and what surprised us, for anyone building retrieval over thousands of PDFs. On 250 questions whose answers we read off the pages ourselves, search that finds the right page went from 41% with keyword search to 93%. Most of that gain came from places we didn't expect.
+This post has two aims. The first is to show how we approached the problem from first principles: a frozen test set before any experiment, one variable per round, and every result checked question by question, applied to each layer in turn, from getting the documents to measuring retrieval. The second is to pass on what we learned and what surprised us, for anyone building retrieval over thousands of PDFs. On 250 questions whose answers we read off the pages ourselves, search that finds the right page went from 41% with keyword search to 93%. Most of that gain came from places we didn't expect. The code, test sets and every run are on [GitHub](https://github.com/Tamil-Selvan-Murugesan/cap-slice).
 
 ## The problem
 
@@ -228,3 +228,5 @@ Retrieval is good enough to build on. Next comes the answer step, measured on th
 - **Quality gates for the parser:** automatic checks on every parsed document, such as printed numbers against the text layer, runaway repeated output, year and column order in tables, and generated chart values kept apart from printed ones. At millions of pages nobody reads the output, so these checks decide what gets indexed.
 
 Then we scale. The pilot settled every choice in the pipeline; what remains is to build it for three thousand companies and measure it again, on questions drawn from many more of them.
+
+Everything in this post can be checked: the code, the question sets with their answer pages, every run and its scores are in the [cap-slice repository](https://github.com/Tamil-Selvan-Murugesan/cap-slice).
