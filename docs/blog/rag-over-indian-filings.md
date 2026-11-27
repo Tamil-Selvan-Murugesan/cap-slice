@@ -2,7 +2,12 @@
 
 We wanted to answer questions about Indian listed companies from their own filings: annual reports, quarterly results, earnings-call transcripts and investor decks. "What was APAR's standalone profit in FY2016-17?" "What did Hero MotoCorp say about EV margins in February 2024?" "How did E2E's capex change after it bought GPUs?" The goal is thousands of companies and more than ten million pages. Before building for that scale, we ran a five-company pilot to choose each part of the pipeline on evidence rather than on defaults.
 
-This post has two aims. The first is to show how we approached the problem from first principles: a frozen test set before any experiment, one variable per round, and every result checked question by question, applied to each layer in turn, from getting the documents to measuring retrieval. The second is to pass on what we learned and what surprised us, for anyone building retrieval over thousands of PDFs. On 250 questions whose answers we read off the pages ourselves, search that finds the right page went from 41% with keyword search to 93%. Most of that gain came from places we didn't expect. The code, test sets and every run are on [GitHub](https://github.com/Tamil-Selvan-Murugesan/cap-slice).
+This post has two aims:
+
+1. **To show our first-principles approach to building retrieval that scales:** a frozen test set before any experiment, one variable per round, and every result checked question by question, applied to each layer in turn, from getting the documents to measuring retrieval.
+2. **To pass on what we learned and what surprised us**, for anyone building retrieval over thousands of PDFs.
+
+On 250 questions whose answers we read off the pages ourselves, search that finds the right page went from 41% with keyword search to 93%. Most of that gain came from places we didn't expect. The code, test sets and every run are on [GitHub](https://github.com/Tamil-Selvan-Murugesan/cap-slice).
 
 ## The problem
 
@@ -46,7 +51,7 @@ What we learned about the sources, all of which carries over to thousands of com
 
 ## Parsing: the decision that matters most
 
-If a number doesn't survive parsing, no retriever can find it. We measured parsers on facts, not on how nice the Markdown looks.
+If a number doesn't survive parsing, no retriever can find it. We measured parsers on facts.
 
 **The yardstick.** We wrote 301 "golden facts" in three sets, each read off a page image. A fact is scored only against chunks from its own page, at four levels:
 
@@ -142,17 +147,8 @@ Every number below is the share of questions with an answer page in the top 10 (
 | d | One slide or concall exchange per chunk | Lost 12 points on concalls |
 | e | Small-to-big retrieval | +4 / −5: no gain |
 
-The heading path is the chain of headings above a chunk: the page's top heading, then its section. A chunk from APAR's FY2016-17 audit report is embedded as:
 
-```
-APAR Industries · Annual report FY2016-17 · Standalone financial statements
-## Financial Section › Auditor's Responsibility
-Our responsibility is to express an opinion on these Standalone Ind AS financial statements…
-```
-
-The first line is the context header, the second the heading path.
-
-**Round 4: reranker.** We ran Voyage rerank-3 over the top 50 dense results. It scored **0.865 → 0.915** (+10 / −0, p = 0.002), and top-1 accuracy rose to 0.61. Reranking 100 candidates was no better than 50. Hybrid plus reranker scored 0.91 against 0.915: one question apart, which is noise, so hybrid didn't do worse, it just didn't do better. A reranker can only reorder the candidates it is given, and BM25's extra candidates held no answer that dense search hadn't already offered, only more look-alikes. With no gain to show for a second index to build and run, hybrid stayed out. At list price reranking costs about $0.0008 per query. (Round 3, images, is deliberately waiting: only four or five image questions still miss, too few to compare methods.)
+**Round 3: reranker.** We ran Voyage rerank-3 over the top 50 dense results. It scored **0.865 → 0.915** (+10 / −0, p = 0.002), and top-1 accuracy rose to 0.61. Reranking 100 candidates was no better than 50. Hybrid plus reranker scored 0.91 against 0.915: one question apart, which is noise, so hybrid didn't do worse, it just didn't do better. A reranker can only reorder the candidates it is given, and BM25's extra candidates held no answer that dense search hadn't already offered, only more look-alikes. With no gain to show for a second index to build and run, hybrid stayed out. At list price reranking costs about $0.0008 per query.
 
 **A chunker bug hiding in concalls.** The parser read two-column transcripts (speaker | words) as tables, so our chunker kept them as speaker tables (1,085 of them), with section labels left over from earlier speakers. We re-chunked them as turns: four tables were left, and no stale labels. The overall hit rate stayed at 0.915, but answers rank higher: top-1 accuracy 0.605 → 0.62, and on concall questions 0.71 → 0.76.
 
@@ -173,7 +169,7 @@ With round-robin, multi-page questions with every fact in the top 10 rose from 5
 | + question-based filter | 0.66 |
 | Dense (Voyage 4 Large) + soft filter | 0.81 |
 | + context header in chunks (round 2) | 0.865 |
-| + reranker on the top 50 (round 4) | 0.915 |
+| + reranker on the top 50 (round 3) | 0.915 |
 | + query expansion, round-robin | **0.93** (200 questions), **0.94** (fresh 50) |
 
 ## Measuring like the rest of the field, and where the measures disagree
@@ -221,7 +217,7 @@ Label metrics can't see either case; a judge can, but a judge is a model. Report
 ## If you're building RAG over thousands of PDFs
 
 1. **Build ground truth from page images before you build anything else.** About 300 facts and 250 questions paid for every decision after.
-2. **Treat parsing as the foundation, and choose the parser on number fidelity, not on looks.** Get parsing wrong and you'll have a perfect retrieval pipeline with nothing to retrieve. Check printed numbers against the text layer where one exists. A plausible wrong number is worse than a missing one.
+2. **Treat parsing as the foundation, and choose the parser on number fidelity.** Get parsing wrong and you'll have a perfect retrieval pipeline with nothing to retrieve. Check printed numbers against the text layer where one exists. A plausible wrong number is worse than a missing one.
 3. **Normalise periods and read the question.** Year, company and document type as soft filters are cheap and large wins in any domain with repeated documents.
 4. **Put context into the embedded text.** Company, document, period and scope in a short header: one line of text, our biggest chunking gain.
 5. **Add a reranker before anything clever.** It was +10 / −0 for a fraction of a cent per query, and filings are where it earns its place. The same table appears in every year's report, and standalone sits next to consolidated. A soft filter leaves other years' pages in the running in case the question was misread; the reranker reads the question together with each chunk's header and picks the right year and scope.
@@ -241,3 +237,8 @@ Retrieval is good enough to build on. Next comes the answer step, measured on th
 Then we scale. The pilot settled every choice in the pipeline; what remains is to build it for three thousand companies and measure it again, on questions drawn from many more of them.
 
 Everything in this post can be checked: the code, the question sets with their answer pages, every run and its scores are in the [cap-slice repository](https://github.com/Tamil-Selvan-Murugesan/cap-slice).
+
+## Contributors
+
+- [Naga Sirisha Chava](https://www.linkedin.com/in/sirisha-chava-9628a8331/)
+- [Tamil Selvan Murugesan](https://www.linkedin.com/in/tamil-selvan-murugesan/)
