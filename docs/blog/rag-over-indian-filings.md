@@ -90,6 +90,17 @@ Three things here surprised us:
 - **The cheaper MinerU tier collapses some financial statements into a single table row.** It scored 20 of 28 against 28 for the advanced tier.
 - **In Docling, OCR was 90–97% of the run time**, mostly re-reading ruled tables on pages that already had perfect text. Running OCR only on pages that need it fixed that. Separately, more threads made Docling slower.
 
+## An open-source contribution we didn't plan
+
+Two PDFs broke Docling's default PDF reader. On one, a single page made memory grow without limit: within seconds the process had run through all 62 GB the machine had, and the kernel killed it. No error was written, and every document queued behind it was blocked. The other failed with a parse error.
+
+Because every run logged each document and kept a cache per document, the silent kill pointed to one PDF, then to one page. Under a memory cap the runaway became a clean error, and Docling's other PDF reader parsed both pages in seconds. That put the fault in `docling-parse`, Docling's C++ library, not in the files. There were two bugs:
+
+- **A malformed font table.** A range written backwards wrapped around, and the library tried to reserve about 4.3 billion entries.
+- **Memory read after it was freed.** One page read a string length of about 4.6 × 10¹⁸.
+
+C++ isn't our language. But with the problem narrowed to two pages and one library, we fixed both with an AI coding agent, with a test for each and before-and-after checks on unaffected documents. The maintainers merged both within a day ([#381](https://github.com/docling-project/docling-parse/pull/381), [#382](https://github.com/docling-project/docling-parse/pull/382)). We didn't go looking for an open-source contribution; measuring carefully led us to one.
+
 ## Chunking and metadata
 
 **Chunking.** Our chunker treats tables as units. It never splits a table without repeating its header, carries the page's units statement ("₹ in crore") into every table chunk, and starts chunks at headings. Building it took 21 recorded bugs. One example: a cash-flow statement labelled with the name of the signatory from the previous page. Several "improvements" during development turned out to be bugs once we opened the chunks behind the score. That became our first lesson: **a score change is a claim, not a fact; read the output behind it.**
