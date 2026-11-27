@@ -1,0 +1,12 @@
+# parsing_eval (local, CPU). The GPU benchmark's environments are created by vlm_bench/setup_pod.sh.
+
+# profile_pages.py, sets/*.py, baselines/pymupdf4llm_parse.py
+pymupdf>=1.28
+pymupdf4llm>=1.28
+pymupdf-layout>=1.28      # layout model used by pymupdf4llm (layout mode)
+rapidocr>=3.9             # OCR engine pymupdf4llm / docling call for scanned regions
+onnxruntime>=1.20
+
+# baselines/docling_parse.py -- use a SEPARATE venv:
+#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+#   pip install docling rapidocr onnxruntime
