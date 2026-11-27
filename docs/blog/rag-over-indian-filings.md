@@ -101,8 +101,8 @@ Two PDFs broke Docling's default PDF reader. On one, a single page made memory g
 
 Because every run logged each document and kept a cache per document, the silent kill pointed to one PDF, then to one page. Under a memory cap the runaway became a clean error, and Docling's other PDF reader parsed both pages in seconds. That put the fault in `docling-parse`, Docling's C++ library, not in the files. There were two bugs:
 
-- **A malformed font table.** A range written backwards wrapped around, and the library tried to reserve about 4.3 billion entries.
-- **Memory read after it was freed.** One page read a string length of about 4.6 × 10¹⁸.
+- **A range written backwards.** A font's lookup table ran from code 65,535 down to 255. The library worked out the range's size with numbers that can't go negative, so the size wrapped round to about 4.3 billion, and it tried to reserve room for all of them.
+- **A name read from freed memory.** While painting a pattern, the library held a reference to the pattern's name, then grew the list that held it, which moved the name elsewhere. On one page the stale reference read a string length of about 4.6 × 10¹⁸.
 
 C++ isn't our language. But with the problem narrowed to two pages and one library, we fixed both with an AI coding agent, with a test for each and before-and-after checks on unaffected documents. The maintainers merged both within a day ([#381](https://github.com/docling-project/docling-parse/pull/381), [#382](https://github.com/docling-project/docling-parse/pull/382)). We didn't go looking for an open-source contribution; measuring carefully led us to one.
 
